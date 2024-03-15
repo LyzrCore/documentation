@@ -61,10 +61,12 @@ open_ai_text_completion_model = OpenAIModel(
 ```
 **Parameters**
 
-| Parameter  | Description                                                                                                                                                                  |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| parameters | All existing parameters supported by OpenAI's chat completion model are included by default for customizable requests. Users can pass these using the parameters dictionary. |
-| api_key    | The api_key parameter is the user's OpenAI API key, required for authentication to access the chat completion service.                                                       |
+<ParamField path="parameters" type="dict">
+All existing parameters supported by OpenAI's chat completion model are included by default for customizable requests. Users can pass these using the parameters dictionary.
+</ParamField>
+<ParamField path="api_key" type="str">
+The api_key parameter is the user's OpenAI API key, required for authentication to access the chat completion service.
+</ParamField>
 
 **Example for creating an OpenAI model with parameters for image generation**
 
@@ -83,11 +85,12 @@ open_ai_model_image = OpenAIModel(
     },
 )
 ```
-
-| Parameter  | Description                                                                                                                                                                   |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| parameters | All existing parameters supported by OpenAI's image generation model are included by default for customizable requests. Users can pass these using the parameters dictionary. |
-| api_key    | The api_key parameter is the user's OpenAI API key, required for authentication to access the image generation service.                                                       |
+<ParamField path="parameters" type="dict">
+All existing parameters supported by OpenAI's image generation model are included by default for customizable requests. Users can pass these using the parameters dictionary.
+</ParamField>
+<ParamField path="api_key" type="str">
+The api_key parameter is the user's OpenAI API key, required for authentication to access the image generation service.
+</ParamField>
 
 2. **Perplexity** 
 
@@ -108,18 +111,28 @@ perplexity_model_text = PerplexityModel(
 
 **Parameters**
 
-| Parameter  | Description                                                                                                                 |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
-| parameters | A dictionary supporting all existing parameters accepted by the Perplexity chat completion model for customizable requests. |
-| api_key    | The user's Perplexity API key required for authentication to access the chat completion service.                            |
+<ParamField path="parameters" type="dict">
+A dictionary supporting all existing parameters accepted by the Perplexity chat completion model for customizable requests.
+</ParamField>
+<ParamField path="api_key" type="str">
+The user's Perplexity API key required for authentication to access the chat completion service.
+</ParamField>
 
 3. **Connect your own model to the framework**
 
 You can bring in your own model and connect it to our framework by extending our base AIModel class.
 
-    1. Import AIModel class
-    2. You may provide initial parameters, including the API key and any model-specific parameters.
-    3. Crucially, create two methods: **generate_text** and **generate_image**, as stipulated by the abstract class design of AIModel.
+<Steps>
+  <Step title="Import">
+    Import AIModel class
+  </Step>
+  <Step title="Params">
+    You may provide initial parameters, including the API key and any model-specific parameters.
+  </Step>
+  <Step title="Methods">
+    Crucially, create two methods: **generate_text** and **generate_image**, as stipulated by the abstract class design of AIModel.
+  </Step>
+</Steps>
 
 **How to bring your own model to Lyzr Automata?** 👇
 
@@ -169,22 +182,34 @@ class MyModel(AIModel):
 
 Generates a text response using an AI chat model based on the provided prompt and optional parameters. This method is intended for creating conversational AI responses, leveraging the client's chat completion capabilities.
 
-| Parameter      | Description                                                                                                                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| task_id        | An optional identifier for the task. Used to specify or reference a particular task instance.                                                                                                                 |
-| system_persona | An optional string that defines the persona or role of the system in the conversation.                                                                                                                        |
-| prompt         | An optional string containing the initial prompt or question posed by the user to the AI system.                                                                                                              |
-| messages       | An optional list of dictionaries, each representing a message in the conversation history. The default value creates a conversation starting with the system persona's message followed by the user's prompt. |
+<ParamField path="task_id" type="Optional[str]">
+An optional identifier for the task. Used to specify or reference a particular task instance.
+</ParamField>
+<ParamField path="system_persona" type="Optional[str]">
+An optional string that defines the persona or role of the system in the conversation.
+</ParamField>
+<ParamField path="prompt" type="Optional[str]">
+An optional string containing the initial prompt or question posed by the user to the AI system.
+</ParamField>
+<ParamField path="messages" type="Optional[List[dict]]">
+An optional list of dictionaries, each representing a message in the conversation history. The default value creates a conversation starting with the system persona's message followed by the user's prompt.
+</ParamField>
 
 **`generate_image` Method**
 
 Generates an image based on a given prompt, utilizing the client's image generation capabilities. The generated image is saved using a **`ResourceBox`**, which likely handles file management and storage.
 
-| Parameter    | Description                                                                                                                                                                     |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| task_id      | A required identifier for the task, used to specify a unique instance for image generation and storage.                                                                         |
-| prompt       | The prompt based on which the image will be generated. This string should describe the desired outcome for the image.                                                           |
-| resource_box | An instance of ResourceBox, which is used for managing the storage of the generated image, including saving the file from a URL and determining the subfolder based on task_id. |
+<ParamField path="task_id" type="str" >
+A required identifier for the task, used to specify a unique instance for image generation and storage.
+</ParamField>
+
+<ParamField path="prompt" type="str" >
+The prompt based on which the image will be generated. This string should describe the desired outcome for the image.
+</ParamField>
+
+<ParamField path="resource_box" type="ResourceBox" >
+An instance of ResourceBox, which is used for managing the storage of the generated image, including saving the file from a URL and determining the subfolder based on task_id.
+</ParamField>
 
 
 
@@ -211,16 +236,22 @@ The code snippet initializes an **`Agent`** object designed to perform tasks or 
 
 **Parameter Table for `Agent`**
 
-| Parameter      | Description                                                                                                 |
-| -------------- | ----------------------------------------------------------------------------------------------------------- |
-| role           | Defines the agent's operational role or function, setting the context for its tasks and interactions.       |
-| prompt_persona | Describes the intended persona or style the agent should adopt, influencing its approach to task execution. |
-| memory         | Specifies the memory system instance the agent uses to interact with vector store memory.                   |
+<ParamField path="role" type="str">
+Defines the agent's operational role or function, setting the context for its tasks and interactions.
+</ParamField>
+<ParamField path="prompt_persona" type="str">
+Describes the intended persona or style the agent should adopt, influencing its approach to task execution.
+</ParamField>
+<ParamField path="memory" type="str">
+Specifies the memory system instance the agent uses to interact with vector store memory.
+</ParamField>
 
 
 *Let's look at an example of creating a blogger agent based on the company's data.*
 
+<Note>
 Note: Currently agent supports only LLAMA index for memory
+</Note>
 
 ```python
 # sample create a index from directory of documents
@@ -256,7 +287,9 @@ website_content_blogger_agent = Agent(prompt_persona="you are intelligent blog p
 
 Tools help agents to connect with external software components like API's or other functions.
 
-*Note: You can use our pre-built tools or tools from other providers like **Llama Hub**. Optionally you can also use our base **Tool** class to create your own custom tool by providing the function, input and output Pydantic models.*
+<Note>
+Note: You can use our pre-built tools or tools from other providers like **Llama Hub**. Optionally you can also use our base **Tool** class to create your own custom tool by providing the function, input and output Pydantic models.
+</Note>
 
 *Let's look at an example to use prebuilt linkedin post tool. All prebuilt tools are available to export from* lyzr_automata.tools.prebuilt_tools
 
@@ -277,13 +310,21 @@ This section provides an overview of how to initialize an instance of a **`Tool`
 
 **Parameter Table**
 
-| Parameter       | Description                                                                                                                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name            | The name of the tool, giving a clear indication of its functionality or the task it is designed to perform.                                                                                       |
-| desc            | A brief description of the tool's purpose and how it operates, providing context to its users.                                                                                                    |
-| function        | The specific function the tool executes. This should be a callable object that performs the tool's main operation.                                                                                |
-| function_input  | The Pydantic model that defines the structure, type, and validation rules for the input data. This ensures that the function receives data in the expected format.                                |
-| function_output | The Pydantic model for the output data, specifying what the function returns. This model validates the output data structure and type, ensuring consistency and reliability in the tool's output. |
+<ParamField path="name" type="str">
+The name of the tool, giving a clear indication of its functionality or the task it is designed to perform.
+</ParamField>
+<ParamField path="desc" type="str">
+A brief description of the tool's purpose and how it operates, providing context to its users.
+</ParamField>
+<ParamField path="function" type="str">
+The specific function the tool executes. This should be a callable object that performs the tool's main operation.
+</ParamField>
+<ParamField path="function_input" type="str">
+The Pydantic model that defines the structure, type, and validation rules for the input data. This ensures that the function receives data in the expected format.
+</ParamField>
+<ParamField path="function_output" type="str">
+The Pydantic model for the output data, specifying what the function returns. This model validates the output data structure and type, ensuring consistency and reliability in the tool's output.
+</ParamField>
 
 
 **Implementation Notes**
@@ -352,19 +393,39 @@ The **`Task`** object initialization configures a specific operation or activity
 
 **Parameter Table**
 
-| Parameter      | Description                                                                                                                                                                                                    |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name           | The unique identifier or descriptive name for the task, highlighting its primary focus or objective.                                                                                                           |
-| agent          | The agent instance responsible for carrying out the task, equipped with the necessary skills or functionalities. Instance of Agent class                                                                       |
-| output_type    | Specifies the format or type of the task's output, ensuring compatibility with subsequent operations or requirements. accepts ( OutputType.TEXT / OutputType.IMAGE )                                           |
-| input_type     | Defines the expected format or type of input the task requires, aligning with the nature of the data being processed. ( InputType.TEXT / InputType.IMAGE )                                                     |
-| model          | (Optional) A reference to a the llm model. Instance of AIModel ( OpenAIModel/ PerplexityModel ) class.                                                                                                         |
-| instructions   | Detailed guidance or commands that the agent follows to execute the task, potentially including objectives and constraints.                                                                                    |
-| log_output     | A boolean value indicating whether the task's outputs should be streamed to logger.                                                                                                                            |
-| enhance_prompt | A boolean flag enabling additional processing or modification of the initial instructions to optimize task performance. ( Automatically enhances prompts based on https://arxiv.org/pdf/2312.16171.pdf paper ) |
-| default_input  | A predefined input value used when actual input is unavailable or incomplete, ensuring task continuity.                                                                                                        |
-| tool           | Tool is a instance of Tool class to do external software actions using llm flow Eg. email sending tool                                                                                                         |
-| input_tasks    | Input tasks instances of Task class, it is for explicitly mentioning which tasks output to be used as input for current task.                                                                                  |
+<ParamField path="name" type="str">
+The unique identifier or descriptive name for the task, highlighting its primary focus or objective.
+</ParamField>
+<ParamField path="agent" type="Agent">
+The agent instance responsible for carrying out the task, equipped with the necessary skills or functionalities. Instance of Agent class.
+</ParamField>
+<ParamField path="output_type" type="str">
+Specifies the format or type of the task's output, ensuring compatibility with subsequent operations or requirements. Accepts (OutputType.TEXT / OutputType.IMAGE).
+</ParamField>
+<ParamField path="input_type" type="str">
+Defines the expected format or type of input the task requires, aligning with the nature of the data being processed. (InputType.TEXT / InputType.IMAGE).
+</ParamField>
+<ParamField path="model" type="AIModel">
+(Optional) A reference to a the llm model. Instance of AIModel (OpenAIModel/PerplexityModel) class.
+</ParamField>
+<ParamField path="instructions" type="str">
+Detailed guidance or commands that the agent follows to execute the task, potentially including objectives and constraints.
+</ParamField>
+<ParamField path="log_output" type="bool">
+A boolean value indicating whether the task's outputs should be streamed to logger.
+</ParamField>
+<ParamField path="enhance_prompt" type="bool">
+A boolean flag enabling additional processing or modification of the initial instructions to optimize task performance. (Automatically enhances prompts based on https://arxiv.org/pdf/2312.16171.pdf paper).
+</ParamField>
+<ParamField path="default_input" type="any">
+A predefined input value used when actual input is unavailable or incomplete, ensuring task continuity.
+</ParamField>
+<ParamField path="tool" type="Tool">
+Tool is an instance of Tool class to do external software actions using llm flow. For example, an email sending tool.
+</ParamField>
+<ParamField path="input_tasks" type="List[Task]">
+Input tasks instances of Task class. It is for explicitly mentioning which tasks output to be used as input for the current task.
+</ParamField>
 
 
 *Let's look at an example, on how you can define a task*
@@ -401,12 +462,10 @@ Pipelines help us run the tasks in a directed orderly fashion. Currently we supp
 
 Currently out of the box we support 1 Pipeline
 
-1. LinearAsyncPipeline
+1. **LinearAsyncPipeline**
 
 Linear async pipeline runs the tasks one after another in sequence. For example 
-
 If there are three tasks A, B, C. Then using the LinearAsyncPipeline class you can run the tasks
-
 in the fashion A→B→C.
 
 ```python
@@ -427,9 +486,11 @@ LinearSyncPipeline(
 
 1. If any task depends on multiple inputs which come from any previous task they can be provided in the input_tasks param of the task instance.
 
+<Note>
 Note: providing explicit input_tasks to a task instance means it will rely solely on those tasks for its output, without considering the sequence output of previous tasks at that point. However, the output from the current task will still be processed further.
+</Note>
 
-ex
+**Example**
 
 Task A → Task B → Task C → TASK D
 

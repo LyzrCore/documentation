@@ -1,0 +1,689 @@
+---
+title: Data Analyzr
+sidebarTitle: Data Analysis Agent
+description: 'LLM-powered conversational analytic'
+---
+
+Lyzr's DataAnalyzr is an innovative conversational analytics framework that provides access to LLM-integrated advanced data analysis through a conversational interface to derive actionable insights and intuitive visualizations.
+
+With DataAnalyzr, you can streamline the complexity of data analytics into a powerful, intuitive, and conversational interface that lets you command data with ease. Whether you're an experienced data scientist or a business analyst, DataAnalyzr opens up a world of possibilities by transforming raw data into actionable insights and engaging visualizations.
+
+**DataAnalyzr comes in two distinct editions**
+
+| Open Source Edition (OSE)      | Enterprise Edition (EE)                       |
+| ------------------------------ | --------------------------------------------- |
+| Only Handles Simple Analysis   | Handles Complex Analysis                      |
+| Only Matplotlib Visualizations | Plotly, Matplotlib and Seaborn Visualizations |
+| Only PNG as output format      | PNG, SVG, PDF, HTML and JSON output format    |
+
+
+## **Key Features**
+
+<CardGroup cols={2}>
+    <Card title="Versatile Analysis" icon="square-1">
+        Choose from SQL-based analysis, or machine learning-driven analysis, or opt to skip analysis altogether and generate insights from the raw data, depending on your project requirements.
+    </Card>
+    <Card title="Powerful Integration" icon="square-2">
+        Seamlessly integrate DataAnalyzr into your existing workflows and applications, leveraging its APIs and versatile capabilities.
+    </Card>
+    <Card title="Insightful Outputs" icon="square-3">
+        Gain valuable insights, generate queries, and receive actionable recommendations, all powered by advanced language models and external services.
+    </Card>
+    <Card title="Flexible Configuration" icon="square-4">
+        Customize analysis parameters, logging settings, and more to suit your specific use cases and preferences.
+    </Card>
+</CardGroup>
+
+# Getting started
+
+The first step in using DataAnalyzr is to create a class instance.
+
+```python
+from exterprise_data_analyzr import DataAnalyzr
+
+analyzr = DataAnalyzr(analysis_type="ml", api_key="openai_key")
+```
+
+The `analysis_type` parameter can take three options:
+
+- `ml` - for analysis with Python code, using Pandas, Scikit-learn and other similar packages.
+- `sql` - for SQL analysis.
+- `skip` - if you want to skip the analysis altogether, and get insights directly from the uploaded data.
+
+<Note>Note that you can also provide an `api_key` parameter. This parameter is optional and given as an alternative to setting the environment variable.</Note>
+
+For details on all the options available in instantiating the `DataAnalyzr` class, [visit the API reference](#api-reference).
+
+
+# Loading data
+
+DataAnalyzr provides multiple options for connecting with your data. Whether you are working with data files in CSV, Excel, JSON, etc. formats, or you want to connect to an online database in Redshift, or perhaps you have a local SQLite database, there is an option for you.
+
+The class method used to connect with data is `get_data`. It takes three parameters - `db_type`, `config`, and `vector_store_config` - the values of all of these depend on the format of the input data. Let's look at a couple of examples:
+
+### Loading data from files
+
+Collect all your data files in a dictionary, where their names are keys and paths are values. Then pass this dictionary when calling the `get_data` method.
+
+```python
+datafiles = {
+		"Name of dataset": path/to/dataset.csv,
+		"Name of dataset": path/to/dataset.xls,
+		"Name of dataset": path/to/dataset.json,
+}
+# Call the get_data method
+analyzr.get_data(
+		db_type = "files",
+		config = {
+				"datasets": datafiles,
+				"db_path": "path/to/local/db",
+		},
+		vector_store_config = {
+				"pass": "password", # pseudo-secret code,
+				"path": "path/to/local/vector/store",
+				"remake": True
+		}
+)
+```
+
+The value of `db_type` tells the system:
+
+- which type of data it will need to explore
+- what to expect in the config parameter
+
+In the `vector_store_config`, `pass` is a pseudo-secret code that permits the system to make a chromadb vector store locally at the given `path`.  The `remake` parameter is set to `True` to ensure that the vector store is remade every time the DataAnalyzr is initialized. This is useful for testing purposes but should be set to `False` in a production environment. Setting remake to `False` will allow the LLM to learn from previous interactions.
+
+### Loading data from Redshift
+
+As a first step, you will need to collect all the Redshift details.
+
+```python
+redshift_config = {
+		"host": "",
+		"port": 3000, # e.g. 5439
+		"database": "",
+        "user": "",
+        "password": "",
+        "schema": ["schema1", "public"],
+        "tables": ["table1", "table2"]
+}
+analyzr.get_data(
+    db_type = "redshift",
+    config = redshift_config,
+    vector_store_config = {
+            "pass": "password", # pseudo-secret code,
+            "path": "path/to/local/vector/store",
+            "remake": True
+    }
+)
+```
+
+Once again, note that the value of `db_type` tells the system:
+
+- which type of data it will need to explore
+- what to expect in the config parameter
+
+While you may pass only one `database` in `config`, the number of tables and schemas is not limited; they are passed as lists. If no `schema` and `tables` are passed, all the tables from the `public` schema are taken.
+
+### Loading data from PostgreSQL
+
+The implementation for PostgreSQL is very similar to that for Redshift. Start by collecting all the DB details.
+
+```python
+postgres_config = {
+		"host": "",
+		"port": 3001, # e.g. 5439
+		"database": "",
+        "user": "",
+        "password": "",
+        "schema": ["schema1", "public"],
+        "tables": ["table1", "table2"]
+}
+analyzr.get_data(
+    db_type = "postgres",
+    config = postgres_config,
+    vector_store_config = {
+            "pass": "password", # pseudo-secret code,
+            "path": "path/to/local/vector/store",
+            "remake": True
+    }
+)
+```
+<Note>
+Note that the value of `db_type` is now `postgres`, while everything else is the same.
+</Note>
+
+### Loading data from SQLite
+
+A local SQLite database can also be used for analysis with DataAnalyzr. You only need to pass the path to this database in the `config` parameter.
+
+```python
+analyzr.get_data(
+    db_type = "sqlite",
+    config = {"db_path": "path/to/sqlite.db"},
+    vector_store_config = {
+				"pass": "password", # pseudo-secret code,
+				"path": "path/to/local/vector/store",
+				"remake": True
+		}
+)
+```
+
+Alternatively, if you have a URL which holds the SQLite database, you can pass this URL as the value of `db_path`.
+
+## Getting results
+
+You can use the `DataAnalyzr` object to perform an analysis on the DataFrame by passing an analysis query to the method `ask`. This function enables you to ask questions directly related to the data at hand, allowing DataAnalyzr to process the inquiry and provide the corresponding insights, recommendations, and tasks.
+
+A most simple such implementation looks like this:
+
+```python
+result = analyzr.ask("Your question here") # returns dict
+```
+
+Here, `result` has keys `insights`, `recommendations` and `tasks`. 
+
+You can control the outputs received from `ask`:
+
+```python
+result = analyzr.ask(
+		user_input = "Your question here",
+		outputs = ["insights"]
+)
+```
+
+Here, result still has the keys “insights”, “recommendations” and “tasks” but their values are changed.
+
+```python
+>>> print(result["insight"])
+This is the insights generated by the LLM analysis...
+>>> print(result["recommendations"])
+	
+>>> repr(result["recommendations"])
+"''"
+```
+
+You can also specify the context for the analysis and the generation of outputs. For example, you could let the system know that this analysis is for a specific user profile, or that the outputs should be presented in a specific way.
+
+```python
+# A humorous example
+result = analyzr.ask(
+		"How many columns in my dataset?",
+		context = {"insights": "Give your response as a pirate."},
+		outputs = ["insights"]
+)
+print(result['insights'])
+- Yer dataset be havin' 11 columns in total, matey.
+- Thar be 147 rows o' data, with ranks spannin' from 1 to 147.
+- The mean rank be 74, which be the midpoint o' the data, arrr.
+```
+
+## API Reference
+
+This is the class and function reference of `DataAnalyzr`. Please refer to the [full user guide](https://www.notion.so/DataAnalyzr-d66279de2ea84e4db67edefc6a4b74f9?pvs=21) for details on usage.
+
+## **`DataAnalyzr` Class**
+
+```python
+DataAnalyzr(
+		analysis_type: Literal["sql", "ml", "skip"],
+		api_key: Optional[str] = None,
+		gen_model: Optional[Union[dict, LLM]] = None,
+		analysis_model: Optional[Union[dict, LLM]] = None,
+		user_input: Optional[str] = None,
+		context: Optional[str] = None,
+		log_level: Optional[Literal["NOTSET", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]] = "INFO",
+		print_log: Optional[bool] = False, log_filename: Optional[str] = "dataanalyzr.log"
+)
+```
+
+Constructor method for initializing a `DataAnalyzr` object.
+
+**Parameters**
+
+<ParamField path="analysis_type" type="Literal['sql', 'ml', 'skip']">
+    Type of analysis to perform. It can be one of: `sql`, `ml`, or `skip`.
+</ParamField>
+
+<ParamField path="api_key" type="Optional[str]">
+    Optional API key used for accessing external services. If not provided, will attempt to retrieve it from the environment variables `API_KEY` or `OPENAI_API_KEY`.
+</ParamField>
+
+<ParamField path="gen_model" type="Optional[Union[dict, LLM]]">
+    Optional dictionary specifying the language model for generating text. It can also be an instance of the `LyzrLanguageModel` (LLM) class. If not provided, default language mode is used.
+</ParamField>
+
+<ParamField path="analysis_model" type="Optional[Union[dict, LLM]]">
+    Optional dictionary specifying the analysis model to be used.
+</ParamField>
+
+<ParamField path="user_input" type="Optional[str]">
+    Optional user input for analysis.
+</ParamField>
+
+<ParamField path="context" type="Optional[str]">
+    Optional context for analysis.
+</ParamField>
+
+<ParamField path="log_level" type="Optional[Literal['NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']]">
+    Optional logging level. It can be one of the following: `NOTSET`, `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`. The default is `INFO`.
+</ParamField>
+
+<ParamField path="print_log" type="Optional[bool]">
+    Optional flag indicating whether to print logs to the console. The default is `False`.
+</ParamField>
+
+<ParamField path="log_filename" type="Optional[str]">
+    Optional filename for logging. The default is `dataanalyzr.log`.
+</ParamField>
+
+**Raises**
+
+- `MissingValueError`: If `api_key` is not provided or found in the environment variables.
+
+**Returns**
+
+- A `DataAnalyzr` object.
+
+**Attributes**
+
+- `api_key`: API key used for accessing external services.
+- `analysis_type`: Type of analysis.
+- `context`: Context for analysis.
+- `user_input`: User input for analysis.
+- `log_filename`: Filename for logging.
+- `database_connector`: Database connector object.
+- `df_dict`: Dictionary of Pandas DataFrames.
+- `vector_store`: Vector store object.
+- `analysis_steps`: Steps performed during analysis.
+- `analysis_output`: Output of the analysis.
+- `insights_output`: Output of the insights generation.
+
+**Example**
+
+```python
+data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+```
+
+## **Methods**
+
+### **`get_data` Method**
+
+```python
+get_data(
+    db_type: Literal["files", "redshift", "postgres", "sqlite"],
+    config: dict,
+    vector_store_config: dict
+)
+```
+
+This method retrieves data from various types of databases or files based on the provided configuration. It also creates a vector store for the data. This method must be called before performing any analysis.
+
+**Parameters**
+
+<ParamField path="db_type" type="Literal['files', 'redshift', 'postgres', 'sqlite']">
+    Type of the database or files from which to retrieve data. It can be one of the following:
+    - `files`: Retrieve data from files.
+    - `redshift`: Retrieve data from Amazon Redshift.
+    - `postgres`: Retrieve data from PostgreSQL.
+    - `sqlite`: Retrieve data from SQLite.
+</ParamField>
+
+<ParamField path="config" type="dict">
+    A dictionary containing configuration details for connecting to the specified database or files. The required keys depend on the `db_type`.
+</ParamField>
+
+<ParamField path="vector_store_config" type="dict">
+    A dictionary containing configuration details for the vector store.
+</ParamField>
+
+**Notes**
+
+- The required keys in the `config` dictionary depend on the specified `db_type`:
+    - If `db_type` is `files`, the required keys in the `config` dictionary are:
+        - `datasets`: A dictionary containing the names of the datasets and their corresponding file paths.
+        - `files_kwargs`: A dictionary containing keyword arguments for reading the files.
+        - `db_path`: The path to the database.
+    - If `db_type` is `redshift`, or `postgres`, the required keys in the `config` dictionary include:
+        - `host`: The hostname of the database server.
+        - `port`: The port number of the database server.
+        - `user`: The username for connecting to the database.
+        - `password`: The password for connecting to the database.
+        - `database`: The name of the database.
+        - `schema`: A list of schema names.
+        - `tables`: A list of table names.
+    - If `db_type` is `sqlite`, the required key in the `config` dictionary:
+        - `db_path`: The path to the SQLite database file.
+- The required keys in the `vector_store_config` dictionary are:
+    - `pass`: A pseudo-secret code that allows the system to make a ChromaDB vector store locally.
+    - `path`: The path to the vector store.
+    - `remake`: A boolean value indicating whether to remake the vector store.
+    Alternatively, the `vector_store_config` can be set to a custom vector store, or it can be set to `None` if the `analysis_type` of the `DataAnalyzr` is `skip`.
+
+**Side Effects**
+
+- Sets the `database_connector`, `df_dict`, and `vector_store` attributes of the `DataAnalyzr` instance.
+
+**Example**
+
+```python
+data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+config = {
+    "host": "localhost",
+    "port": 5432,
+    "user": "user",
+    "password": "password",
+    "database": "my_database",
+    "schema": ["public"],
+    "tables": ["my_table"]
+}
+vector_store_config = {
+    "pass": "password",
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
+data_analyzer.get_data(
+		db_type="postgres",
+		config=config,
+		vector_store_config=vector_store_config
+)
+```
+
+
+### **`get_data` Method**
+
+```python
+ask(
+    user_input: str = None,
+    outputs: list[Literal["insights", "recommendations", "tasks"]] = None,
+    rerun_analysis: bool = True,
+    use_insights: bool = True,
+    recs_format: dict = None,
+    recs_output_type: Literal["text", "json"] = None,
+    counts: dict = None,
+    context: dict = None
+) -> dict
+```
+
+This method orchestrates the analysis process and generates insights, recommendations, and tasks based on the specified inputs and parameters. It is the recommended method to use for generating insights, recommendations, and tasks.
+
+**Parameters**
+
+<ParamField path="user_input" type="str">
+Input provided by the user for analysis. If not provided, the method uses the user input stored in the `DataAnalyzr` instance.
+</ParamField>
+<ParamField path="outputs" type="list[Literal['insights', 'recommendations', 'tasks']]">
+List of outputs to generate. It can include any combination of `insights`, `recommendations`, and `tasks`. Default is `["insights", "recommendations", "tasks"]`.
+</ParamField>
+<ParamField path="rerun_analysis" type="bool">
+Flag indicating whether to rerun the analysis. The default is `True`.
+</ParamField>
+<ParamField path="use_insights" type="bool">
+Flag indicating whether to use analysis insights. The default is `True`.
+</ParamField>
+<ParamField path="recs_format" type="dict">
+Dictionary specifying the format for the recommendations output. The default is `None`.
+</ParamField>
+<ParamField path="recs_output_type" type="Literal['text', 'json']">
+Output type for the recommendations. It can be either `text` or `json`. The default is `None`.
+</ParamField>
+<ParamField path="counts" type="dict">
+Dictionary specifying the number of insights, recommendations, and tasks to generate. The default is `None`.
+</ParamField>
+<ParamField path="context" type="dict">
+Dictionary specifying the context for analysis, insights, recommendations, and tasks. The default is `None`.
+</ParamField>
+
+**Returns**
+
+- Returns a dictionary containing the generated insights, recommendations, and tasks. The keys of the dictionary are `insights`, `recommendations`, and `tasks`.
+
+**Notes**
+
+- The method coordinates the analysis process and generates insights, recommendations, and tasks based on the specified parameters.
+- It allows for customization of outputs, analysis rerun, insights usage, recommendations format, output type, and counts.
+- The generated outputs are returned as a dictionary.
+
+**Example**
+
+```python
+data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+config = {
+    "host": "localhost",
+    "port": 5432,
+    "user": "user",
+    "password": "password",
+    "database": "my_database",
+    "schema": ["public"],
+    "tables": ["my_table"]
+}
+vector_store_config = {
+    "pass": "password",
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
+data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
+
+user_input = "What are the trends in sales?"
+outputs = ["insights", "recommendations", "tasks"]
+result = data_analyzer.ask(user_input=user_input, outputs=outputs)
+
+# Print the insights
+print(result["insights"])
+# Print the recommendations
+print(result["recommendations"])
+# Print the tasks
+print(result["tasks"])
+```
+
+### **`analysis` Method**
+
+```python
+analysis(
+		user_input: str,
+		analysis_context: str
+) -> Union[list[pd.DataFrame], dict[pd.DataFrame], pd.DataFrame]
+```
+
+This method performs data analysis based on the specified analysis type and user input.
+
+**Parameters**
+
+<ParamField path="user_input" type="str">
+Input provided by the user for analysis.
+</ParamField>
+<ParamField path="analysis_context" type="str">
+Context for analysis.
+</ParamField>
+
+**Returns**
+
+- Returns the analysis output based on the specified analysis type.
+
+**Notes**
+
+- If the analysis type is set to `skip`, the method fetches data frames from the database if not already available and returns them as the analysis output.
+- If the analysis type is set to `sql`, it generates a SQL query and performs SQL-based analysis using the provided user input and context.
+- If the analysis type is set to `ml`, it generates analysis steps and performs pandas and machine learning-based analysis using the provided user input and context.
+
+**Side Effects**
+
+- Sets the `analysis_output` and `analysis_steps` attributes of the `DataAnalyzr` instance.
+
+**Example**
+
+```python
+data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+config = {
+    "host": "localhost",
+    "port": 5432,
+    "user": "user",
+    "password": "password",
+    "database": "my_database",
+    "schema": ["public"],
+    "tables": ["my_table"]
+}
+vector_store_config = {
+    "pass": "password",
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
+data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
+
+user_input = "What are the trends in sales?"
+analysis_context = "You are assisting a sales manager who is looking to understand the trends in sales over the past year."
+result = data_analyzer.analysis(user_input=user_input, analysis_context=analysis_context)
+```
+
+### **`insights` Method**
+
+```python
+insights(
+		user_input: str,
+		insights_context: Optional[str] = None,
+		n_insights: Optional[int] = 3
+) -> str
+```
+
+This method generates insights based on the user input, analysis context, and specified insights context. It is recommended that to generate insights, the `[ask` method](https://www.notion.so/DataAnalyzr-d66279de2ea84e4db67edefc6a4b74f9?pvs=21) should be used instead of this method.
+
+**Parameters**:
+
+<ParamField path="user_input" type="str">
+input provided by the user. If not provided, the method uses the user input stored in the `DataAnalyzr` instance.
+</ParamField>
+
+<ParamField path="insights_context" type="Optional[str]">
+Optional context for insights generation.
+</ParamField>
+
+<ParamField path="n_insights" type="Optional[int]">
+Optional number of insights to generate. The default is 3.
+</ParamField>
+
+**Returns**:
+
+- Returns the generated insights as a string.
+
+**Notes**:
+
+- The method utilizes a language model to generate insights based on the provided input and context.
+- The generated insights are influenced by the analysis context, user input, and insights context.
+- The generated insights are formatted and returned as a string.
+
+**Side Effects**:
+
+- Updates the `insights_output` attribute of the `DataAnalyzr` instance.
+
+
+### **`recommendations` Method**
+
+```python
+recommendations(
+		user_input: Optional[str] = None,
+		use_insights: Optional[bool] = True,
+		recs_format: Optional[dict] = None,
+		recommendations_context: Optional[str] = None,
+		n_recommendations: Optional[int] = 3,
+		output_type: Optional[Literal["text", "json"]] = "text"
+) -> Union[str, list[dict]]
+```
+
+This method generates recommendations based on the user input, analysis insights, and specified recommendations context. It is recommended that to generate recommendations, the `[ask` method](https://www.notion.so/DataAnalyzr-d66279de2ea84e4db67edefc6a4b74f9?pvs=21) should be used instead of this method.
+
+**Parameters**
+
+<ParamField path="use_insights" type="Optional[bool]">
+Optional flag indicating whether to use analysis insights. The default is `True`.
+</ParamField>
+
+<ParamField path="recs_format" type="Optional[dict]">
+Optional dictionary specifying the format for the recommendations. The default is `None`. To be used in conjunction with `output_type` set to `json`.
+</ParamField>
+
+<ParamField path="recommendations_context" type="Optional[str]">
+Optional context for generating recommendations. If not provided, a default context will be used.
+</ParamField>
+
+<ParamField path="n_recommendations" type="Optional[int]">
+Optional number of recommendations to generate. The default is 3.
+</ParamField>
+
+<ParamField path="output_type" type="Optional[Literal['text', 'json']]">
+Optional output type for the recommendations. It can be either `text` or `json`. The default is `text`.
+</ParamField>
+
+**Returns**
+
+- Returns the generated recommendations as a string.
+
+**Notes**
+
+- If `use_insights` is `True`, the method incorporates insights into the recommendations.
+- The format of the recommendations output can be customized using the `recs_format` parameter.
+    - If the `output_type` is `text`, this parameter is ignored.
+    - If `recs_format` is `None`, the default format will be used:
+    
+    ```json
+            [{
+                "Recommendation": "string",
+                "Basis of the Recommendation": "string",
+                "Impact if implemented": "string",
+            }]
+    ```
+    
+- The output type of the recommendations can be either text or JSON.
+
+**Side Effects**
+
+- Updates the `recommendations_output` attribute of the `DataAnalyzr` instance.
+
+
+### **`tasks` Method**
+
+```python
+tasks(
+		user_input: Optional[str] = None,
+		tasks_context: Optional[str] = None,
+		n_tasks: Optional[int] = 3
+) -> str
+```
+
+This method generates tasks based on the `user_input`, analysis insights, and recommendations. It is recommended that to generate tasks, the `[ask` method](https://www.notion.so/DataAnalyzr-d66279de2ea84e4db67edefc6a4b74f9?pvs=21) should be used instead of this method.
+
+**Parameters**
+
+<ParamField path="user_input" type="Optional[str]">
+Optional input provided by the user. If not provided, the method uses the user input stored in the `DataAnalyzr` instance.
+</ParamField>
+
+<ParamField path="tasks_context" type="Optional[str]">
+Optional context for generating tasks.
+</ParamField>
+
+<ParamField path="n_tasks" type="Optional[int]">
+Optional number of tasks to generate. The default is 3.
+</ParamField>
+
+**Returns**
+
+- Returns the generated tasks as a string.
+
+**Notes**
+
+- The method incorporates user input, insights, and recommendations into the generated tasks.
+- The number of tasks to generate can be customized using the `n_tasks` parameter.
+
+**Side Effects**
+
+- Updates the `tasks_output` attribute of the `DataAnalyzr` instance.
+
+
+
+
+
+
+
+
+
+

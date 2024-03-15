@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "./assets/logo/LyzrDark.svg",
+    "light": "/assets/logo/LyzrLight.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/assets/favicon.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -17,75 +17,82 @@
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Lyzr",
+      "url": "https://lyzr.ai"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Blog",
+    "url": "https://www.lyzr.ai/blog"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
+      "name": "Join Slack",
       "icon": "slack",
-      "url": "https://mintlify.com/community"
+      "url": "https://anybodycanai.slack.com/ssb/redirect"
     },
     {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Join Discord",
+      "icon": "discord",
+      "url": "https://discord.gg/P6HCMQ9TRX"
     }
   ],
   "navigation": [
     {
       "group": "Get Started",
+      "pages": ["introduction", "how-to-use", "FAQs", "getting-support"]
+    },
+    {
+      "group": "Pre-built Agents",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "pre-built-agents/chat-agent",
+        "pre-built-agents/search-agent",
+        "pre-built-agents/rag-agent",
+        "pre-built-agents/qa-agent",
+        "pre-built-agents/data-analysis-agent",
+        "pre-built-agents/voice-agent"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Lyzr Automata",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "lyzr-automata/getting-started",
+        "lyzr-automata/the-code",
+        "lyzr-automata/body-params",
+        "lyzr-automata/examples",
+        "lyzr-automata/responses"
       ]
     },
     {
-      "group": "API Documentation",
+      "group": "Free Tools",
       "pages": [
-        "api-reference/introduction"
+        "free-tools/lyzr-parse",
+        "free-tools/magic-prompts",
+        "free-tools/prompt-studio",
+        "free-tools/knowledge-base"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Cookbooks",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "cookbooks/lyzr-weaviate",
+        "cookbooks/lyzr-streamlit",
+        "cookbooks/lyzr-qdrant",
+        "cookbooks/lyzr-vellum"
+      ]
+    },
+    {
+      "group": "Use Cases",
+      "pages": [
+        "use-cases/law-lookup-agent",
+        "use-cases/compliance-search-agent",
+        "use-cases/newsletter-creator-publisher"
       ]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "twitter": "https://twitter.com/lyzrai",
+    "github": "https://github.com/LyzrCore/lyzr",
+    "linkedin": "https://www.linkedin.com/company/lyzr-platform"
   }
 }

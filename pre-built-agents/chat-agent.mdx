@@ -1,0 +1,274 @@
+---
+title: Chat Agent
+description: 'Pre-built chat agent by Lyzr'
+---
+
+## Getting Started with Lyzr Chat Agent SDK
+
+Lyzr's Chat Agent is powered by a state-of-the-art chatbot architecture that super abstracts all the complexity of building an advanced LLM-powered chatbot. This enables developers to focus more on data quality, prompt quality, and the application use case instead of spending countless hours stitching together various building blocks and indexes to build the backend RAG pipeline.
+
+**Lyzr's Chat Agent integrates all the building blocks of a chatbot**
+
+![Lyzr Chat Agent](./assets/images/pre-built-agents/chat-agent-chart.png)
+
+## What are the various methods and arguments that you could pass to Lyzr's ChatBot class?
+
+**Methods**
+| Method       | What it does?                                                       |
+| ------------ | ------------------------------------------------------------------- |
+| pdf_chat     | chat with PDF documents                                             |
+| website_chat | automatically scrape the website content and chat with website data |
+| docx_chat    | chat with Microsoft Word documents                                  |
+| txt_chat     | chat with flat files                                                |
+| youtube_chat | chat with youtube content (must have transcriptions)                |
+| webpage_chat | automatically scrape the webpage content and chat with webpage data |
+
+## Chat with PDF
+
+**Sample Code 👇**
+
+```python
+import os
+from lyzr import ChatBot
+
+# Set your OpenAI API key
+os.environ['OPENAI_API_KEY'] = 'sk-'
+
+# Initialize the PDF Chatbot with the path to the PDF file
+chatbot = ChatBot.pdf_chat(
+    input_files=["PATH/TO/YOUR/PDF/FILE"],
+)
+
+# Ask a question related to the PDF content
+response = chatbot.chat("Your question here")
+
+# Print the chatbot's response
+print(response.response)
+
+# Access source nodes for additional information
+for n, source in enumerate(response.source_nodes):
+    print(f"Source {n+1}")
+    print(source.text)
+```
+**Types of Arguments**
+
+```python
+pdf_chat(
+        input_dir: Optional[str] = None,
+        input_files: Optional[List] = None,
+        exclude_hidden: bool = True,
+        filename_as_id: bool = True,
+        recursive: bool = True,
+        required_exts: Optional[List[str]] = None,
+        system_prompt: str = None,
+        query_wrapper_prompt: str = None,
+        embed_model: Union[str, EmbedType] = "default",
+        llm_params: dict = None,
+        vector_store_params: dict = None,
+        service_context_params: dict = None,
+        chat_engine_params: dict = None,
+        retriever_params: dict = None,
+    ):
+```
+
+<ParamField path="input_dir" type="string">
+    Use `input_dir` to parse all the .pdf files from a directory.
+</ParamField>
+
+<ParamField path="input_files" type="list">
+    Pass a list of .pdf file paths.
+</ParamField>
+
+<ParamField path="exclude_hidden" type="boolean">
+    Set to `true` to ignore hidden files when using `input_dir`.
+</ParamField>
+
+<ParamField path="filename_as_id" type="boolean">
+    Set to `true` to consider the filename as the id for indexing the parsed data.
+</ParamField>
+
+<ParamField path="recursive" type="boolean">
+    Set to `true` to parse files from all subdirectories.
+</ParamField>
+
+<ParamField path="system_prompt" type="string">
+    System-wide prompt to be prepended to all input prompts, used to guide system "decision making".
+</ParamField>
+
+<ParamField path="query_wrapper_prompt" type="string">
+    A specific wrapper instruction for passed-in input queries.
+</ParamField>
+
+<ParamField path="embed_model" type="string">
+    The default embed model is OpenAI `text-embedding-ada-002`. Default fallback model is `bge` from Hugging Face.
+</ParamField>
+
+<ParamField path="llm_params" type="object">
+    Default language model is OpenAI `gpt-4-0125-preview`. Default temperature is 0.
+</ParamField>
+
+<ParamField path="vector_store_params" type="object">
+    The default vector store is Embedded Weaviate DB.
+</ParamField>
+
+<ParamField path="service_context_params" type="object">
+    Default chunk_size is 1024 tokens. Default overlap is 20 tokens.
+</ParamField>
+
+<ParamField path="chat_engine_params" type="object">
+    Default is none.
+</ParamField>
+
+<ParamField path="retriever_params" type="object">
+    Default is none.
+</ParamField>
+
+## Integrations
+
+### Vector Store Integrations
+
+#### Lyzr + Weaviate
+
+<AccordionGroup>
+    <Accordion title="Local Embedded">
+    ```python
+    vector_store_params = {
+        "vector_store_type": "WeaviateVectorStore",
+        "index_name": "IndexName" # first letter should be capital
+    }
+    ```
+    </Accordion>
+    <Accordion title="Cloud / Self Hosted">
+    ```python
+    vector_store_params = {
+        "vector_store_type": "WeaviateVectorStore",
+        "url": "https://sample..weaviate.network",
+        "api_key": "DB_API_KEY",
+        "index_name": "IndexName" # first letter should be capital
+    }
+    ```
+    </Accordion>
+</AccordionGroup>
+
+#### Lyzr + Supabase Pgvector
+Install vecs and supabase
+```bash
+pip install vecs supabase
+```
+
+```python
+vector_store_params = {
+    "vector_store_type": "SupabaseVectorStore",
+    "postgres_connection_string": "postgresql://<user>:<password>@<host>:<port>/<db_name>",
+    "collection_name":"base_demo",
+  }
+```
+
+#### Lyzr + Qdrant Vector Store
+```bash
+!pip install -U qdrant_client
+```
+
+<AccordionGroup>
+    <Accordion title="Local Embedded">
+    ```python
+    client = qdrant_client.QdrantClient(
+            location=":memory:" 
+    )
+    vector_store_params = {
+        "vector_store_type": "QdrantVectorStore",
+        "client": client,
+        "collection_name":"base_demo",
+    }
+    ```
+    </Accordion>
+    <Accordion title="Cloud / Self Hosted">
+    ```python
+    client = qdrant_client.QdrantClient( 
+        uri="http://<host>:<port>"
+        api_key="<qdrant-api-key>",
+    )
+    vector_store_params = {
+        "vector_store_type": "QdrantVectorStore",
+        "client": client,
+        "collection_name":"base_demo",
+    }
+    ```
+    </Accordion>
+</AccordionGroup>
+
+#### Lyzr + LanceDB Vector Store
+```bash
+!pip install -U lancedb
+```
+
+<Accordion title="Local Embedded">
+    ```python
+    vector_store_params = {
+        "vector_store_type": "LanceDBVectorStore",
+        "uri": "/tmp/lancedb"),
+        "table_name":"base_demo",
+    }
+    ```
+</Accordion>
+
+#### Lyzr + Azure Cognitive Search
+```bash
+pip install azure-search-documents==11.4.0  azure-identity
+```
+
+ <Accordion title="Cloud / Self Hosted">
+    ```python
+    from azure.search.documents.indexes import SearchIndexClient
+    from azure.search.documents import SearchClient
+    from azure.core.credentials import AzureKeyCredential
+
+    search_service_name = getpass.getpass("Azure Cognitive Search Service Name")
+
+    key = getpass.getpass("Azure Cognitive Search Key")
+
+    cognitive_search_credential = AzureKeyCredential(key)
+
+    service_endpoint = f"https://{search_service_name}.search.windows.net"
+
+    index_name = "quickstart"
+
+    index_client = SearchIndexClient(
+        endpoint=service_endpoint,
+        credential=cognitive_search_credential,
+    )
+
+    vector_store_params = {
+        "vector_store_type": "CognitiveSearchVectorStore",
+        "search_or_index_client": index_client),
+        "index_name":index_name,
+    }
+    ```
+</Accordion>
+
+
+### LLM Integration
+
+<AccordionGroup>
+    <Accordion title="Lyzr + OpenAI">
+    ```python
+    llm_params = {
+        "model":"gpt-4-0125-preview",
+        "api_key":"sk-"
+        "temperature":0,
+        "top_p":0,
+    }
+    ``` 
+    </Accordion>
+    <Accordion title="Lyzr + Azure OpenAI">
+    ```python
+    llm_params = {
+        "model": "azure/gpt-35-turbo-16k",
+        "api_base": "https://<deployment_namer>.azure.com/",
+        "api_version": "2024-02-15-preview",
+        "api_key": "<YOUR-API-KEY>",
+        "max_retries": 1
+    }
+    ```
+    </Accordion>
+</AccordionGroup>

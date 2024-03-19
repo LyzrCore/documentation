@@ -19,11 +19,19 @@
     {
       "name": "Lyzr",
       "url": "https://lyzr.ai"
+    },
+    {
+      "name": "Blog",
+      "url": "https://lyzr.ai/blog/"
+    },
+    {
+      "name": "Industries",
+      "url": "https://lyzr.ai/industries/"
     }
   ],
   "topbarCtaButton": {
-    "name": "Blog",
-    "url": "https://www.lyzr.ai/blog"
+    "name": "Book Demo",
+    "url": "https://www.lyzr.ai/book-demo"
   },
   "anchors": [
     {
@@ -35,6 +43,28 @@
       "name": "Join Discord",
       "icon": "discord",
       "url": "https://discord.gg/P6HCMQ9TRX"
+    }
+  ],
+  "tabs": [
+    {
+      "name": "Pre-built Agents",
+      "url": "pre-built-agents"
+    },
+    {
+      "name": "Lyzr Automata",
+      "url": "lyzr-automata"
+    },
+    {
+      "name": "Free Tools",
+      "url": "free-tools"
+    },
+    {
+      "name": "Cookbooks",
+      "url": "cookbooks"
+    },
+    {
+      "name": "Use Cases",
+      "url": "use-cases"
     }
   ],
   "navigation": [

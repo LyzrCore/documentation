@@ -26,9 +26,9 @@ The best part is that you can get locally deployable SDKs and private APIs to ru
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Chat Agent       | State-of-the-art chatbots with short-term and long-term memory, RLHF (Reinforced Learning Human Feedback), a customizable system prompt, and seamless switches between LLMs. Try Lyzr [Chat Agent](https://chatagent.lyzr.ai/)                                                                                                                                   |
 | Knowledge Search | Bring perplexity-style document and data search to your organization. Lyzr's document search can handle 100,000 documents and more, retrieving information accurately every time. And you get a citation to the source along with fetching the source file. Try Lyzr [Knowledge Search](https://knowledgebase.lyzr.ai/)                                          |
-| RAG Powered Apps | It is probably the most comprehensive RAG agent ever built. Just by tuning the parameters, you can choose up to 630 different RAG pipelines. You can also integrate with any LLM, vector store, embedding model, renranker, or parser of your choice. Read [Blog](https://www.lyzr.ai/how-to-build-a-state-of-the-art-sota-rag-engine/)                          |
+| RAG Powered Apps | It is probably the most comprehensive RAG agent ever built. Just by tuning the parameters, you can choose up to 630 different RAG pipelines. You can also integrate with any LLM, vector store, embedding model, reranker, or parser of your choice. Read [Blog](https://www.lyzr.ai/how-to-build-a-state-of-the-art-sota-rag-engine/)                          |
 | QA Bot           | A simplified version of Lyzr Chatbot—an accurate question-answering agent to power your help and FAQs section. QA Bots are also the best fit for handling one-way conversations like employee handbook searches, law lookup searches, etc.                                                                                                                       |
-| Data Analysis    | Build a conversational analytics app on your data in pythonic way with Lyzr's Data Analyzr agent. The text query converts into a python code that runs on a pandas dataframe invoking several ML libraries like Scikit-Learn, StatsModel etc, helping you run various analysis on your data including regression, correlation, clustering, time series and more. |
+| Data Analysis    | Build a conversational analytics app on your data in a pythonic way with Lyzr's Data Analyzr agent. The text query converts into a python code that runs on a pandas dataframe invoking several ML libraries like Scikit-Learn, StatsModel etc, helping you run various analysis on your data including regression, correlation, clustering, time series and more. |
 | Text-to-SQL      | Want to run an exploratory analysis on your database? Run Lyzr's Text-to-SQL agent to convert your text queries to SQL code that can handle complex joins, extract information, and build insights and recommendations.                                                                                                                                          |
 
 2. **Lyzr Automata: The multi-agent automation platform**
@@ -54,7 +54,7 @@ my_chatbot = ChatBot.pdf_chat(input_files=["pdf_file_path"])
 ```
 4. That’s it. Just query and start chatting with your chatbot. 
 ```python
-response = chatbot.chat("Your question here")
+response = my_chatbot.chat("Your question here")
 ```
 
 ## How is Lyzr different from competitors?

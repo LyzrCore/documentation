@@ -9,7 +9,7 @@ Welcome to the official documentation for DataAnalyzr – your go-to tool for se
 With DataAnalyzr you can streamline the complexity of data analytics into a powerful, intuitive, and conversational interface that lets you command data with ease. Whether you're an experienced data scientist or a business analyst, DataAnalyzr opens up a world of possibilities by transforming raw data into actionable insights and engaging visualizations.
 
 DataAnalyzr supports both pythonic and SQL-based analysis, allowing you to choose the best approach for your data analysis needs.
-<Info>For the SQL-based analysis documentation, please refer to the [SQL Analysis Agent](/pre-built-agents/text-sql-agent) documentation.</Info>
+<Info>For documentation on the SQL-based analysis, please refer to the [SQL Analysis Agent](/pre-built-agents/text-sql-agent) documentation.</Info>
 
 DataAnalyzr's pythonic analysis provides users with a comprehensive toolkit for conducting machine learning-based analysis using Python's extensive array of libraries such as NumPy, pandas, scikit-learn, and statsmodels. Users can tap into Python's vast ecosystem of machine learning tools and techniques to derive actionable insights from their data and solve complex analytical problems.
 
@@ -44,7 +44,20 @@ DataAnalyzr's pythonic analysis provides users with a comprehensive toolkit for 
 
 ## Getting started
 
-The first step in using DataAnalyzr is to create a class instance.
+Data analysis with DataAnalyzr includes three simple steps:
+<Steps>
+  <Step title="Create an instance">
+    Create an instance of the DataAnalyzr class with the desired analysistype and API key.
+  </Step>
+  <Step title="Load data">
+    Load data from files, Redshift, PostgreSQL, or SQLite databases using the `get_data` method.
+  </Step>
+  <Step title="Ask a question">
+    Ask a question using the `ask` method to generate visualizations, insights, recommendations, and tasks.
+  </Step>
+</Steps>
+
+Let's go over these steps one by one for pythonic data analysis. The first step is to create a class instance.
 
 ```python
 from lyzr import DataAnalyzr
@@ -59,6 +72,7 @@ The `analysis_type` parameter can take three options:
 3. `skip` - if you want to skip the analysis altogether, and get insights directly from the uploaded data.
 
 <Note>Note that you can also provide an `api_key` parameter. This parameter is optional and given as an alternative to setting the environment variable.</Note>
+<Info>For documentation on the SQL-based analysis, please refer to the [SQL Analysis Agent](/pre-built-agents/text-sql-agent) documentation.</Info>
 
 For details on all the options available in instantiating the `DataAnalyzr` class, [visit the API reference](#api-reference).
 

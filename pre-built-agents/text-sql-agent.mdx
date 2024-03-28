@@ -1,17 +1,17 @@
 ---
-title: Data Analysis Agent
-sidebarTitle: Data Analysis Agent
-description: 'LLM-powered pythonic conversational analytics'
+title: Text to SQL Agent
+sidebarTitle: Text to SQL Agent
+description: 'SQL-based LLM-powered conversational analytics'
 ---
-
 Welcome to the official documentation for DataAnalyzr – your go-to tool for seamless and comprehensive data analysis. DataAnalyzr is an innovative conversational analytics framework that provides access to LLM-integrated advanced data analysis through a conversational interface to derive actionable insights and intuitive visualizations.
 
 With DataAnalyzr you can streamline the complexity of data analytics into a powerful, intuitive, and conversational interface that lets you command data with ease. Whether you're an experienced data scientist or a business analyst, DataAnalyzr opens up a world of possibilities by transforming raw data into actionable insights and engaging visualizations.
 
 DataAnalyzr supports both pythonic and SQL-based analysis, allowing you to choose the best approach for your data analysis needs.
-<Info>For the SQL-based analysis documentation, please refer to the [SQL Analysis Agent](/pre-built-agents/text-sql-agent) documentation.</Info>
+<Info>For the pythonic analysis documentation, please refer to the [Data Analysis Agent](/pre-built-agents/data-analysis-agent) documentation.</Info>
 
-DataAnalyzr's pythonic analysis provides users with a comprehensive toolkit for conducting machine learning-based analysis using Python's extensive array of libraries such as NumPy, pandas, scikit-learn, and statsmodels. Users can tap into Python's vast ecosystem of machine learning tools and techniques to derive actionable insights from their data and solve complex analytical problems.
+DataAnalyzr's SQL analysis type enables users to seamlessly integrate SQL-based analysis into their workflow and harness the versatility and efficiency of SQL for extracting actionable insights from their data. With comprehensive support for SQL-based analysis, DataAnalyzr facilitates a seamless and intuitive user experience, enabling users to unleash the full potential of SQL for driving data-driven decision-making and achieving business objectives.
+
 
 **DataAnalyzr comes in two distinct editions**
 
@@ -23,7 +23,6 @@ DataAnalyzr's pythonic analysis provides users with a comprehensive toolkit for 
 | Only Handles Simple Analysis   | Handles Complex Analysis                      |
 | Only Matplotlib Visualizations | Plotly, Matplotlib and Seaborn Visualizations |
 | Only PNG as output format      | PNG, SVG, PDF, HTML and JSON output format    |
-
 
 ## **Key Features**
 
@@ -49,7 +48,7 @@ The first step in using DataAnalyzr is to create a class instance.
 ```python
 from lyzr import DataAnalyzr
 
-analyzr = DataAnalyzr(analysis_type="ml", api_key="openai_key")
+analyzr = DataAnalyzr(analysis_type="sql", api_key="openai_key")
 ```
 
 The `analysis_type` parameter can take three options:
@@ -84,8 +83,12 @@ analyzr.get_data(
     db_type = "files",
     config = {
             "datasets": datafiles,
+            "db_path": "path/to/local/db",
     },
-    vector_store_config = {}
+    vector_store_config = {
+            "path": "path/to/local/vector/store",
+            "remake": True
+    }
 )
 ```
 
@@ -94,7 +97,7 @@ The value of `db_type` tells the system:
 - which type of data it will need to explore
 - what to expect in the config parameter
 
-For pythonic analysis (`analysis_type="ml"`), the `vector_store_config` is not required, and can be set to an empty dictionary.
+In the `vector_store_config`, `remake` parameter is set to `True` to ensure that the vector store is remade every time the DataAnalyzr is initialized. This is useful for testing purposes but should be set to `False` in a production environment. Setting remake to `False` will allow the LLM to learn from previous interactions.
 
 ### Loading data from Redshift
 
@@ -113,7 +116,10 @@ redshift_config = {
 analyzr.get_data(
     db_type = "redshift",
     config = redshift_config,
-    vector_store_config = {}
+    vector_store_config = {
+            "path": "path/to/local/vector/store",
+            "remake": True
+    }
 )
 ```
 
@@ -141,7 +147,10 @@ postgres_config = {
 analyzr.get_data(
     db_type = "postgres",
     config = postgres_config,
-    vector_store_config = {}
+    vector_store_config = {
+            "path": "path/to/local/vector/store",
+            "remake": True
+    }
 )
 ```
 <Note>
@@ -156,7 +165,10 @@ A local SQLite database can also be used for analysis with DataAnalyzr. You only
 analyzr.get_data(
     db_type = "sqlite",
     config = {"db_path": "path/to/sqlite.db"},
-    vector_store_config = {}
+    vector_store_config = {
+				"path": "path/to/local/vector/store",
+				"remake": True
+		}
 )
 ```
 
@@ -339,7 +351,7 @@ Constructor method for initializing a `DataAnalyzr` object.
 #### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 ```
 
 
@@ -379,6 +391,7 @@ The required keys in the `config` dictionary depend on the specified `db_type`:
 1. If `db_type` is `files`, the required keys in the `config` dictionary are:
     - `datasets`: A dictionary containing the names of the datasets and their corresponding file paths.
     - `files_kwargs`: A dictionary containing keyword arguments for reading the files.
+    - `db_path`: The path to the database.
 2. If `db_type` is `redshift`, or `postgres`, the required keys in the `config` dictionary include:
     - `host`: The hostname of the database server.
     - `port`: The port number of the database server.
@@ -390,7 +403,11 @@ The required keys in the `config` dictionary depend on the specified `db_type`:
 3. If `db_type` is `sqlite`, the required key in the `config` dictionary:
     - `db_path`: The path to the SQLite database file.
 
-For pythonic analysis (`analysis_type="ml"`), the `vector_store_config` is not required, and can be set to an empty dictionary.
+The required keys in the `vector_store_config` dictionary are:
+1. `path`: The path to the vector store.
+2. `remake`: A boolean value indicating whether to remake the vector store.
+
+Alternatively, the `vector_store_config` can be set to a custom vector store, or it can be set to `None` if the `analysis_type` of the `DataAnalyzr` is `skip`.
 
 #### **Side Effects**
 
@@ -399,7 +416,7 @@ Sets the `database_connector`, `df_dict`, and `vector_store` attributes of the `
 #### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -409,10 +426,14 @@ config = {
     "schema": ["public"],
     "tables": ["my_table"]
 }
+vector_store_config = {
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
 data_analyzer.get_data(
     db_type="postgres",
     config=config,
-    vector_store_config={}
+    vector_store_config=vector_store_config
 )
 ```
 
@@ -479,7 +500,7 @@ Dictionary specifying the context for analysis, insights, recommendations, and t
 #### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -489,7 +510,11 @@ config = {
     "schema": ["public"],
     "tables": ["my_table"]
 }
-data_analyzer.get_data(db_type="postgres", config=config, vector_store_config={})
+vector_store_config = {
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
+data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
 
 user_input = "What are the trends in sales?"
 outputs = ["visualisation", "insights", "recommendations", "tasks"]
@@ -546,7 +571,7 @@ Sets the `analysis_output` and `analysis_steps` attributes of the `DataAnalyzr` 
 #### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="ml", api_key="your_api_key")
+data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -556,7 +581,11 @@ config = {
     "schema": ["public"],
     "tables": ["my_table"]
 }
-data_analyzer.get_data(db_type="postgres", config=config, vector_store_config={})
+vector_store_config = {
+    "path": "./testing/chromadb/testing/",
+    "remake": True
+}
+data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
 
 user_input = "What are the trends in sales?"
 analysis_context = "You are assisting a sales manager who is looking to understand the trends in sales over the past year."

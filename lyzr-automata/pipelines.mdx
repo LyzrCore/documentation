@@ -1,0 +1,41 @@
+---
+title: Pipelines
+---
+
+Pipelines help us run the tasks in a directed orderly fashion. Currently we support linear async pipeline, with plans to release async DAG pipelines in next versions.
+
+Currently out of the box we support 1 Pipeline
+
+1. **LinearAsyncPipeline**
+
+Linear async pipeline runs the tasks one after another in sequence. For example 
+If there are three tasks A, B, C. Then using the LinearAsyncPipeline class you can run the tasks
+in the fashion A→B→C.
+
+```python
+LinearSyncPipeline(
+    name="pipeline name",
+		# completion message after pipeline completes
+    completion_message="pipeline completed",
+    tasks=[
+				# tasks are instance of Task class
+        task_a, # Task A
+        task_b, # Task B
+				task_c  # Task C
+    ],
+).run()
+```
+
+**Dependency input tasks flow**
+
+1. If any task depends on multiple inputs which come from any previous task they can be provided in the input_tasks param of the task instance.
+
+<Note>
+Note: providing explicit input_tasks to a task instance means it will rely solely on those tasks for its output, without considering the sequence output of previous tasks at that point. However, the output from the current task will still be processed further.
+</Note>
+
+**Example**
+
+Task A → Task B → Task C → TASK D
+
+if Task D requires output of Task A and Task C then, TASK D input_tasks param will have list of instance of Task class which will be task A and task C instances.

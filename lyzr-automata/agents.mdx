@@ -1,0 +1,71 @@
+---
+title: Agents
+---
+
+Agents are directed specialists with a set role, persona, and memory. They are used to set direction and expertise for LLM models to increase their effectiveness.
+
+*Let's see an example of creating a simple LinkedIn content creation agent.*
+
+```python
+from lyzr_automata import Agent
+
+linkedin_content_creator_agent = Agent(
+        role="linkedin content creator",
+        prompt_persona="you are an expert linkedin content creator who holds a Phd in molecular biology and are good at creating engaging linkedin posts."
+    )
+```
+
+**Description**
+
+The code snippet initializes an **`Agent`** object designed to perform tasks or generate content based on defined roles and characteristics. This versatile object can be configured for various applications, such as content creation, automated responses, or specialized tasks, by setting its role and persona through parameters.
+
+**Parameters**
+
+**Parameter Table for `Agent`**
+
+<ParamField path="role" type="str">
+Defines the agent's operational role or function, setting the context for its tasks and interactions.
+</ParamField>
+<ParamField path="prompt_persona" type="str">
+Describes the intended persona or style the agent should adopt, influencing its approach to task execution.
+</ParamField>
+<ParamField path="memory" type="str">
+Specifies the memory system instance the agent uses to interact with vector store memory.
+</ParamField>
+
+
+*Let's look at an example of creating a blogger agent based on the company's data.*
+
+<Note>
+Note: Currently agent supports only LLAMA index for memory
+</Note>
+
+```python
+# sample create a index from directory of documents
+import os
+
+os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY"
+
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+
+documents = SimpleDirectoryReader("YOUR_DATA_DIRECTORY").load_data()
+index = VectorStoreIndex.from_documents(documents)
+```
+
+Creating a memory instance
+
+```python
+# use LlamaMemory class 
+from lyzr_automata.memory.llama_index import LlamaMemory
+
+company_memory = LlamaMemory(llama_index=index)
+```
+
+Pass the memory to the agent 
+
+```python
+from lyzr_automata.agents.agent_base import Agent
+
+# supply llama index memory to our agent class
+website_content_blogger_agent = Agent(prompt_persona="you are intelligent blog post writer good at writing MARKDOWN Blogs",role="BLOG POST WRITER", memory=website_memory)
+```

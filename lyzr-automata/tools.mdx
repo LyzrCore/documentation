@@ -1,0 +1,101 @@
+---
+title: Tools
+---
+
+Tools help agents to connect with external software components like API's or other functions.
+
+<Note>
+Note: You can use our pre-built tools or tools from other providers like **Llama Hub**. Optionally you can also use our base **Tool** class to create your own custom tool by providing the function, input and output Pydantic models.
+</Note>
+
+*Let's look at an example to use prebuilt linkedin post tool. All prebuilt tools are available to export from* lyzr_automata.tools.prebuilt_tools
+
+```python
+from lyzr_automata.tools.prebuilt_tools import linkedin_image_text_post_tool
+
+linkedin_post_tool = linkedin_image_text_post_tool(
+    owner="urn:li:person:<YOUR_ID_HERE>",
+    token="YOUR_TOKEN_HERE",
+)
+```
+
+**Tool class**
+
+**Description**
+
+This section provides an overview of how to initialize an instance of a **`Tool`** object. A **`Tool`** is designed to encapsulate a specific operation or function, complete with metadata describing its purpose, and structured input and output specifications. This setup allows for standardized execution of tasks, ranging from simple operations like arithmetic calculations to more complex data processing or analysis functions. The use of Pydantic models for input and output ensures type safety and data validation, enhancing the robustness of the tool.
+
+**Parameter Table**
+
+<ParamField path="name" type="str">
+The name of the tool, giving a clear indication of its functionality or the task it is designed to perform.
+</ParamField>
+<ParamField path="desc" type="str">
+A brief description of the tool's purpose and how it operates, providing context to its users.
+</ParamField>
+<ParamField path="function" type="str">
+The specific function the tool executes. This should be a callable object that performs the tool's main operation.
+</ParamField>
+<ParamField path="function_input" type="str">
+The Pydantic model that defines the structure, type, and validation rules for the input data. This ensures that the function receives data in the expected format.
+</ParamField>
+<ParamField path="function_output" type="str">
+The Pydantic model for the output data, specifying what the function returns. This model validates the output data structure and type, ensuring consistency and reliability in the tool's output.
+</ParamField>
+
+
+**Implementation Notes**
+
+- **Pydantic Models:** **`function_input`** and **`function_output`** are crucial for defining clear contracts for the tool's operation. Pydantic models facilitate data validation and error handling, making the tool more reliable and easier to integrate.
+- **Customization:** The flexibility in defining **`function`**, **`function_input`**, and **`function_output`** allows for a wide range of tools to be created, from simple utilities to complex data processing pipelines.
+
+***Create your own tool with Tool base class***
+
+Create a function
+
+```python
+ def multiply_numbers(a, b):
+    """
+    Multiply two numbers.
+
+    Parameters:
+    - a (int/float): The first number.
+    - b (int/float): The second number.
+
+    Returns:
+    - int/float: The product of the two numbers.
+    """
+    return a * b
+```
+
+Create Pydantic input model
+
+```python
+#INPUT
+from pydantic import BaseModel
+
+class MultiplyInput(BaseModel):
+	      a: float  # Assuming we want to allow floating point numbers
+	      b: float
+```
+
+Create Pydantic output model
+```python
+#OUPUT
+ class MultiplyOutput(BaseModel):
+       result: float
+```
+
+Create a tool instance
+
+```python
+from lyzr_automata import Tool
+
+multiplication_tool = Tool(
+        name="Multiplication tool",
+        desc="multiplies two numbers",
+        function=multiply_numbers,
+        function_input=MultiplyInput,
+        function_output=MultiplyOutput,
+    )
+```

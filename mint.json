@@ -15,6 +15,9 @@
       "to": "#07C983"
     }
   },
+  "primaryTab": {
+    "name": "Introduction"
+  },
   "topbarLinks": [
     {
       "name": "Lyzr",

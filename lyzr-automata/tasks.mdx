@@ -1,0 +1,74 @@
+---
+title: Tasks
+---
+
+Tasks are our smallest functioning unit/node that helps you define what do you want to get done by the agent. It combines agent & tools.
+
+**Description**
+
+The **`Task`** object initialization configures a specific operation or activity to be performed within the system, encompassing a broad spectrum of functionalities from content generation to data processing. This configuration includes defining the task's name, assigning an agent with a specific role or capability, setting input and output types, and specifying operational details such as instructions and default inputs. Additional settings may control logging and feature enhancements.
+
+**Parameter Table**
+
+<ParamField path="name" type="str">
+The unique identifier or descriptive name for the task, highlighting its primary focus or objective.
+</ParamField>
+<ParamField path="agent" type="Agent">
+The agent instance responsible for carrying out the task, equipped with the necessary skills or functionalities. Instance of Agent class.
+</ParamField>
+<ParamField path="output_type" type="str">
+Specifies the format or type of the task's output, ensuring compatibility with subsequent operations or requirements. Accepts (OutputType.TEXT / OutputType.IMAGE).
+</ParamField>
+<ParamField path="input_type" type="str">
+Defines the expected format or type of input the task requires, aligning with the nature of the data being processed. (InputType.TEXT / InputType.IMAGE).
+</ParamField>
+<ParamField path="model" type="AIModel">
+(Optional) A reference to a the llm model. Instance of AIModel (OpenAIModel/PerplexityModel) class.
+</ParamField>
+<ParamField path="instructions" type="str">
+Detailed guidance or commands that the agent follows to execute the task, potentially including objectives and constraints.
+</ParamField>
+<ParamField path="log_output" type="bool">
+A boolean value indicating whether the task's outputs should be streamed to logger.
+</ParamField>
+<ParamField path="enhance_prompt" type="bool">
+A boolean flag enabling additional processing or modification of the initial instructions to optimize task performance. (Automatically enhances prompts based on https://arxiv.org/pdf/2312.16171.pdf paper).
+</ParamField>
+<ParamField path="default_input" type="any">
+A predefined input value used when actual input is unavailable or incomplete, ensuring task continuity.
+</ParamField>
+<ParamField path="tool" type="Tool">
+Tool is an instance of Tool class to do external software actions using llm flow. For example, an email sending tool.
+</ParamField>
+<ParamField path="input_tasks" type="List[Task]">
+Input tasks instances of Task class. It is for explicitly mentioning which tasks output to be used as input for the current task.
+</ParamField>
+
+
+*Let's look at an example, on how you can define a task*
+
+```python
+from  lyzr_automata  import  Task
+    
+linkedin_content_writing_task = Task(
+        name="linkedin content writing",
+        agent=linkedin_content_writer_agent,
+        output_type=OutputType.TEXT,
+        input_type=InputType.TEXT,
+        model=open_ai_model_text,
+        instructions="Write a linkedin post on gene editing using CRISPR",
+        log_output=True,
+        enhance_prompt=False,
+)
+```
+
+*Let's look at an example, on how you can create a tool task*
+
+```python
+linkedin_post_task  = Task(
+        name="upload post to linkedin",
+        model=open_ai_model_text,
+        tool=linkedin_post_tool,
+        instructions="Post on Linkedin",
+	)
+```

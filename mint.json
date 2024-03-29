@@ -91,10 +91,18 @@
       "group": "Lyzr Automata",
       "pages": [
         "lyzr-automata/getting-started",
-        "lyzr-automata/the-code",
-        "lyzr-automata/body-params",
-        "lyzr-automata/examples",
-        "lyzr-automata/responses"
+        {
+          "group": "Implementation",
+          "pages": [
+            "lyzr-automata/installation",
+            "lyzr-automata/model-calling",
+            "lyzr-automata/agents",
+            "lyzr-automata/tools",
+            "lyzr-automata/tasks",
+            "lyzr-automata/pipelines"
+          ]
+        },
+        "lyzr-automata/examples"
       ]
     },
     {

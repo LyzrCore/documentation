@@ -102,7 +102,12 @@
             "lyzr-automata/pipelines"
           ]
         },
-        "lyzr-automata/examples"
+        {
+          "group":"Examples",
+          "pages":[
+            "lyzr-automata/newsletter-automation"
+          ]
+        }
       ]
     },
     {

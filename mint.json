@@ -91,8 +91,6 @@
             "pre-built-agents/data-analyzr-api-reference"
           ]
         },
-        "pre-built-agents/data-analysis-agent",
-        "pre-built-agents/text-sql-agent",
         "pre-built-agents/voice-agent"
       ]
     },

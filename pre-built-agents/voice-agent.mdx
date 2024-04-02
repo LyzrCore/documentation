@@ -1,7 +1,72 @@
 ---
 title: Voice Agent
 sidebarTitle: Voice Agent
-description: Voice Agent
+description: 
 ---
 
-## Voices
+The VoiceBot open-source software (OSS) module is a versatile tool that utilizes OpenAI's powerful APIs to perform text-to-speech conversion, audio transcription, and text summarization into structured notes. Here's how you can harness each of these functionalities in your OSS applications:
+
+## Features
+
+- **Text-to-Speech**: Convert texts into spoken words using various voices provided by OpenAI TTS.
+- **Transcribe**: Transcribe spoken words into text using Whisper API.
+- **Text-to-Notes**: Turn conversations into organized bullet points, ensuring no detail is omitted.
+
+# VoiceBot Feature Comparison
+
+VoiceBot offers two distinct editions with different sets of features to cater to a range of users, from those who need basic functionalities to organizations requiring advanced capabilities.
+
+Below is a comparative table highlighting the differences between the Open Source Edition (OSE) and the Enterprise Edition (EE).
+
+| Feature                        | Open Source Edition (OSE) | Enterprise Edition (EE)                                                   |
+| ------------------------------ | ------------------------- | ------------------------------------------------------------------------- |
+| Text-to-Speech (TTS)           | Online API                | Online API with Streaming for longer texts, Bark offline TTS, ElevenLabs online TTS|
+| Transcription (Speech to Text) | Online Whisper API only   | Online Whisper API, Offline Whisper Models, Offline Distil-Whisper Models, AssemblyAI, Speaker Diarization |
+| Text-to-Notes                  | Online API                | Online API                                                                |
+
+You can also find a google collab notebook [here.](https://colab.research.google.com/drive/1tzHq7OPKrD5XS7-Qd7-Zth_FaUt3Is-i?usp=sharing)
+
+## Usage
+
+lets start by making an object of the module first
+
+```python
+from lyzr import VoiceBot
+vb = VoiceBot(api_key="your_openai_api_key")
+```
+
+### Text-to-Speech
+
+```python
+text = "Text you want converted into audio"
+vb.text_to_speech(text)
+    # ... (Online OpenAI API call to convert text to speech) ...
+    # The TTS wil be saved as tts_output.mp3 in the directory it was called in
+```
+
+### Transcription (Speech to Text)
+
+```python
+audiofilepath = "path/to/audio/file"
+transcript = vb.transcribe(audiofilepath)
+    # ... (Online API call or local synthesis to transcribe audio content to text) ...
+    # Returns the text transcription of the audio
+print(transcript)
+```
+
+### Text-to-Notes
+
+```python
+text = "Big paragraphs or conversations that you wish to streamline or shorten"
+notes = vb.text_to_notes(text)
+    # ... (Online API call to GPT for summarization as bullet points) ...
+    # Returns structured notes
+print(notes)
+```
+These functions make it simple to integrate advanced linguistic and speech capabilities into your applications, allowing you to create new user experiences or enhance existing workflows. Use the VoiceBot module to effectively manage content generation, comprehension, and accessibility tasks.
+
+## Limitations
+
+- The open-source version requires an internet connection to utilize the online API.
+- It offers a smaller subset of features compared to enterprise versions, focusing primarily on cloud-based services.
+

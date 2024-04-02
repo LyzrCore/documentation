@@ -1,0 +1,143 @@
+
+# Automated Newsletter Publisher with Lyzr-Automata
+
+In this blog post, we'll demonstrate how to create an Automated Newsletter Publisher using **Lyzr-Automata**, a low-code multi-agent automation framework. This framework allows us to decompose complex tasks into simpler agents and interconnect them seamlessly.
+
+## Setup
+
+<SetupInstructions>
+Create a new folder, initialize a virtual environment, and activate it:
+
+```bash
+virtualenv my_env
+source my_env/bin/activate
+```
+
+Install the required packages:
+
+```bash
+pip install lyzr-automata==0.1.2 python-dotenv==1.0.1
+```
+</SetupInstructions>
+
+<EnvFileSetup>
+Create a `.env` file in your project directory and include the following variables:
+
+```
+OPENAI_API_KEY = "YOUR OPENAI API KEY"
+EMAIL = "YOUR EMAIL ID"
+PASSWORD = "YOUR APP PASSWORD"
+```
+</EnvFileSetup>
+
+> **Note**: For obtaining your App Password, follow the steps [here](#).
+
+## Get Started
+
+Let’s initiate our project by creating a `main.py` file:
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PASSWORD = os.getenv("PASSWORD")
+EMAIL = os.getenv("EMAIL")
+```
+
+### Initialise our Model
+
+We will use two models:
+- A **Text to Text model** for creating content (GPT-4).
+- A **Text to Image model** to generate a suitable image (DALL-E-3).
+
+<CodeBlock>
+```python
+from lyzr_automata.models import OpenAIModel
+
+open_ai_model_text = OpenAIModel(
+    api_key=OPENAI_API_KEY,
+    parameters={
+        "model": "gpt-4-turbo-preview",
+        "temperature": 0.2,
+        "max_tokens": 1500,
+    },
+)
+
+open_ai_model_image = OpenAIModel(
+    api_key=OPENAI_API_KEY,
+    parameters={
+        "n": 1,
+        "model": "dall-e-3",
+    },
+)
+```
+</CodeBlock>
+
+### Build our agent
+
+```python
+from lyzr_automata import Agent
+
+content_researcher_agent = Agent(
+    prompt_persona="You are an intelligent Travel Newsletter writer...",
+    role="Travel Newsletter writer",
+)
+```
+
+### Implement our Tasks
+
+<TaskDetails>
+Define tasks for newsletter content creation, image generation, and merging content with images for our newsletter.
+
+```python
+from lyzr_automata import Task
+from lyzr_automata.tasks.task_literals import InputType, OutputType
+
+# Define tasks here...
+```
+</TaskDetails>
+
+### Create our Email Sender Tool
+
+```python
+from lyzr_automata.tools.prebuilt_tools import send_email_by_smtp_tool
+
+email_sender = send_email_by_smtp_tool(
+    username=EMAIL,
+    password=PASSWORD,
+    host="smtp.gmail.com",
+    port=587,
+    sender_email=EMAIL
+)
+```
+
+### Create Pipeline and execute the tasks
+
+<PipelineDiagram>
+Utilize the `LinearSyncPipeline` to execute our tasks in sequence and send out the newsletter email.
+
+```python
+from lyzr_automata.pipelines.linear_sync_pipeline import LinearSyncPipeline
+from lyzr_automata import Logger
+
+def main_program():
+    logger = Logger()
+    LinearSyncPipeline(
+        logger=logger,
+        name="Send Email",
+        completion_message="Email Sent!",
+        tasks=[...],
+    ).run()
+
+main_program()
+```
+</PipelineDiagram>
+
+### Run the file and find the email in your inbox!
+
+## FLOW Diagram
+
+> Illustrate the flow of the automated newsletter publisher process.

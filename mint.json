@@ -82,8 +82,15 @@
         "pre-built-agents/search-agent",
         "pre-built-agents/rag-agent",
         "pre-built-agents/qa-agent",
-        "pre-built-agents/data-analysis-agent",
-        "pre-built-agents/text-sql-agent",
+        {
+          "group": "Data Analyzr Agents",
+          "pages": [
+            "pre-built-agents/data-analyzr-introduction",
+            "pre-built-agents/data-analysis-agent",
+            "pre-built-agents/text-sql-agent",
+            "pre-built-agents/data-analyzr-api-reference"
+          ]
+        },
         "pre-built-agents/voice-agent"
       ]
     },

@@ -1,11 +1,11 @@
-
-# Automated Newsletter Publisher with Lyzr-Automata
+---
+title: Newsletter Automation
+---
 
 In this blog post, we'll demonstrate how to create an Automated Newsletter Publisher using **Lyzr-Automata**, a low-code multi-agent automation framework. This framework allows us to decompose complex tasks into simpler agents and interconnect them seamlessly.
 
 ## Setup
 
-<SetupInstructions>
 Create a new folder, initialize a virtual environment, and activate it:
 
 ```bash
@@ -18,17 +18,14 @@ Install the required packages:
 ```bash
 pip install lyzr-automata==0.1.2 python-dotenv==1.0.1
 ```
-</SetupInstructions>
 
-<EnvFileSetup>
 Create a `.env` file in your project directory and include the following variables:
 
-```
+```python
 OPENAI_API_KEY = "YOUR OPENAI API KEY"
 EMAIL = "YOUR EMAIL ID"
 PASSWORD = "YOUR APP PASSWORD"
 ```
-</EnvFileSetup>
 
 > **Note**: For obtaining your App Password, follow the steps [here](#).
 
@@ -53,7 +50,6 @@ We will use two models:
 - A **Text to Text model** for creating content (GPT-4).
 - A **Text to Image model** to generate a suitable image (DALL-E-3).
 
-<CodeBlock>
 ```python
 from lyzr_automata.models import OpenAIModel
 
@@ -74,7 +70,6 @@ open_ai_model_image = OpenAIModel(
     },
 )
 ```
-</CodeBlock>
 
 ### Build our agent
 
@@ -89,7 +84,6 @@ content_researcher_agent = Agent(
 
 ### Implement our Tasks
 
-<TaskDetails>
 Define tasks for newsletter content creation, image generation, and merging content with images for our newsletter.
 
 ```python
@@ -98,7 +92,6 @@ from lyzr_automata.tasks.task_literals import InputType, OutputType
 
 # Define tasks here...
 ```
-</TaskDetails>
 
 ### Create our Email Sender Tool
 
@@ -116,7 +109,6 @@ email_sender = send_email_by_smtp_tool(
 
 ### Create Pipeline and execute the tasks
 
-<PipelineDiagram>
 Utilize the `LinearSyncPipeline` to execute our tasks in sequence and send out the newsletter email.
 
 ```python
@@ -134,7 +126,6 @@ def main_program():
 
 main_program()
 ```
-</PipelineDiagram>
 
 ### Run the file and find the email in your inbox!
 

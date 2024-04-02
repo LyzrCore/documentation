@@ -2,6 +2,8 @@
 description: To develop an automated system for crafting newsletters, which includes the creation of both textual and visual content before distributing them to a list of subscribers.
 ---
 > **Note**: you can also refer the youtube tutorial, given [here](https://www.loom.com/share/3047db02d1bc40a49cb00032372452f2?sid=8a21aa3d-8ea6-4a88-9d93-5330fb0a5973).
+
+
 ## Setup
 
 Create a new folder, initialize a virtual environment, and activate it:
@@ -49,6 +51,7 @@ We will use two models:
 - A **Text completion model** for creating content (GPT-4).
 - A **Text to Image model** to generate a suitable image (DALL-E-3).
 
+<CodeBlock>
 ```python
 from lyzr_automata.models import OpenAIModel
 
@@ -69,6 +72,7 @@ open_ai_model_image = OpenAIModel(
     },
 )
 ```
+</CodeBlock>
 
 ### Build our agent
 
@@ -134,6 +138,12 @@ email_sender = send_email_by_smtp_tool(
 )
 ```
 
+
+### Task flow
+We will construct the flow outlined below, utilizing a pipeline in the subsequent steps.
+
+![Newsletter flow](../assets/images/lyzr-automata/newsletter_dig.webp)
+
 ### Create Pipeline and execute the tasks
 Utilize the `LinearSyncPipeline` to execute our tasks in sequence and send out the newsletter email.
 
@@ -158,5 +168,5 @@ def main_program():
 main_program()
 ```
 
-### output
+### Final Output
 Run the file and find the email in your inbox!

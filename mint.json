@@ -56,6 +56,10 @@
     {
       "name": "Lyzr Automata",
       "url": "lyzr-automata"
+    },
+    {
+      "name": "Free Tools",
+      "url": "free-tools"
     }
   ],
   "navigation": [
@@ -101,6 +105,15 @@
             "lyzr-automata/newsletter-automation"
           ]
         }
+      ]
+    },
+    {
+      "group": "Free Tools",
+      "pages": [
+        "free-tools/lyzr-parse",
+        "free-tools/magic-prompts",
+        "free-tools/prompt-studio",
+        "free-tools/knowledge-base"
       ]
     }
   ],

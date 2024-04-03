@@ -201,7 +201,7 @@ print(result['insights'])
 ```
 
 ## Getting visualisations
-To retrieve plots from your analysis, use the `ask` method and pass `"visualisation"` in your `outputs` parameter. The dictionary returned has a key `"visualisation"` which contains the path to the `png` image. By default, visualization images are saved to `./generated_plots/plot.png`, but this can be controlled using the `plot_path` parameter. Here's an example:
+To retrieve plots from your analysis, use the `ask` method and pass `"visualisation"` in your `outputs` parameter. The dictionary returned has a key `"visualisation"` which contains the path to the PNG image. By default, visualization images are saved to `./generated_plots/plot.png`, but this can be controlled using the `plot_path` parameter. Here's an example:
 ```python
 result = analyzr.ask(
     "Your query here",

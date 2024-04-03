@@ -1,8 +1,8 @@
 ---
 title: API Reference
+sidebarTitle: API Reference
+description: 'This is the class and function reference of `DataAnalyzr`. Please refer to the [full user guide](/pre-built-agents/data-analyzr-introduction) for details on usage.'
 ---
-
-This is the class and function reference of `DataAnalyzr`. Please refer to the [full user guide](/pre-built-agents/data-analyzr-introduction) for details on usage.
 
 ## **`DataAnalyzr` Class**
 
@@ -88,7 +88,7 @@ Constructor method for initializing a `DataAnalyzr` object.
 ### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
+analyzr = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 ```
 
 
@@ -153,7 +153,7 @@ Sets the `database_connector`, `df_dict`, and `vector_store` attributes of the `
 ### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
+analyzr = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -167,7 +167,7 @@ vector_store_config = {
     "path": "./testing/chromadb/testing/",
     "remake": True
 }
-data_analyzer.get_data(
+analyzr.get_data(
     db_type="postgres",
     config=config,
     vector_store_config=vector_store_config
@@ -237,7 +237,7 @@ Dictionary specifying the context for analysis, insights, recommendations, and t
 ### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
+analyzr = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -251,11 +251,11 @@ vector_store_config = {
     "path": "./testing/chromadb/testing/",
     "remake": True
 }
-data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
+analyzr.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
 
 user_input = "What are the trends in sales?"
 outputs = ["visualisation", "insights", "recommendations", "tasks"]
-result = data_analyzer.ask(user_input=user_input, outputs=outputs)
+result = analyzr.ask(user_input=user_input, outputs=outputs)
 
 # View the visualisation
 from PIL import Image
@@ -308,7 +308,7 @@ Sets the `analysis_output` and `analysis_steps` attributes of the `DataAnalyzr` 
 ### **Example**
 
 ```python
-data_analyzer = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
+analyzr = DataAnalyzr(analysis_type="sql", api_key="your_api_key")
 config = {
     "host": "localhost",
     "port": 5432,
@@ -322,11 +322,11 @@ vector_store_config = {
     "path": "./testing/chromadb/testing/",
     "remake": True
 }
-data_analyzer.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
+analyzr.get_data(db_type="postgres", config=config, vector_store_config=vector_store_config)
 
 user_input = "What are the trends in sales?"
 analysis_context = "You are assisting a sales manager who is looking to understand the trends in sales over the past year."
-result = data_analyzer.analysis(user_input=user_input, analysis_context=analysis_context)
+result = analyzr.analysis(user_input=user_input, analysis_context=analysis_context)
 ```
 
 ## **`visualisation` Method**

@@ -1,152 +1,191 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Docs",
-  "logo": {
-    "dark": "./assets/logo/LyzrDark.svg",
-    "light": "/assets/logo/LyzrLight.svg"
-  },
-  "favicon": "/assets/favicon.svg",
-  "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
-    }
-  },
-  "primaryTab": {
-    "name": "Introduction"
-  },
-  "topbarLinks": [
-    {
-      "name": "Lyzr",
-      "url": "https://lyzr.ai"
+    "$schema": "https://mintlify.com/schema.json",
+    "name": "Docs",
+    "logo": {
+        "dark": "./assets/logo/LyzrDark.svg",
+        "light": "/assets/logo/LyzrLight.svg"
     },
-    {
-      "name": "Blog",
-      "url": "https://lyzr.ai/blog/"
-    },
-    {
-      "name": "Industries",
-      "url": "https://lyzr.ai/industries/"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Book Demo",
-    "url": "https://www.lyzr.ai/book-demo"
-  },
-  "anchors": [
-    {
-      "name": "Join Slack",
-      "icon": "slack",
-      "url": "https://anybodycanai.slack.com/ssb/redirect"
-    },
-    {
-      "name": "Join Discord",
-      "icon": "discord",
-      "url": "https://discord.gg/P6HCMQ9TRX"
-    }
-  ],
-  "tabs": [
-    {
-      "name": "Pre-built Agents",
-      "url": "pre-built-agents"
-    },
-    {
-      "name": "Lyzr Automata",
-      "url": "lyzr-automata"
-    },
-    {
-      "name": "Free Tools",
-      "url": "free-tools"
-    },
-    {
-      "name": "Cookbooks",
-      "url": "cookbooks"
-    },
-    {
-      "name": "Use Cases",
-      "url": "use-cases"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": ["introduction", "how-to-use", "FAQs", "getting-support"]
-    },
-    {
-      "group": "Pre-built Agents",
-      "pages": [
-        "pre-built-agents/chat-agent",
-        "pre-built-agents/search-agent",
-        "pre-built-agents/rag-agent",
-        "pre-built-agents/qa-agent",
-        {
-          "group": "Data Analyzr Agents",
-          "pages": [
-            "pre-built-agents/data-analyzr-introduction",
-            "pre-built-agents/data-analysis-agent",
-            "pre-built-agents/text-sql-agent",
-            "pre-built-agents/data-analyzr-api-reference"
-          ]
-        },
-        "pre-built-agents/voice-agent"
-      ]
-    },
-    {
-      "group": "Lyzr Automata",
-      "pages": [
-        "lyzr-automata/getting-started",
-        {
-          "group": "Implementation",
-          "pages": [
-            "lyzr-automata/installation",
-            "lyzr-automata/model-calling",
-            "lyzr-automata/agents",
-            "lyzr-automata/tools",
-            "lyzr-automata/tasks",
-            "lyzr-automata/pipelines"
-          ]
-        },
-        {
-          "group":"Examples",
-          "pages":[
-            "lyzr-automata/newsletter-automation"
-          ]
+    "favicon": "/assets/favicon.svg",
+    "colors": {
+        "primary": "#0D9373",
+        "light": "#07C983",
+        "dark": "#0D9373",
+        "anchors": {
+            "from": "#0D9373",
+            "to": "#07C983"
         }
-      ]
     },
-    {
-      "group": "Free Tools",
-      "pages": [
-        "free-tools/lyzr-parse",
-        "free-tools/magic-prompts",
-        "free-tools/prompt-studio",
-        "free-tools/knowledge-base"
-      ]
+    "primaryTab": {
+        "name": "Introduction"
     },
-    {
-      "group": "Cookbooks",
-      "pages": [
-        "cookbooks/lyzr-weaviate",
-        "cookbooks/lyzr-streamlit",
-        "cookbooks/lyzr-qdrant",
-        "cookbooks/lyzr-vellum"
-      ]
+    "topbarLinks": [{
+            "name": "Lyzr",
+            "url": "https://lyzr.ai"
+        },
+        {
+            "name": "Blog",
+            "url": "https://lyzr.ai/blog/"
+        },
+        {
+            "name": "Industries",
+            "url": "https://lyzr.ai/industries/"
+        }
+    ],
+    "topbarCtaButton": {
+        "name": "Book Demo",
+        "url": "https://www.lyzr.ai/book-demo"
     },
-    {
-      "group": "Use Cases",
-      "pages": [
-        "use-cases/law-lookup-agent",
-        "use-cases/compliance-search-agent",
-        "use-cases/newsletter-creator-publisher"
-      ]
+    "anchors": [{
+            "name": "Join Slack",
+            "icon": "slack",
+            "url": "https://anybodycanai.slack.com/ssb/redirect"
+        },
+        {
+            "name": "Join Discord",
+            "icon": "discord",
+            "url": "https://discord.gg/P6HCMQ9TRX"
+        }
+    ],
+    "tabs": [{
+            "name": "Pre-built Agents",
+            "url": "pre-built-agents"
+        },
+        {
+            "name": "Lyzr Automata",
+            "url": "lyzr-automata"
+        },
+        {
+            "name": "Free Tools",
+            "url": "free-tools"
+        },
+        {
+            "name": "Cookbooks",
+            "url": "cookbooks"
+        },
+        {
+            "name": "Use Cases",
+            "url": "use-cases"
+        }
+    ],
+    "navigation": [{
+            "group": "Get Started",
+            "pages": ["introduction", "how-to-use", "FAQs", "getting-support"]
+        },
+        {
+            "group": "Pre-built Agents",
+            "pages": [
+                "pre-built-agents/chat-agent",
+                {
+                    "group": "Search Agents",
+                    "pages": [
+                        "pre-built-agents/search-agent/introduction",
+                        {
+                            "group": "Usage",
+                            "pages": [
+                                "pre-built-agents/search-agent/installation",
+                                "pre-built-agents/search-agent/quick-start"
+                            ]
+                        },
+                        {
+                            "group": "Data Sources",
+                            "pages": [
+                                "pre-built-agents/search-agent/data-sources/overview",
+                                {
+                                    "group": "Data Types",
+                                    "pages": [
+                                        "pre-built-agents/search-agent/data-sources/add-pdf",
+                                        "pre-built-agents/search-agent/data-sources/add-docx",
+                                        "pre-built-agents/search-agent/data-sources/add-txt",
+                                        "pre-built-agents/search-agent/data-sources/add-youtube",
+                                        "pre-built-agents/search-agent/data-sources/add-webpage",
+                                        "pre-built-agents/search-agent/data-sources/add-website"
+
+                                    ]
+                                }
+
+                            ]
+                        },
+                        {
+                            "group": "Vector Databases",
+                            "pages": ["pre-built-agents/search-agent/vector-database/weaviate"]
+                        },
+                        {
+                            "group": "Large Language Models",
+                            "pages": ["pre-built-agents/search-agent/llms/openai"]
+                        },
+                        {
+                            "group": "Embedding Models",
+                            "pages": ["pre-built-agents/search-agent/emd-models/openai"]
+                        }
+                    ]
+                },
+                "pre-built-agents/rag-agent",
+                "pre-built-agents/qa-agent",
+                {
+                    "group": "Data Analyzr Agents",
+                    "pages": [
+                        "pre-built-agents/data-analyzr-introduction",
+                        "pre-built-agents/data-analysis-agent",
+                        "pre-built-agents/text-sql-agent",
+                        "pre-built-agents/data-analyzr-api-reference"
+                    ]
+                },
+                "pre-built-agents/voice-agent"
+            ]
+        },
+        {
+            "group": "Lyzr Automata",
+            "pages": [
+                "lyzr-automata/getting-started",
+                {
+                    "group": "Implementation",
+                    "pages": [
+                        "lyzr-automata/installation",
+                        "lyzr-automata/model-calling",
+                        "lyzr-automata/agents",
+                        "lyzr-automata/tools",
+                        "lyzr-automata/tasks",
+                        "lyzr-automata/pipelines"
+                    ]
+                },
+                {
+                    "group": "Examples",
+                    "pages": [
+                        "lyzr-automata/newsletter-automation"
+                    ]
+                }
+            ]
+        },
+        {
+            "group": "Free Tools",
+            "pages": [
+                "free-tools/lyzr-parse",
+                "free-tools/magic-prompts",
+                "free-tools/prompt-studio",
+                "free-tools/knowledge-base"
+            ]
+        },
+        {
+            "group": "Cookbooks",
+            "pages": [
+                "cookbooks/lyzr-weaviate",
+                "cookbooks/lyzr-streamlit",
+                "cookbooks/lyzr-qdrant",
+                "cookbooks/lyzr-vellum"
+            ]
+        },
+        {
+            "group": "Use Cases",
+            "pages": [
+                "use-cases/law-lookup-agent",
+                "use-cases/compliance-search-agent",
+                "use-cases/newsletter-creator-publisher"
+            ]
+        }
+    ],
+    "footerSocials": {
+        "twitter": "https://twitter.com/lyzrai",
+        "github": "https://github.com/LyzrCore/lyzr",
+        "linkedin": "https://www.linkedin.com/company/lyzr-platform"
     }
-  ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/lyzrai",
-    "github": "https://github.com/LyzrCore/lyzr",
-    "linkedin": "https://www.linkedin.com/company/lyzr-platform"
-  }
 }

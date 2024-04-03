@@ -56,18 +56,6 @@
     {
       "name": "Lyzr Automata",
       "url": "lyzr-automata"
-    },
-    {
-      "name": "Free Tools",
-      "url": "free-tools"
-    },
-    {
-      "name": "Cookbooks",
-      "url": "cookbooks"
-    },
-    {
-      "name": "Use Cases",
-      "url": "use-cases"
     }
   ],
   "navigation": [
@@ -80,8 +68,6 @@
       "pages": [
         "pre-built-agents/chat-agent",
         "pre-built-agents/search-agent",
-        "pre-built-agents/rag-agent",
-        "pre-built-agents/qa-agent",
         {
           "group": "Data Analyzr Agents",
           "pages": [
@@ -115,32 +101,6 @@
             "lyzr-automata/newsletter-automation"
           ]
         }
-      ]
-    },
-    {
-      "group": "Free Tools",
-      "pages": [
-        "free-tools/lyzr-parse",
-        "free-tools/magic-prompts",
-        "free-tools/prompt-studio",
-        "free-tools/knowledge-base"
-      ]
-    },
-    {
-      "group": "Cookbooks",
-      "pages": [
-        "cookbooks/lyzr-weaviate",
-        "cookbooks/lyzr-streamlit",
-        "cookbooks/lyzr-qdrant",
-        "cookbooks/lyzr-vellum"
-      ]
-    },
-    {
-      "group": "Use Cases",
-      "pages": [
-        "use-cases/law-lookup-agent",
-        "use-cases/compliance-search-agent",
-        "use-cases/newsletter-creator-publisher"
       ]
     }
   ],

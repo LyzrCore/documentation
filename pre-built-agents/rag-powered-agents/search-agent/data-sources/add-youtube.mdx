@@ -1,0 +1,39 @@
+---
+title: 📺 Youtube Video
+---
+
+# Integrating YouTube Content into Your Search Agent
+
+Expanding your search agent's capabilities to include content from YouTube videos can significantly enhance its ability to provide engaging and multimedia-rich answers. The `add_youtube` function enables the straightforward addition of YouTube videos, allowing your search agent to leverage video descriptions, titles, and potentially transcribed content for a more diverse search experience.
+
+## Function Overview
+
+The `add_youtube` method is specifically designed for integrating YouTube video content into your search agent, offering a range of parameters to customize how this content is processed, indexed, and retrieved.
+
+### Parameters
+
+- **urls** (`List[str]`): A list of URLs for the YouTube videos you want to add. Each URL points to a specific video whose content will be made searchable by your agent.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing YouTube video content. This can direct the focus towards relevant aspects of the video, such as the description or transcribed speech.
+- **query_wrapper_prompt** (`str`): An optional prompt to enhance the relevance of search queries by providing a context specific to the YouTube content.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for processing and embedding the text content extracted from YouTube videos. Defaults to a standard model suitable for general content.
+- **llm_params** (`dict`): Parameters for integrating Large Language Models, enhancing the agent's understanding of video content and improving query processing.
+- **vector_store_params** (`dict`): Configuration for vector storage, detailing how and where the extracted embeddings from video content are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context for YouTube content integration.
+- **query_engine_params** (`dict`): Customization parameters for the query engine, affecting how YouTube content is searched and matched with user queries.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how YouTube video content is indexed and retrieved.
+ 
+## Example Usage
+
+### Adding Multiple YouTube Videos
+
+```python
+search_agent.add_youtube(
+    urls=[
+        "https://www.youtube.com/watch?v=video1",
+        "https://www.youtube.com/watch?v=video2"
+    ],
+)
+```
+
+This example demonstrates how to add specific YouTube videos to your search agent.
+ 

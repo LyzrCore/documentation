@@ -1,0 +1,23 @@
+---
+title: LanceDB 
+---
+
+## Lyzr + LanceDB 
+
+LanceDB offers efficient vector and time-series data storage. It's optimal for local and cloud setups requiring fast data retrieval.
+
+### Installation
+
+```bash
+pip install -U lancedb
+```
+
+### Local
+
+```python
+vector_store_params = {
+    "vector_store_type": "LanceDBVectorStore",
+    "uri": "./lancedb",
+    "table_name": "lyzr_core",
+}
+```

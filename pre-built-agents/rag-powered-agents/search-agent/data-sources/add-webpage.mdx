@@ -1,0 +1,35 @@
+---
+title: 🧾 Webpage
+---
+# Integrating Webpage Content into Your Search Agent
+
+Adding individual webpages to your search agent allows for the inclusion of specific, high-quality content that can directly answer user queries. The `add_webpage` method streamlines the process of incorporating content from single webpages, enhancing the search agent's ability to provide precise and relevant search results.
+
+## Function Signature
+
+The `add_webpage` function is tailored for adding content from a single webpage, using a range of parameters to fine-tune how this content is processed and indexed.
+
+### Parameters
+
+- **url** (`Optional[str]`): The URL of the webpage to be added. This specifies the exact page whose content you wish to make searchable.
+- **system_prompt** (`str`): An optional prompt to guide the system in how to process the content of the webpage. It can be used to direct the focus of content extraction towards relevant information.
+- **query_wrapper_prompt** (`str`): An optional prompt that can enhance the relevance of search queries by wrapping them in a specific context related to the webpage content.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for processing and embedding the webpage's text content. Defaults to a standard model suitable for general web content.
+- **llm_params** (`dict`): Parameters for integrating Large Language Models to augment content understanding and query processing capabilities.
+- **vector_store_params** (`dict`): Configuration for the vector storage, specifying how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context specific to the webpage's content.
+- **query_engine_params** (`dict`): Customization parameters for the query engine, affecting how the webpage content is searched and matched with queries.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how the webpage content is indexed and retrieved based on search queries.
+  
+
+## Example Usage
+
+### Adding a Specific Webpage
+
+```python
+search_agent.add_webpage(
+    url="https://www.specificpage.com/article",
+)
+```
+
+This example adds content from a specific webpage.

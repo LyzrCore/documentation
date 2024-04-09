@@ -1,0 +1,35 @@
+---
+title: 🗺️ Website
+---
+
+# Integrating Website Content into Your Search Agent
+
+Incorporating entire websites into your search agent significantly enhances its ability to provide comprehensive and relevant search results. The `add_website` method is designed to facilitate the seamless integration of web content, expanding the knowledge base of your agent with rich, web-based information.
+
+## Function Signature
+
+The `add_website` function provides a streamlined approach to ingesting content from specified websites, allowing your search agent to access and index web pages.
+
+### Parameters
+
+- **url** (`Optional[str]`): The URL of the website to be added. This is the starting point for content integration.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing website content. It can be used to specify instructions or objectives for the content retrieval process.
+- **query_wrapper_prompt** (`str`): An optional prompt to enhance the relevance of user queries by wrapping them. This can be particularly useful for tailoring the search experience based on the website's content.
+- **embed_model** (`Union[str, EmbedType]`): Specifies the embedding model used for processing the website's text content. The default setting uses a standard model optimized for web content.
+- **llm_params** (`dict`): Parameters for integrating Large Language Models, enhancing content understanding and processing.
+- **vector_store_params** (`dict`): Configuration parameters defining how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context for the website content.
+- **query_engine_params** (`dict`): Customization parameters for the query engine, tailoring how search queries are processed and matched with the website content.
+- **retriever_params** (`dict`): Configuration for the document retriever component, influencing how web content is retrieved and indexed based on search queries.
+
+## Example Usage
+
+### Adding a Website
+
+```python
+search_agent.add_website(
+    url="https://www.example.com",
+)
+```
+
+This example demonstrates how to add content from a website.

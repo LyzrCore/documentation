@@ -1,0 +1,50 @@
+---
+title: 📰 PDF
+---
+
+# Adding PDF Files to Your Search Agent
+
+Integrating PDF documents into your search agent significantly enhances its ability to provide comprehensive search results by indexing the content within these documents. The `add_pdf` method facilitates the addition of PDF files to your search agent, leveraging various parameters for customization and optimization of the process.
+
+## Function Signature
+
+The `add_pdf` function is designed to be flexible, accommodating various use cases from adding a single PDF file to integrating entire directories of PDF documents.
+
+### Parameters
+
+- **input_dir** (`Optional[str]`): The directory path containing PDF files to be added. If specified, the method scans this directory for PDF files.
+- **input_files** (`Optional[List]`): A list of paths to individual PDF files to be added. If provided, `input_dir` is ignored.
+- **exclude_hidden** (`bool`): When set to `True`, hidden files or files starting with a dot (.) in `input_dir` are excluded.
+- **filename_as_id** (`bool`): If `True`, uses the filename as the unique identifier for each PDF document in the database.
+- **recursive** (`bool`): If set to `True`, the method also searches subdirectories within `input_dir` for PDF files.
+- **required_exts** (`Optional[List[str]]`): Specifies file extensions to include. Defaults to `[".pdf"]` to target PDF files.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing PDF content.
+- **query_wrapper_prompt** (`str`): An optional prompt that wraps user queries, enhancing the relevance of search results.
+- **embed_model** (`Union[str, EmbedType]`): Specifies the embedding model for text extraction and embedding. The default setting uses the predefined model.
+- **llm_params** (`dict`): Parameters for configuring the integration with Large Language Models, enhancing content understanding and query processing.
+- **vector_store_params** (`dict`): Configuration for the vector store, defining how and where the extracted embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters for customizing the service context.
+- **query_engine_params** (`dict`): Parameters for customizing the query engine's behavior.
+- **retriever_params** (`dict`): Configuration for the retriever component, affecting how documents are retrieved based on queries.
+
+
+## Example Usage
+
+### Adding a Directory of PDF Files
+
+```python
+search_agent.add_pdf(
+    input_dir="/path/to/pdf/documents",
+    recursive=True
+)
+```
+
+This example scans the specified directory (and its subdirectories) for PDF files, adding them to the search agent's database.
+
+### Adding Specific PDF Files
+
+```python
+search_agent.add_pdf(
+    input_files=["/path/to/document1.pdf", "/path/to/document2.pdf"],
+)
+```

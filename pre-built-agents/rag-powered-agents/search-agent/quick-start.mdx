@@ -1,0 +1,155 @@
+---
+title: Quick Start 
+---
+
+
+To get started with the SearchAgent SDK, you'll first need to ensure that your environment is set up with all necessary dependencies. While specific installation commands are not provided here, typical Python package management tools like `pip` can be used to manage your environment.
+
+## Key Components
+
+The SDK is comprised of several key components, each tailored to handle different types of content:
+
+- PDF Files
+- DOCX Files
+- Text Files
+- Webpages
+- Websites
+- YouTube Videos
+
+These components allow the SearchAgent to Train, process and index content from these sources, making it searchable within your Search Agent.
+
+## Using the SearchAgent SDK
+
+The following sections provide a step-by-step guide to using the SearchAgent SDK in your projects.
+
+### Initializing the SearchAgent
+
+To use the SDK, start by importing and initializing the `SearchAgent` class:
+
+```python
+from lyzr import SearchAgent 
+
+# Initialize the SearchAgent
+search_agent = SearchAgent()
+```
+### Setup Vector Database
+
+Let's configure Qdrant Vector Database. please intall  `pip install qdrant_client`
+
+```python
+import qdrant_client
+
+QDRANT_CLIENT_URL = "<YOUR-QDRANT-CLIENT-URL>"
+QDRANT_API_KEY = "<YOUR-QDRANT-API-KEY>"
+
+client = qdrant_client.QdrantClient(
+   url= QDRANT_CLIENT_URL,
+    api_key= QDRANT_CLIENT_URL,
+)
+
+vector_store_params = {
+    "vector_store_type":"QdrantVectorStore",
+    "client":client,
+    "collection_name":"lyzr_core"
+}
+```
+Search Agent supports variety of Vector Databases
+
+### Setup Large Language model
+
+```python
+import os
+import openai
+
+os.environ["OPENAI_API_KEY"] = "<YOUR-OPENAI-API-KEY>"
+
+llm_params = {
+    "model": "gpt-4-turbo-preview",
+    "api_key": "<YOUR-OPENAI-API-KEY>"
+}
+```
+Search Agent supports variety of Large Language Models
+
+
+## Training Search Agent
+
+With the `SearchAgent` initialized, you can begin adding content from various sources. The SDK provides methods for integrating different content types, as outlined below.
+
+#### Adding PDF Files
+
+```python
+search_agent.add_pdf(
+    input_files=["path-to-file"],
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+#### Adding DOCX Files
+
+```python
+search_agent.add_docx(
+    input_files=["path-to-file"],
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+#### Adding Text Files
+
+```python
+search_agent.add_text(
+    input_files=["path-to-file"],
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+#### Adding Webpages
+
+```python
+search_agent.add_webpage(
+    url="https://example.com",
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+#### Adding Websites
+
+```python
+search_agent.add_website(
+    url="https://example.com",
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+#### Adding YouTube Videos
+
+```python
+search_agent.add_youtube(
+    urls=["https://youtube.com/example"],
+    vector_store_params=vector_store_params,
+    llm_params=llm_params
+)
+```
+
+## Let's Search
+```python
+# Ask a question
+response = agent.query("<you-query>")
+```
+
+### Sources
+```python
+# Sources
+for n, source in enumerate(response.source_nodes):
+  print(source.text)
+  print(source.score)
+  print(source.metadata)
+```
+
+### Advanced Configuration
+
+Each method supports various parameters allowing for detailed customization of how content is processed and indexed. These include specifying whether to include hidden files, whether to process directories recursively, and how to handle file extensions.

@@ -57,14 +57,6 @@
         {
             "name": "Free Tools",
             "url": "free-tools"
-        },
-        {
-            "name": "Cookbooks",
-            "url": "cookbooks"
-        },
-        {
-            "name": "Use Cases",
-            "url": "use-cases"
         }
     ],
     "navigation": [{
@@ -76,6 +68,36 @@
             "pages": [{
                     "group": "Rag Powered Agents",
                     "pages": ["pre-built-agents/rag-powered-agents/intro",
+                        {
+                            "group": "Chat Agent",
+                            "pages": [
+                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start", {
+                                    "group": "Usage",
+                                    "pages": [
+                                        "pre-built-agents/rag-powered-agents/chat-agent/installation"
+                                    ]
+                                },
+                                {
+                                    "group": "Data Sources",
+                                    "pages": [
+                                        "pre-built-agents/rag-powered-agents/chat-agent/data-sources/overview",
+                                        {
+                                            "group": "Data Types",
+                                            "pages": [
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-pdf",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-docx",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-txt",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-youtube",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-webpage",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-website"
+
+                                            ]
+                                        }
+
+                                    ]
+                                }
+                            ]
+                        },
                         {
                             "group": "Search Agent",
                             "pages": [
@@ -109,37 +131,7 @@
                             ]
                         },
                         {
-                            "group": "Chat Agent",
-                            "pages": [
-                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start", {
-                                    "group": "Usage",
-                                    "pages": [
-                                        "pre-built-agents/rag-powered-agents/chat-agent/installation"
-                                    ]
-                                },
-                                {
-                                    "group": "Data Sources",
-                                    "pages": [
-                                        "pre-built-agents/rag-powered-agents/chat-agent/data-sources/overview",
-                                        {
-                                            "group": "Data Types",
-                                            "pages": [
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-pdf",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-docx",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-txt",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-youtube",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-webpage",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-website"
-
-                                            ]
-                                        }
-
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "group": "Advanced Congifuration",
+                            "group": "Advanced Configuration",
                             "pages": [{
                                     "group": "Vector Databases",
                                     "pages": [

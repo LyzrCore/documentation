@@ -49,13 +49,14 @@ Input tasks instances of Task class. It is for explicitly mentioning which tasks
 
 ```python
 from  lyzr_automata  import  Task
+from lyzr_automata.tasks.task_literals import InputType, OutputType
     
 linkedin_content_writing_task = Task(
         name="linkedin content writing",
         agent=linkedin_content_writer_agent,
         output_type=OutputType.TEXT,
         input_type=InputType.TEXT,
-        model=open_ai_model_text,
+        model=open_ai_text_completion_model,
         instructions="Write a linkedin post on gene editing using CRISPR",
         log_output=True,
         enhance_prompt=False,

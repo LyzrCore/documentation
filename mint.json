@@ -131,7 +131,7 @@
                             ]
                         },
                         {
-                            "group": "Advanced Congifuration",
+                            "group": "Advanced Configuration",
                             "pages": [{
                                     "group": "Vector Databases",
                                     "pages": [

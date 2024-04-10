@@ -191,23 +191,6 @@
                 "free-tools/magic-prompts",
                 "free-tools/prompt-studio"
             ]
-        },
-        {
-            "group": "Cookbooks",
-            "pages": [
-                "cookbooks/lyzr-weaviate",
-                "cookbooks/lyzr-streamlit",
-                "cookbooks/lyzr-qdrant",
-                "cookbooks/lyzr-vellum"
-            ]
-        },
-        {
-            "group": "Use Cases",
-            "pages": [
-                "use-cases/law-lookup-agent",
-                "use-cases/compliance-search-agent",
-                "use-cases/newsletter-creator-publisher"
-            ]
         }
     ],
     "footerSocials": {

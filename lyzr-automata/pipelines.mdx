@@ -13,6 +13,8 @@ If there are three tasks A, B, C. Then using the LinearAsyncPipeline class you c
 in the fashion A→B→C.
 
 ```python
+from lyzr_automata.pipelines.linear_sync_pipeline import LinearSyncPipeline
+
 LinearSyncPipeline(
     name="pipeline name",
 		# completion message after pipeline completes

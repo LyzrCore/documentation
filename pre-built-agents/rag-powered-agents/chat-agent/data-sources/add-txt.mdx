@@ -1,0 +1,51 @@
+---
+title: 📝 Text
+---
+
+# Integrating Text File Content into Your Chat Agent
+
+Enhancing your chat agent with the inclusion of plain text (.txt) files broadens its knowledge base, enabling it to draw upon a diverse range of textual content. The `txt_chat` method facilitates the seamless integration of text files into your chat agent, making this wealth of information accessible for enhancing conversation quality and relevance.
+
+## Function Overview
+
+The `txt_chat` function is designed to ingest content from text files into your chat agent, employing a variety of parameters to ensure this process is both efficient and effective.
+
+### Parameters
+
+- **input_dir** (`Optional[str]`): Directory path containing text files to be added. If specified, the function will search this directory for eligible files.
+- **input_files** (`Optional[List]`): A list of paths to specific text files to be added. When provided, `input_dir` is bypassed.
+- **exclude_hidden** (`bool`): If `True`, hidden files or those starting with a dot (.) within `input_dir` are excluded.
+- **filename_as_id** (`bool`): If `True`, the filename is used as the unique identifier for each text document.
+- **recursive** (`bool`): If `True`, the function will also search subdirectories within `input_dir` for text files.
+- **required_exts** (`Optional[List[str]]`): Specifies the file extensions to include. Defaults to text file extensions.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing text file content.
+- **query_wrapper_prompt** (`str`): An optional prompt that can improve the relevance of search queries by providing context related to the text content.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for extracting and embedding text from the files. Defaults to a general-purpose model.
+- **llm_params** (`dict`): Configuration parameters for integrating Large Language Models to enhance content comprehension and query processing.
+- **vector_store_params** (`dict`): Configuration for vector storage, specifying how and where extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context for the text file content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, influencing how the chat agent utilizes text file content in conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how text file content is indexed and retrieved in response to user queries.
+ 
+## Example Usage
+
+### Adding Text Files from a Directory
+
+```python
+chat_agent.txt_chat(
+    input_dir="/path/to/text/files",
+    recursive=True
+)
+```
+
+This snippet configures the chat agent to ingest text files from the specified directory and its subdirectories.
+
+### Adding Specific Text Files
+
+```python
+chat_agent.txt_chat(
+    input_files=["/path/to/file1.txt", "/path/to/file2.txt"],
+)
+```
+
+Here, specific text files are directly added to the chat agent, allowing it to leverage their content in conversations.

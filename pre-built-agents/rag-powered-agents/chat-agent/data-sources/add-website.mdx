@@ -1,0 +1,34 @@
+---
+title: 🗺️ Website
+---
+# Integrating Entire Website Content into Your Chat Agent
+
+The ability to integrate content from an entire website into your chat agent significantly enhances its knowledge base and conversational capabilities. The `website_chat` method is designed for this purpose, allowing for the comprehensive inclusion of information from a website, thereby expanding the agent's ability to provide detailed and accurate responses.
+
+## Function Overview
+
+The `website_chat` function enables the integration of an entire website's content into the chat agent, using a series of parameters to fine-tune the content processing and ensure effective integration.
+
+### Parameters
+
+- **url** (`Optional[str]`): The base URL of the website you want to integrate. This should point to the homepage or a major section of the site whose content you wish to make searchable.
+- **system_prompt** (`str`): An optional prompt to guide the system's approach to processing the website's content. This can be useful for focusing on particular types of information.
+- **query_wrapper_prompt** (`str`): An optional prompt that can improve the relevance of user queries by providing a context specific to the website's content.
+- **embed_model** (`Union[str, EmbedType]`): Specifies the embedding model used for extracting and embedding text from the website. Defaults to a model optimized for general web content.
+- **llm_params** (`dict`): Configuration parameters for integrating Large Language Models, enhancing the chat agent's comprehension of the website content.
+- **vector_store_params** (`dict`): Configuration for vector storage, outlining how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters for customizing the service context for the integrated website content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, affecting how the agent utilizes the website content in conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how the website content is indexed and retrieved based on user queries.
+
+ ## Example Usage
+
+### Adding an Entire Website
+
+```python
+chat_agent.website_chat(
+    url="https://www.example.com",
+)
+```
+
+This example adds the content from the entire `Example.com` website to the chat agent.

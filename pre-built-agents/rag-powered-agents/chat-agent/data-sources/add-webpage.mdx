@@ -1,0 +1,35 @@
+---
+title: 🧾 Webpage
+---
+
+# Integrating Webpage Content into Your Chat Agent
+
+Incorporating content from specific webpages can significantly enhance your chat agent's ability to provide informative and contextually relevant responses. The `webpage_chat` method enables the integration of webpage content, expanding the agent's knowledge base with up-to-date information available on the internet.
+
+## Function Overview
+
+The `webpage_chat` function is crafted to facilitate the seamless addition of content from a single webpage into your chat agent, utilizing a range of parameters for effective content processing and integration.
+
+### Parameters
+
+- **url** (`Optional[str]`): The URL of the webpage whose content you wish to make searchable by the chat agent. This specifies the exact source of the content to be integrated.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing the webpage content. It can be used to focus the content extraction on relevant information for the chat agent.
+- **query_wrapper_prompt** (`str`): An optional prompt that can enhance the relevance of search queries by providing context related to the webpage content.
+- **embed_model** (`Union[str, EmbedType]`): Specifies the embedding model used for text extraction and embedding from the webpage. Defaults to a model suitable for general web content.
+- **llm_params** (`dict`): Configuration parameters for integrating Large Language Models to augment the agent's understanding of the webpage content.
+- **vector_store_params** (`dict`): Configuration for vector storage, detailing how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context for the integrated webpage content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, influencing how the agent utilizes the webpage content in conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how the webpage content is indexed and retrieved based on user queries.
+
+## Example Usage
+
+### Adding a Specific Webpage
+
+```python
+chat_agent.webpage_chat(
+    url="https://www.example.com/specific-article",
+)
+```
+
+This example demonstrates adding content from a specific webpage to the chat agent.

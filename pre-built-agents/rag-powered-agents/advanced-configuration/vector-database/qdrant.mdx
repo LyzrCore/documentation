@@ -1,0 +1,30 @@
+---
+title: Qdrant
+---
+
+## Lyzr + Qdrant Vector Database
+
+Qdrant is a high-performance vector database designed for machine learning workloads. It supports both local and cloud setups.
+
+### Installation
+
+```bash
+pip install -U qdrant_client
+```
+
+### Cloud / Self Hosted
+
+```python
+import qdrant_client
+
+client = qdrant_client.QdrantClient( 
+    uri="http://<host>:<port>",
+    api_key="<qdrant-api-key>",
+)
+
+vector_store_params = {
+    "vector_store_type": "QdrantVectorStore",
+    "client": client,
+    "collection_name": "lyzr_core",
+}
+```

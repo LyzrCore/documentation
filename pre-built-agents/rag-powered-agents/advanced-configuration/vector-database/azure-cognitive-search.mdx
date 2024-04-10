@@ -1,0 +1,40 @@
+---
+title: Azure Cognitive Search 
+---
+
+## Lyzr + Azure Cognitive Search
+
+Azure Cognitive Search is a cloud search service with built-in AI capabilities. Integrating Azure Cognitive Search into your Lyzr application allows for rich search capabilities, including vector search.
+
+### Installation
+
+```bash
+pip install azure-search-documents==11.4.0 azure-identity
+```
+
+### Cloud
+
+```python
+import os
+from azure.search.documents.indexes import SearchIndexClient
+from azure.search.documents import SearchClient
+from azure.core.credentials import AzureKeyCredential
+
+search_service_name = os.environ["Azure Cognitive Search Service Name"]
+key = os.environ["Azure Cognitive Search Key"]
+
+cognitive_search_credential = AzureKeyCredential(key)
+service_endpoint = f"https://{search_service_name}.search.windows.net"
+
+
+index_client = SearchIndexClient(
+    endpoint=service_endpoint,
+    credential=cognitive_search_credential,
+)
+
+vector_store_params = {
+    "vector_store_type": "CognitiveSearchVectorStore",
+    "search_or_index_client": index_client,
+    "index_name": "lyzr_core",
+}
+```

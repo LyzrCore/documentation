@@ -1,0 +1,52 @@
+---
+title: 📄 Docx file
+---
+
+# Adding DOCX Files to Your Search Agent
+
+Incorporating DOCX (Microsoft Word) documents into your search agent allows it to index and search through a wealth of structured text content. This can significantly improve the agent's ability to understand and respond to queries with relevant information. The `add_docx` method is designed to streamline the integration of DOCX files into your search agent.
+
+## Function Signature
+
+The `add_docx` function provides a flexible way to add DOCX files from various sources into your search agent, enhancing its knowledge base with rich text content.
+
+### Parameters
+
+- **input_dir** (`Optional[str]`): Directory containing DOCX files. If specified, the function searches this directory for files to add.
+- **input_files** (`Optional[List]`): A specific list of DOCX file paths to add. If provided, `input_dir` is ignored.
+- **exclude_hidden** (`bool`): If `True`, hidden files or files starting with a dot (.) are excluded from `input_dir`.
+- **filename_as_id** (`bool`): Uses the filename as the document's unique identifier if set to `True`.
+- **recursive** (`bool`): Searches subdirectories within `input_dir` for DOCX files if `True`.
+- **required_exts** (`Optional[List[str]]`): File extensions to include. Defaults to targeting DOCX files.
+- **system_prompt** (`str`): Optional prompt guiding the system in processing DOCX content.
+- **query_wrapper_prompt** (`str`): Optional prompt enhancing query relevance by wrapping user queries.
+- **embed_model** (`Union[str, EmbedType]`): Embedding model for text extraction and embedding. Defaults to a predefined model.
+- **llm_params** (`dict`): Configuration parameters for integrating Large Language Models.
+- **vector_store_params** (`dict`): Configuration for vector storage, defining embedding storage and retrieval.
+- **service_context_params** (`dict`): Additional service context configuration.
+- **query_engine_params** (`dict`): Customization parameters for the query engine.
+- **retriever_params** (`dict`): Configuration for the document retriever, affecting document retrieval strategies.
+
+
+## Example Usage
+
+### Adding DOCX Files from a Directory
+
+```python
+search_agent.add_docx(
+    input_dir="/path/to/docx/documents",
+    recursive=True
+)
+```
+
+This code snippet adds DOCX files from the specified directory and its subdirectories.
+
+### Adding Specific DOCX Files
+
+```python
+search_agent.add_docx(
+    input_files=["/path/to/file1.docx", "/path/to/file2.docx"],
+)
+```
+
+Here, specific DOCX files are added without using filenames as identifiers, allowing the search agent to generate unique IDs for each document.

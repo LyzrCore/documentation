@@ -1,0 +1,52 @@
+---
+title: 📰 PDF
+---
+
+# Integrating PDF Content into Your Chat Agent
+
+Adding PDF content to your chat agent enriches its conversational capabilities by drawing on the vast amount of information stored in PDF documents. This functionality is critical for creating a chat agent that can provide detailed, accurate answers derived from a wide range of documents. The `pdf_chat` method simplifies the process of making PDF content searchable and accessible to your chat agent.
+
+## Function Overview
+
+The `pdf_chat` function is specifically designed to ingest PDF content into your chat agent, leveraging various parameters to optimize how this content is processed and utilized during conversations.
+
+### Parameters
+
+- **input_dir** (`Optional[str]`): The directory containing PDF files to be added. If specified, the function scans this directory for PDF files.
+- **input_files** (`Optional[List]`): A list of specific PDF file paths to be added. If provided, `input_dir` is ignored.
+- **exclude_hidden** (`bool`): When set to `True`, hidden files or files starting with a dot (.) in `input_dir` are excluded.
+- **filename_as_id** (`bool`): Uses the filename as the unique identifier for each PDF document if set to `True`.
+- **recursive** (`bool`): If `True`, includes files from subdirectories within `input_dir`.
+- **required_exts** (`Optional[List[str]]`): Specifies file extensions to include, with the default targeting PDF files.
+- **system_prompt** (`str`): An optional prompt to guide the system in processing PDF content.
+- **query_wrapper_prompt** (`str`): An optional prompt to enhance query relevance by wrapping user queries in a specific context.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for text extraction and embedding from PDF documents. Defaults to a predefined model.
+- **llm_params** (`dict`): Parameters for integrating Large Language Models to augment content understanding and query processing.
+- **vector_store_params** (`dict`): Configuration for vector storage, specifying how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters for customizing the service context for PDF content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, influencing how the chat agent utilizes the PDF content during conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how PDF content is indexed and retrieved based on user queries.
+
+
+## Example Usage
+
+### Adding PDF Files from a Directory
+
+```python
+chat_agent.pdf_chat(
+    input_dir="/path/to/pdf/documents",
+    recursive=True
+)
+```
+
+This example adds PDF documents from the specified directory (and its subdirectories, if `recursive` is `True`) to the chat agent's database.
+
+### Adding Specific PDF Files
+
+```python
+chat_agent.pdf_chat(
+    input_files=["/path/to/specific/document1.pdf", "/path/to/specific/document2.pdf"],
+)
+```
+
+Here, specific PDF files are directly added to the chat agent, allowing it to draw upon their content in conversations.

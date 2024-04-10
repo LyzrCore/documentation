@@ -1,0 +1,43 @@
+---
+title: Weaviate 
+---
+
+## Lyzr + Weaviate Vector Database
+
+Weaviate is a vector search engine that enables scalable and efficient vector searches. You can integrate Weaviate into your Lyzr application for both local embedded scenarios and cloud or self-hosted solutions.
+
+### Local Embedded
+
+```python
+vector_store_params = {
+    "vector_store_type": "WeaviateVectorStore",
+    "index_name": "LyzrCore", 
+}
+```
+
+### Cloud / Self Hosted
+
+```bash
+pip install weaviate-client
+```
+
+```python
+import weaviate
+
+resource_owner_config = weaviate.AuthClientPassword(
+    username="<username>",
+    password="<password>",
+)
+
+client = weaviate.Client(
+    "https://lyzr-core.weaviate.network",
+    auth_client_secret=resource_owner_config,
+)
+
+vector_store_params = {
+    "vector_store_type": "WeaviateVectorStore",
+    "weaviate_client": client,
+    "api_key": "DB_API_KEY",
+    "index_name": "LyzrCore",  
+}
+```

@@ -1,0 +1,37 @@
+---
+title: 📺 Youtube Video
+---
+# Integrating YouTube Video Content into Your Chat Agent
+
+Expanding your chat agent's capabilities to include content from YouTube videos can greatly enhance its ability to engage users with dynamic, multimedia-based information. The `youtube_chat` method facilitates the integration of YouTube video content, leveraging the vast repository of knowledge, tutorials, and insights available on the platform.
+
+## Function Overview
+
+The `youtube_chat` function is specifically designed to ingest content from YouTube videos into your chat agent. This integration not only enriches the agent's data pool with diverse content but also enables the agent to reference or cite video content in its responses.
+
+### Parameters
+
+- **urls** (`List[str]`): A list of YouTube video URLs that you wish to integrate into the chat agent. Each URL should point to a specific video from which content will be extracted.
+- **system_prompt** (`str`): An optional prompt guiding the system on how to process and integrate content from the YouTube videos. This can be particularly useful for emphasizing certain types of information within the videos.
+- **query_wrapper_prompt** (`str`): An optional prompt designed to enhance the relevance of user queries by providing a context specific to the YouTube content.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for processing and embedding textual content extracted from the videos. Defaults to a model suitable for video content analysis.
+- **llm_params** (`dict`): Configuration parameters for integrating Large Language Models, enhancing the agent's understanding and interpretation of video content.
+- **vector_store_params** (`dict`): Configuration for vector storage, specifying how and where the extracted content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context specific to YouTube video content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, affecting how the agent utilizes YouTube content in conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how YouTube content is indexed and retrieved based on user queries.
+ 
+## Example Usage
+
+### Adding Multiple YouTube Videos
+
+```python
+chat_agent.youtube_chat(
+    urls=[
+        "https://www.youtube.com/watch?v=example1",
+        "https://www.youtube.com/watch?v=example2"
+    ],
+)
+```
+
+This example demonstrates how to add content from selected YouTube videos to the chat agent.

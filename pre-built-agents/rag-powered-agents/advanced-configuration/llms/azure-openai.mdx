@@ -1,0 +1,31 @@
+---
+title: Azure OpenAI
+---
+
+## Lyzr + Azure OpenAI Integration
+
+For those who prefer Microsoft Azure's infrastructure or have specific requirements that Azure services meet, integrating Azure OpenAI models is straightforward. This process involves additional parameters like the Azure API base URL and version.
+
+### Configuration Steps
+
+1. **Model Selection**: Azure offers various models, including custom and pre-trained options. Select a model that fits your application needs, such as "azure/gpt-35-turbo-16k".
+
+2. **API Base and Version**: Specify your Azure API base URL and the version of the OpenAI service you're using.
+
+3. **API Key**: Similar to OpenAI, an API key from Azure is required for authentication.
+
+4. **Max Retries**: Define the maximum number of retries for API requests to handle transient failures gracefully.
+
+### Example Configuration
+
+```python
+llm_params = {
+    "model": "azure/gpt-35-turbo-16k",
+    "api_base": "https://<deployment_name>.azure.com/",
+    "api_version": "2024-02-15-preview",
+    "api_key": "<YOUR-API-KEY>",
+    "max_retries": 1
+}
+```
+
+Ensure to replace `<deployment_name>` and `<YOUR-API-KEY>` with your specific deployment name and API key.

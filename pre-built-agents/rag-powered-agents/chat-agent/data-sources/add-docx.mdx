@@ -1,0 +1,52 @@
+---
+title: 📄 Docx file
+---
+
+# Integrating DOCX Content into Your Chat Agent
+
+Incorporating DOCX (Microsoft Word) documents into your chat agent significantly enriches its conversational abilities by tapping into the wealth of information stored in these widely used document formats. The `docx_chat` method facilitates the addition of DOCX content, enabling your chat agent to access and leverage the detailed information contained within DOCX files for more informed and accurate interactions.
+
+## Function Overview
+
+The `docx_chat` function is specifically tailored to ingest DOCX content into your chat agent, using a variety of parameters to control how this content is processed, indexed, and utilized during conversations.
+
+### Parameters
+
+- **input_dir** (`Optional[str]`): Directory path containing DOCX files to be added. If specified, the function scans this directory for eligible DOCX files.
+- **input_files** (`Optional[List]`): A list of specific DOCX file paths to be added. This parameter takes precedence over `input_dir` if provided.
+- **exclude_hidden** (`bool`): If `True`, hidden files or files starting with a dot (.) in `input_dir` are excluded from processing.
+- **filename_as_id** (`bool`): Uses the filename as the unique identifier for each DOCX document if set to `True`.
+- **recursive** (`bool`): If `True`, includes files from subdirectories within `input_dir`.
+- **required_exts** (`Optional[List[str]]`): Specifies file extensions to include, typically set to `[".docx"]` to target DOCX files.
+- **system_prompt** (`str`): An optional prompt guiding the system in processing DOCX content.
+- **query_wrapper_prompt** (`str`): An optional prompt to enhance the relevance of user queries by providing specific context related to the DOCX content.
+- **embed_model** (`Union[str, EmbedType]`): The embedding model used for text extraction and embedding from DOCX documents. Defaults to a standard model optimized for document content.
+- **llm_params** (`dict`): Parameters for integrating Large Language Models to enhance content understanding and query processing.
+- **vector_store_params** (`dict`): Configuration for vector storage, detailing how and where the content embeddings are stored.
+- **service_context_params** (`dict`): Additional parameters to customize the service context for DOCX content.
+- **chat_engine_params** (`dict`): Customization parameters for the chat engine, influencing how the chat agent utilizes the DOCX content in conversations.
+- **retriever_params** (`dict`): Configuration for the document retriever component, determining how DOCX content is indexed and retrieved in response to user queries.
+
+
+## Example Usage
+
+### Adding DOCX Files from a Directory
+
+```python
+chat_agent.docx_chat(
+    input_dir="/path/to/docx/documents",
+    recursive=True
+)
+```
+
+This code snippet adds DOCX documents from the specified directory (and its subdirectories, if `recursive` is `True`) to the chat agent's database.
+
+### Adding Specific DOCX Files
+
+```python
+chat_agent.docx_chat(
+    input_files=["/path/to/document1.docx", "/path/to/document2.docx"],
+ )
+```
+
+Here, specific DOCX files are directly added to the chat agent, enabling it to draw upon their content in conversation.

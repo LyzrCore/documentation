@@ -1,0 +1,57 @@
+---
+title: Pinecone 
+---
+
+# Lyzr + Pinecone 
+
+Pinecone is a managed vector database service optimized for similarity search at scale. It's designed to handle sparse and dense vector search with ease, making it an excellent choice for applications requiring accurate and scalable similarity search functionalities. Integrating Pinecone into your Lyzr application involves setting up the Pinecone environment and configuring the necessary parameters for communication between Lyzr and Pinecone.
+
+## Pinecone Setup
+
+Before integrating Pinecone with Lyzr, ensure you have a Pinecone account and have created a project and an index within Pinecone. You'll also need to install the Pinecone client library in your Python environment.
+
+### Installation
+
+To use Pinecone with Lyzr, first, install the Pinecone Python client:
+
+```bash
+pip install pinecone-client>=3.0.0
+```
+
+## Configuration for Lyzr Integration
+
+Integrating Pinecone with Lyzr involves configuring a set of parameters that allow Lyzr to communicate with Pinecone's vector database services. These parameters include specifying Pinecone as the vector store type, providing your Pinecone API key, and the name of the Pinecone index you wish to use.
+
+### Example Configuration
+
+```python
+from pinecone import Pinecone, PodSpec
+
+os.environ["OPENAI_API_KEY"] = "sk-"
+
+api_key = os.environ["PINECONE_API_KEY"]
+
+
+pc = Pinecone(api_key=api_key)
+
+pc.create_index(
+	 name='lyzr_core',
+	 dimension=1536,
+	 metric='cosine',
+	 spec=PodSpec(
+		 environment='gcp-starter',
+		 pod_type='starter',
+		 pods=1
+	 )
+)
+
+pinecone_index = pc.Index("lyzr_core")
+
+vector_store_params = {
+    "vector_store_type":"PineconeVectorStore",
+    "pinecone_index":pinecone_index,
+}
+```
+
+- **vector_store_type**: Specifies that Pinecone is the vector database to be used.
+- **index_name**: The name of the Pinecone index you want to use for storing and searching vectors. Ensure this index has been created in your Pinecone project.

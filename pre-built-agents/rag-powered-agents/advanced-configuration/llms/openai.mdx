@@ -1,0 +1,29 @@
+---
+title: OpenAI
+---
+
+## Lyzr + OpenAI Integration
+
+Integrating OpenAI's models into Lyzr enables your applications to utilize the cutting-edge capabilities of models such as GPT-4. This integration requires specifying a set of parameters tailored to OpenAI's API, including the model name, your API key, and generation controls.
+
+### Configuration Steps
+
+1. **Model Selection**: Choose the appropriate OpenAI model for your needs. Models vary in size, capability, and cost. For example, "gpt-4-0125-preview" represents a version of GPT-4.
+
+2. **API Key**: Obtain an API key from OpenAI. This key is essential for authenticating your requests to the OpenAI API.
+
+3. **Generation Parameters**: Configure generation parameters like `temperature` and `top_p` to control the model's output characteristics.
+
+### Example Configuration
+
+```python
+llm_params = {
+    "model": "gpt-4-0125-preview",
+    "api_key": "sk-<YOUR-API-KEY>",
+    "temperature": 0,
+    "top_p": 0,
+}
+```
+
+- **temperature**: A low temperature (e.g., 0) results in more deterministic and less varied output.
+- **top_p**: Setting `top_p` to 0 effectively selects the most probable outcomes, reducing randomness.

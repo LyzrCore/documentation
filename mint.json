@@ -110,10 +110,8 @@
     {
       "group": "Free Tools",
       "pages": [
-        "free-tools/lyzr-parse",
         "free-tools/magic-prompts",
-        "free-tools/prompt-studio",
-        "free-tools/knowledge-base"
+        "free-tools/prompt-studio"
       ]
     }
   ],

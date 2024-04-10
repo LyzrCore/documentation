@@ -57,14 +57,6 @@
         {
             "name": "Free Tools",
             "url": "free-tools"
-        },
-        {
-            "name": "Cookbooks",
-            "url": "cookbooks"
-        },
-        {
-            "name": "Use Cases",
-            "url": "use-cases"
         }
     ],
     "navigation": [{

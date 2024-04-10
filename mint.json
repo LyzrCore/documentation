@@ -69,6 +69,36 @@
                     "group": "Rag Powered Agents",
                     "pages": ["pre-built-agents/rag-powered-agents/intro",
                         {
+                            "group": "Chat Agent",
+                            "pages": [
+                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start", {
+                                    "group": "Usage",
+                                    "pages": [
+                                        "pre-built-agents/rag-powered-agents/chat-agent/installation"
+                                    ]
+                                },
+                                {
+                                    "group": "Data Sources",
+                                    "pages": [
+                                        "pre-built-agents/rag-powered-agents/chat-agent/data-sources/overview",
+                                        {
+                                            "group": "Data Types",
+                                            "pages": [
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-pdf",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-docx",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-txt",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-youtube",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-webpage",
+                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-website"
+
+                                            ]
+                                        }
+
+                                    ]
+                                }
+                            ]
+                        },
+                        {
                             "group": "Search Agent",
                             "pages": [
                                 "pre-built-agents/rag-powered-agents/search-agent/introduction",
@@ -92,36 +122,6 @@
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-youtube",
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-webpage",
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-website"
-
-                                            ]
-                                        }
-
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "group": "Chat Agent",
-                            "pages": [
-                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start", {
-                                    "group": "Usage",
-                                    "pages": [
-                                        "pre-built-agents/rag-powered-agents/chat-agent/installation"
-                                    ]
-                                },
-                                {
-                                    "group": "Data Sources",
-                                    "pages": [
-                                        "pre-built-agents/rag-powered-agents/chat-agent/data-sources/overview",
-                                        {
-                                            "group": "Data Types",
-                                            "pages": [
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-pdf",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-docx",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-txt",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-youtube",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-webpage",
-                                                "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-website"
 
                                             ]
                                         }

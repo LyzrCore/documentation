@@ -136,6 +136,16 @@ email_sender = send_email_by_smtp_tool(
     port=587,
     sender_email=EMAIL
 )
+
+send_email_task = Task(
+    name = "Send Email Task",
+    tool = email_sender,
+    instructions="Send Email",
+    model=open_ai_model_text,
+    input_tasks = [merge_image_text_task],
+    default_input = ["abc@gmail.com", "contact@lyzr.ai"] # Specify Reciever Email IDs HERE
+)
+
 ```
 
 

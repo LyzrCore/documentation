@@ -1,0 +1,51 @@
+---
+title: Generator Agent
+sidebarTitle: Generator Agent
+---
+
+Generator-Agent OSS is a powerful writing aid that brings your ideas to life in many styles, from detailed pieces to catchy tweets. It's tailored for any audience, making content creation a breeze.
+
+## Features
+
+- **Diverse Content Styles**: Generate content that ranges from short stories and poems to structured essays and concise tweets.
+- **Persona Tailoring**: Adjust the content's tone and style to cater to specific audience personas.
+- **Advanced Text Expansion**: Expand brief prompts into detailed narratives or information-rich formats.
+
+# Generator-Agent Feature Comparison
+
+The Generator-Agent module offers an OSS version that can generate a diverse range of written pieces. However, it lacks the Reinforcement Learning from Human Feedback (RLHF) present in premium versions.
+
+| Feature               | Open Source Edition (OSE)            | Enterprise Edition (EE)              |
+| --------------------- | ------------------------------------ | ------------------------------------ |
+| Diverse Style Output  | Yes                                  | Yes                                  |
+| Persona Tailoring     | Yes                                  | Yes                                  |
+| Text Expansion        | GPT-4                       | Any LLM + Lyzr RLHF                  |
+
+## Usage
+
+To start using Generator-Agent, first instantiate the Generator with an API key:
+
+```python
+from lyzr import Generator
+generator = Generator(api_key="your_openai_api_key")
+```
+
+### Generate Elaborate Content
+
+```python
+text = "Prompt or idea that you want to expand upon"
+style = "Short Story"  # Other options include "Poem", "Children's Story", "Tweet"
+persona = "Not Specified"  # Tailors the content to a specific audience
+
+elaborated_content = generator.generate(text, persona=persona, style=style)
+print(elaborated_content)
+```
+
+This will generate content corresponding to the designated style and persona, offering flexibility and creativity in your writing tasks.
+
+## Limitations
+
+- RLHF is not available in the OSS version, potentially affecting the nuanced understanding and output quality of the generated content.
+- Internet connectivity is required.
+
+Generator-Agent empowers you to transform simple ideas into captivating stories, poems, essays, and tweets, perfect for content creators seeking a versatile and powerful writing assistant.

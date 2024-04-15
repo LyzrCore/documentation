@@ -1,0 +1,50 @@
+---
+title: Summarizer Agent
+sidebarTitle: Summarizer Agent
+---
+
+Summarizer-Agent OSS quickly cuts down long text to the basics, making it easy to get the gist without the fluff. It's the ideal tool for fast and clear information digestion.
+
+## Features
+
+- **Custom Summary Styles**: Choose to condense information into summaries, bullet-point notes, or even concise tweets.
+- **Content Focus**: Ensures critical information is highlighted while omitting non-essential details.
+- **Language Model Precision**: Utilizes advanced LLM capabilities to maintain the coherence and relevance of summaries.
+
+# Summarizer-Agent Feature Comparison
+
+Here's how the OSS version matches up against premium versions. It is important to note that the RLHF (Reinforcement Learning from Human Feedback) is not included in the OSS version. 
+
+| Feature             | Open Source Edition (OSE)            | Enterprise Edition (EE)              |
+| ------------------- | ------------------------------------ | ------------------------------------ |
+| Summary Generation  | GPT-4                       | Any LLM + Lyzr RLHF                |
+| Style Customization | Summary, Notes, Tweet or text prompt  | Enhanced style customization options |
+| Critical Information Focus | Yes                            | Yes                                  |
+
+## Usage
+
+Instantiating the Summarizer is straightforward:
+
+```python
+from lyzr import Summarizer
+summarizer = Summarizer(api_key="your_openai_api_key")
+```
+
+### Generating Summaries
+
+```python
+text = "Big paragraphs or conversations that you wish to streamline or shorten"
+style = "Summary"  # Other options include "Notes", "Tweet"
+
+summary = summarizer.summarize(text, style=style)
+print(summary)
+```
+
+This will result in a neatly condensed version of the text, catering to your selected style, and facilitating a faster understanding of the content's essence.
+
+## Limitations
+
+- The OSS version lacks RLHF, which may impact adaptability and refinement of the summaries.
+- Internet connectivity is required.
+
+Summarizer-Agent provides a resourceful solution for anyone seeking to convert extensive narratives into straightforward, clear-cut summaries or notes. It's particularly apt for professionals, students, or any individual grappling with the challenge of navigating through substantial chunks of information efficiently.

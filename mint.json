@@ -159,7 +159,9 @@
                         "pre-built-agents/data-analyzr-api-reference"
                     ]
                 },
-                "pre-built-agents/voice-agent"
+                "pre-built-agents/voice-agent",
+                "pre-built-agents/generator-agent",
+                "pre-built-agents/summarizer-agent"
             ]
         },
         {

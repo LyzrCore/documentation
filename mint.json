@@ -57,6 +57,10 @@
         {
             "name": "Free Tools",
             "url": "free-tools"
+        },
+        {
+            "name": "Cookbooks",
+            "url": "cookbooks"
         }
     ],
     "navigation": [{
@@ -192,6 +196,12 @@
             "pages": [
                 "free-tools/magic-prompts",
                 "free-tools/prompt-studio"
+            ]
+        },
+        {
+            "group": "Cookbooks",
+            "pages": [
+                "cookbooks/lyzr-qdrant"
             ]
         }
     ],

@@ -7,7 +7,7 @@ Generator-Agent OSS is a powerful writing aid that brings your ideas to life in 
 
 ## Features
 
-- **Diverse Content Styles**: Generate content that ranges from short stories and poems to structured essays and concise tweets.
+- **Diverse Content instructions**: Generate content that ranges from short stories and poems to structured essays and concise tweets.
 - **Persona Tailoring**: Adjust the content's tone and style to cater to specific audience personas.
 - **Advanced Text Expansion**: Expand brief prompts into detailed narratives or information-rich formats.
 
@@ -34,7 +34,7 @@ generator = Generator(api_key="your_openai_api_key")
 
 ```python
 text = "Prompt or idea that you want to expand upon"
-style = "Short Story"  # Other options include "Poem", "Children's Story", "Tweet"
+instructions = "Short Story"  # Other options include "Poem", "Children's Story", "Tweet"
 persona = "Not Specified"  # Tailors the content to a specific audience
 
 elaborated_content = generator.generate(text, persona=persona, style=style)

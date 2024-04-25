@@ -7,7 +7,7 @@ Summarizer-Agent OSS quickly cuts down long text to the basics, making it easy t
 
 ## Features
 
-- **Custom Summary Styles**: Choose to condense information into summaries, bullet-point notes, or even concise tweets.
+- **Custom Summary instructions**: Choose to condense information into summaries, bullet-point notes, or even concise tweets.
 - **Content Focus**: Ensures critical information is highlighted while omitting non-essential details.
 - **Language Model Precision**: Utilizes advanced LLM capabilities to maintain the coherence and relevance of summaries.
 
@@ -18,7 +18,7 @@ Here's how the OSS version matches up against premium versions. It is important 
 | Feature             | Open Source Edition (OSE)            | Enterprise Edition (EE)              |
 | ------------------- | ------------------------------------ | ------------------------------------ |
 | Summary Generation  | GPT-4                       | Any LLM + Lyzr RLHF                |
-| Style Customization | Summary, Notes, Tweet or text prompt  | Enhanced style customization options |
+| instructions Customization | Summary, Notes, Tweet or text prompt  | Enhanced style customization options |
 | Critical Information Focus | Yes                            | Yes                                  |
 
 ## Usage
@@ -34,7 +34,7 @@ summarizer = Summarizer(api_key="your_openai_api_key")
 
 ```python
 text = "Big paragraphs or conversations that you wish to streamline or shorten"
-style = "Summary"  # Other options include "Notes", "Tweet"
+instructions = "Summary"  # Other options include "Notes", "Tweet"
 
 summary = summarizer.summarize(text, style=style)
 print(summary)

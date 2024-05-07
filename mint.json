@@ -39,11 +39,6 @@
             "name": "Join Slack",
             "icon": "slack",
             "url": "https://anybodycanai.slack.com/ssb/redirect"
-        },
-        {
-            "name": "Join Discord",
-            "icon": "discord",
-            "url": "https://discord.gg/P6HCMQ9TRX"
         }
     ],
     "tabs": [{

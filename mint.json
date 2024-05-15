@@ -196,7 +196,8 @@
         {
             "group": "Cookbooks",
             "pages": [
-                "cookbooks/lyzr-qdrant"
+                "cookbooks/lyzr-qdrant",
+                "cookbooks/lyzr-pinecone"
             ]
         }
     ],

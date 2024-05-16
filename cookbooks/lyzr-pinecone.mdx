@@ -2,11 +2,12 @@
 title: Lyzr + Pinecone
 ---
 
-Pinecone, a leading vector database and vector similarity search engine, and Lyzr, an enterprise agent framework known for its simplicity and data privacy, have partnered to launch the ‘Private Perplexity’ application for enterprise customers. With the ‘Knowledge Search’ app, enterprises can deploy a 100% private and secure document and content search engine for their organization in their cloud account.
+Pinecone, a leading vector database and vector similarity search engine, and Lyzr, an enterprise agent framework known for its simplicity and data privacy, have partnered to launch the ‘Knowledge Base’ application for enterprise customers. With the ‘Knowledge Base’ app, enterprises can deploy a 100% private and secure document and content search engine for their organization in their cloud account.
 
 ## How to access the demo app?
 
 Visit https://pinecone.lyzr.ai/ to test the micro-app built on Lyzr and Pinecone.
+![Lyzr Pinecone](../assets/images/cookbooks/lyzr-pinecone.png)
 
 ## Key Features
 
@@ -25,7 +26,7 @@ Let’s see how it works.
 
 ```python
 import openai
-import pinecone
+from pinecone import Pinecone, PodSpec
 from lyzr import SearchAgent
 ```
 2. Pass the OpenAI and Pinecone credentials
@@ -57,8 +58,6 @@ vector_store_params = {
 }
 
 search = SearchAgent()
-
-search = SearchAgent()
 ```
 4. Pass the data that the RAG pipeline will access. In this example, we pass a PDF document as the data source.
 ```python
@@ -69,4 +68,4 @@ agent = search.add_pdf(input_files=["pdf_file_path"],vector_store_params=vector_
 response = agent.query("Ask your query")
 ```
 
-That’s it. You have built a personal, fully-private, open-source version of the perplexity-style search engine for your organization in just 5 steps.
+That’s it. You have built a personal, fully-private, open-source knowledge base for your organization in just 5 steps.

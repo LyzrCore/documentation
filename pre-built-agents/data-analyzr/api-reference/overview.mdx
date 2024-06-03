@@ -1,0 +1,42 @@
+---
+title: API Reference Overview
+sidebarTitle: Overview
+description: API reference for the DataAnalyzr class in the lyzr library
+---
+
+The `DataAnalyzr` class provides a high-level interface for performing data analysis using the Large Language Models (LLM) for generating insights, recommendations, and tasks based on user input.
+It supports SQL and machine learning (ML) analysis types. Please refer to the [full user guide](/pre-built-agents/data-analyzr/introduction) for details on usage.
+
+In addition to the methods described below, the `DataAnalyzr` class includes several internal flows for handling data, analysis, and response generation.
+
+In this reference guide, we will cover the public methods of the `DataAnalyzr` class, including their parameters and return values.
+You will find detailed explanations of each method, its purpose, and how to use it in your data analysis workflow.
+You will also find examples of the parameters of each method and how to use them in practice.
+
+### Constructor
+1. [**DataAnalyzr**](/pre-built-agents/data-analyzr/api-reference/constructor) - class object for performing conversational data analysis.
+
+### Primary Methods
+1. [**DataAnalyzr.get_data**](/pre-built-agents/data-analyzr/api-reference/get-data) - Connect your DataAnalyzr instance to a database and vector store.
+2. [**DataAnalyzr.ask**](/pre-built-agents/data-analyzr/api-reference/ask) - Get responses to queries in the form of plots, insights, recommendations, and tasks.
+
+### Attributes
+1. [**Basic Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#basic-attributes)
+    - Instance configuration attributes
+    - `analysis_type`, `params`, `generator_llm`, `analysis_llm`, `context`, `logger`.
+2. [**Data Related Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#data-related-attributes)
+    - Input dataset and vector store connections
+    - `df_dict`, `database_connector`, `vector_store`.
+3. [**Analysis Related Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#analysis-related-attributes)
+    - Values generated during analysis
+    - `analysis_code`, `analysis_guide`, `analysis_output`, `plot_code`.
+4. [**Output Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#output-attributes)
+    - Output values of various steps in query response generation
+    - `plot_output`, `insights_output`, `recommendations_output`, `tasks_output`, `ai_queries_output`.
+
+### Additional Methods
+1. [**analysis**](/pre-built-agents/data-analyzr/api-reference/methods#analysis) - Perform data analysis using the LLM.
+2. [**visualisation**](/pre-built-agents/data-analyzr/api-reference/methods#visualisation) - Generate visualizations based on the analysis output.
+3. [**insights**](/pre-built-agents/data-analyzr/api-reference/methods#insights) - Generate insights based on the analysis output.
+4. [**recommendations**](/pre-built-agents/data-analyzr/api-reference/methods#recommendations) - Generate recommendations based on the analysis output.
+5. [**tasks**](/pre-built-agents/data-analyzr/api-reference/methods#tasks) - Generate tasks based on the analysis output.

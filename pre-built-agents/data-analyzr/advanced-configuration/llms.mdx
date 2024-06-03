@@ -1,0 +1,90 @@
+---
+title: Large Language Models
+sidebarTitle: Large Language Models
+description: Use DataAnalyzr with an LLM of your choice
+---
+
+Through the use of LiteLLM in it's backend, DataAnalyzr gives you the freedom to integrate with any large language model (LLM) of your choice.
+This allows you to leverage the power of LLMs for data analysis as well as response generation.
+By default, DataAnalyzr uses the `gpt-4o` model from OpenAI.
+
+You are given the option to choose two separate llms - one for analysis and one for response generation.
+The analysis LLM is used to generate and execute code on your data, to extract information relevant to the question and to generate visualisations.
+The generation LLM is used to generate insights, recommendations, and tasks.
+
+A list of supported LLMs can be found [here](https://docs.litellm.ai/docs/providers).
+
+## Configuration
+
+To integrate DataAnalyzr with an LLM, follow these steps:
+
+1. **Model Selection**: Choose the appropriate LLM for your needs from the [list here](https://docs.litellm.ai/docs/providers). Models vary in size, capability, and cost.
+2. **Create LLM object**: Use `LyzrLLMFactory` to create an object with the model name. Depending on the chosen LLM, credentials can be set in as environment variables or passed directly in the object.
+3. **Use LLM object**: Pass the object when creating an instance of the `DataAnalyzr` class. Generation parameters for the LLM are configured by DataAnalyzr automatically.
+
+## Example Configuration
+
+For this example, we will assume that you have chosen:
+1. Anthropic's `claude-3-opus-20240229` for analysis, and
+2. OpenAI's `gpt-4-1106-preview` for generation.
+
+```python
+import os
+from lyzr.base import LyzrLLMFactory
+
+# Set the environment variables
+os.environ["ANTHROPIC_API_KEY"] = "anthropic-api-key"
+os.environ["OPENAI_API_KEY"] = "openai-api-key"
+
+# Create the LLM objects
+analysis_llm = LyzrLLMFactory.from_defaults(
+    model="anthropic/claude-3-opus-20240229"
+)
+generator_llm = LyzrLLMFactory.from_defaults(
+    model="openai/gpt-4-1106-preview"
+)
+
+# Use the LLMs in DataAnalyzr
+analyzr = DataAnalyzr(
+    analysis_type="sql",
+    analysis_llm=analysis_llm,
+    generation_llm=generator_llm,
+)
+```
+## Provider-specific Keys
+
+If you wish to set a provider-specific key, you may do so by setting the environment variable. Following are examples for some commonly used providers:
+
+```python
+os.environ["OPENAI_API_KEY"] = "Your API Key"
+os.environ["AZURE_API_KEY"] = "Your API Key"
+os.environ["ANTHROPIC_API_KEY"] = "Your API Key"
+os.environ["REPLICATE_API_KEY"] = "Your API Key"
+os.environ["TOGETHERAI_API_KEY"] = "Your API Key"
+```
+
+## Additional Parameters
+
+Depending on the model, you may also need to set additional parameters. You can do so in the environment or when creating the LLM object.
+
+```python
+# Setting as environment variables
+# for azure openai
+os.environ['AZURE_API_BASE'] = "https://openai-gpt-4-test2-v-12.openai.azure.com/"
+os.environ['AZURE_API_VERSION'] = "2023-05-15" # [OPTIONAL]
+os.environ['AZURE_API_TYPE'] = "azure" # [OPTIONAL]
+
+# for openai
+os.environ['OPENAI_API_BASE'] = "https://openai-gpt-4-test2-v-12.openai.azure.com/"
+
+
+# Setting in the llm object
+llm = LyzrLLMFactory.from_defaults(
+    model="model-name",
+    api_key="api-key",
+    api_base="https://hosted-llm-api.co",
+    api_type="api-type", # e.g. "openai", "azure"
+    api_version="2023-05-15",
+    organization="organization",
+)
+```

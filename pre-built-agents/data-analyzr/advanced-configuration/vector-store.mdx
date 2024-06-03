@@ -1,0 +1,386 @@
+---
+title: Vector Store
+sidebarTitle: Vector Store
+description: Vector store structure and operations in DataAnalyzr
+---
+
+The vector store is an attribute of DataAnalyzr that allows storage and retrieval of details about input datasets and past query-response pairs.
+This information is a key component of the response generation flow in DataAnalyzr.
+It allows the system to understand the context of the query, generate and accurate responses, and get smarter with use.
+
+In this guide, we will discuss the structure of the vector store, the types of information it stores, and the operations that can be performed on it.
+
+## Structure
+
+The information in the vector store is divided into five collections - Documentation, DDL, SQL, Python, and Plot.
+Each collection stores a specific type of information and is used for different purposes.
+
+They are also populated at different stages of the analysis process:
+1. The Documentation collection is filled at the time of data ingestion,
+2. The DDL collection is empty by default and left to the user to fill (if needed), and 
+3. The SQL, Python and Plot collections are filled during analysis.
+
+### Documentation collection
+
+The documentation collection contains the following information about each of the input datasets:
+1. Column names, data types, and number or fraction of null values.
+2. A snapshot of the dataset - the first five rows.
+
+For example, for **SQL-based analysis** and a SQLite dataset with a table called `population`, the dataset details would include the following two sections:
+<CodeGroup>
+```markdown columns' information
+The following columns are in the population table:
+
+|    | name               | type   |
+|---:|:-------------------|:-------|
+|  0 | country            | TEXT   |
+|  1 | population_in_2022 | REAL   |
+|  2 | population_in_2023 | REAL   |
+|  3 | region             | TEXT   |
+|  4 | sub_region         | TEXT   |
+```
+```markdown snapshot
+Following are the first five rows of the population table:
+
+| country       |   population_in_2022 |   population_in_2023 | region   | sub_region         |
+|:--------------|---------------------:|---------------------:|:---------|:-------------------|
+| India         |        1417173173.00 |        1428627663.00 | Asia     | Southern Asia      |
+| China         |        1425887337.00 |        1425671352.00 | Asia     | Eastern Asia       |
+| United States |         338289857.00 |         339996564.00 | Americas | Northern America   |
+| Indonesia     |         275501339.00 |         277534123.00 | Asia     | South-eastern Asia |
+| Pakistan      |         235824862.00 |         240485658.00 | Asia     | Southern Asia      |
+```
+</CodeGroup>
+
+Similarly, for **Pythonic analysis** and a pandas DataFrame called `real_estate`, the dataset details would include the following two sections:
+<CodeGroup>
+```markdown columns' information
+The following columns are in the real_estate dataframe:
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 414 entries, 0 to 413
+Data columns (total 8 columns):
+ #   Column                               Non-Null Count  Dtype  
+---  ------                               --------------  -----  
+ 0   no                                   414 non-null    int64  
+ 1   transaction_date                     414 non-null    float64
+ 2   house_age                            414 non-null    float64
+ 3   distance_to_the_nearest_mrt_station  414 non-null    float64
+ 4   number_of_convenience_stores         414 non-null    int64  
+ 5   latitude                             414 non-null    float64
+ 6   longitude                            414 non-null    float64
+ 7   house_price_of_unit_area             414 non-null    float64
+dtypes: float64(6), int64(2)
+memory usage: 26.0 KB
+```
+```markdown snapshot
+Following are the first five rows of the real_estate dataframe:
+
+|    |   no |   transaction_date |   house_age |   distance_to_the_nearest_mrt_station |   number_of_convenience_stores |   latitude |   longitude |   house_price_of_unit_area |
+|---:|-----:|-------------------:|------------:|--------------------------------------:|-------------------------------:|-----------:|------------:|---------------------------:|
+|  0 |    1 |            2012.92 |        32   |                               84.8788 |                             10 |    24.983  |     121.54  |                       37.9 |
+|  1 |    2 |            2012.92 |        19.5 |                              306.595  |                              9 |    24.9803 |     121.54  |                       42.2 |
+|  2 |    3 |            2013.58 |        13.3 |                              561.985  |                              5 |    24.9875 |     121.544 |                       47.3 |
+|  3 |    4 |            2013.5  |        13.3 |                              561.985  |                              5 |    24.9875 |     121.544 |                       54.8 |
+|  4 |    5 |            2012.83 |         5   |                              390.568  |                              5 |    24.9794 |     121.542 |                       43.1 |
+```
+</CodeGroup>
+
+### DDL collection
+
+Data Definition Language (DDL) examples are SQL queries that define the structure of a table.
+These are relevant for SQL-based analysis only.
+
+The DDL collection includes:
+1. The SQL query used to create the table.
+2. The SQL query used to insert data into the table.
+
+
+By default, this collection is empty.
+
+An example of a DDL query for a table called `population` is as follows:
+```sql
+CREATE TABLE population (
+    Country TEXT,
+    "Population in 2022" REAL,
+    "Population in 2023" REAL,
+    Region TEXT,
+    "Sub Region" TEXT
+);
+```
+
+### SQL collection
+
+The SQL collection includes examples of SQL queries that have been generated during analysis in response to user input.
+They are used as examples to answer similar questions in the future.
+These examples are relevant only for SQL-based analysis and are only added if the SQL query executes successfully.
+
+Each such example includes:
+1. Input question.
+2. SQL query generated during analysis.
+
+
+For example, for an input question about the population of a specific country, the input question and SQL query pair could be as follows:
+
+```python
+question = "How did the population of India change over the years?"
+sql = """
+SELECT 
+    Country, 
+    "Population in 2022", 
+    "Population in 2023" 
+FROM 
+    population 
+WHERE 
+    Country = 'India';
+"""
+```
+
+### Python collection
+
+The Python collection includes examples of Python code that have been generated during analysis in response to user input.
+They are used as examples to answer similar questions in the future.
+These examples are relevant only for Pythonic analysis and are only added if the code executes successfully.
+
+Each of these examples includes:
+1. Input question.
+2. Python code snippet generated during analysis.
+
+For example, for a pandas DataFrame called `real_estate`, the input question and Python code pair could be as follows:
+
+```python
+question = "How does the price vary with number of convenience stores?"
+code = """
+import pandas as pd
+import statsmodels.api as sm
+
+# Data Cleaning: Ensure there are no missing values
+real_estate = real_estate.dropna()
+
+# Feature Selection
+X = real_estate[['number_of_convenience_stores']]
+y = real_estate['house_price_of_unit_area']
+
+# Add a constant to the model (intercept)
+X = sm.add_constant(X)
+
+# Fit the model
+model = sm.OLS(y, X).fit()
+
+# Get the summary of the model
+result = model.summary2().tables[1]
+"""
+```
+
+### Plot collection
+
+The plot collection includes code that has been used to generate visualisations in response to user input.
+They are used as examples to generate similar visualisations in the future.
+These examples are relevant for both SQL and Pythonic analysis and are only added if the code executes successfully.
+
+Each of these examples includes:
+1. Input question.
+2. Plotting code snippet generated during analysis.
+
+For example, for **SQL-based analysis** and a connection to the database `conn` with table `population`, the input question and plotting code pair could be as follows:
+
+```python
+question = "How did the population of India change over the years?"
+code = """
+# Query the database
+query = '''
+SELECT country, population_in_2022, population_in_2023, 
+       (population_in_2023 - population_in_2022) AS population_change
+FROM population
+WHERE country = 'India';
+'''
+df = pd.read_sql(query, conn.conn)
+
+# Prepare data for plotting
+years = ['2022', '2023']
+population = [df['population_in_2022'].values[0], df['population_in_2023'].values[0]]
+
+# Create the plot
+fig, ax = plt.subplots()
+ax.plot(years, population, marker='o')
+ax.set_title('Population Change in India (2022-2023)')
+ax.set_xlabel('Year')
+ax.set_ylabel('Population')
+ax.grid(True)
+"""
+```
+
+Similarly, for **Pythonic analysis** and a pandas DataFrame called `real_estate`, the input question and plotting code pair could be as follows:
+```python
+question = "How does the price vary with number of convenience stores?"
+code = """
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=real_estate, x='number_of_convenience_stores', y='house_price_of_unit_area', ax=ax)
+ax.set_title('House Price vs Number of Convenience Stores')
+ax.set_xlabel('Number of Convenience Stores')
+ax.set_ylabel('House Price of Unit Area')
+"""
+```
+
+## Operations
+
+The information in the vector store can be augmented and retrieved using a set of operations.
+By adding extra information to the vector store, you can improve the quality of responses generated by DataAnalyzr.
+
+This is especially useful in the following scenarios:
+1. The system has difficulty intuiting the information in your dataset (e.g. when the column names are not descriptive).
+2. Your dataset pertains to a specific domain and you want to improve the system's understanding of that domain.
+3. You want to change the way in which the system responds to a specific type of query.
+4. You want to encourage the system to generate specific types of responses.
+5. For overall performance improvement.
+
+In the following sections, we will discuss how to add information to the vector store and how to retrieve information from it.
+We will assume that an instance of DataAnalyzr has been created and is available as `data_analyzr`.
+The following attributes are then available:
+1. [Vector Store](/pre-built-agents/data-analyzr/advanced-configuration/vector-store.mdx): `data_analyzr.vector_store`
+2. [Documentation Collection](#documentation-collection): `data_analyzr.vector_store.documentation_collection`
+3. [DDL Collection](#ddl-collection): `data_analyzr.vector_store.ddl_collection`
+4. [SQL Collection](#sql-collection): `data_analyzr.vector_store.sql_collection`
+5. [Python Collection](#python-collection): `data_analyzr.vector_store.python_collection`
+6. [Plot Collection](#plot-collection): `data_analyzr.vector_store.plot_collection`
+
+
+### Adding information
+
+To add information to the vector store, follow these simple steps:
+1. Identify the type of information you want to add - documentation, DDL, SQL, Python, or plot - and, correspondingly, the collection you want to add it to.
+2. Ensure that the information is in the format of a python string.
+3. Use the `add_training_data` method of the vector store to add the information to the relevant collection.
+
+<CodeGroup>
+```python documentation
+documentation = "Your documentation string here"
+data_analyzr.vector_store.add_training_data(documentation=documentation)
+```
+
+```python ddl
+ddl = "Your DDL string here"
+data_analyzr.vector_store.add_training_data(ddl=ddl)
+```
+
+```python sql
+question = "Your question string here"
+sql = "Your SQL string here"
+data_analyzr.vector_store.add_training_data(question=question, sql=sql)
+```
+
+```python python
+question = "Your question string here"
+python_code = "Your Python code string here"
+data_analyzr.vector_store.add_training_data(question=question, python_code=python_code)
+```
+
+```python plot
+question = "Your question string here"
+plot_code = "Your plotting code string here"
+data_analyzr.vector_store.add_training_data(question=question, plot_code=plot_code)
+```
+</CodeGroup>
+
+### Retrieval
+
+Information retrival from the vector store depends on the use case.
+
+#### Retrieving relevant information
+
+To retrieve information relevant to a specific query, the following methods are available:
+1. Documentation: `get_related_documentation`
+2. DDL: `get_related_ddl`
+3. SQL: `get_related_sql_queries`
+4. Python: `get_related_python_code`
+5. Plot: `get_related_plotting_code`
+
+Each of these methods takes the query as input and returns the most relevant information as a python list.
+
+<CodeGroup>
+```python documentation
+# Retrieve relevant documentation for a query
+query = "Your query string here"
+relevant_documentation = data_analyzr.vector_store.get_related_documentation(query)
+```
+
+```python ddl
+# Retrieve relevant DDL for a query
+query = "Your query string here"
+relevant_ddl = data_analyzr.vector_store.get_related_ddl(query)
+```
+
+```python sql
+# Retrieve relevant SQL queries for a query
+query = "Your query string here"
+relevant_sql = data_analyzr.vector_store.get_related_sql_queries(query)
+```
+
+```python python
+# Retrieve relevant Python code for a query
+query = "Your query string here"
+relevant_python = data_analyzr.vector_store.get_related_python_code(query)
+```
+
+```python plot
+# Retrieve relevant plotting code for a query
+query = "Your query string here"
+relevant_plot = data_analyzr.vector_store.get_related_plotting_code(query)
+```
+</CodeGroup>
+
+#### Retrieving all information
+
+To retrieve all the information in a collection, use the `get` method on the collection. The returned keys include `ids`, `embeddings`, `metadatas`, `documents`, `uris`, and `data`.
+
+The `ids` key contains the unique identifiers of the stored information, while the `documents` key contains the actual information.
+
+<CodeGroup>
+```python documentation
+# Retrieve all the information in the documentation collection
+documentation = data_analyzr.vector_store.documentation_collection.get()
+
+# Print each document along with its ID
+for id, doc in zip(documentation['ids'], documentation['documents']):
+    print(f"ID: {id}\n{doc}\n\n")
+```
+    
+```python ddl
+# Retrieve all the information in the DDL collection
+ddl = data_analyzr.vector_store.ddl_collection.get()
+
+# Print each document along with its ID
+for id, doc in zip(ddl['ids'], ddl['documents']):
+    print(f"ID: {id}\n{doc}\n\n")
+```
+
+```python sql
+# Retrieve all the information in the SQL collection
+sql = data_analyzr.vector_store.sql_collection.get()
+
+# Print each document along with its ID
+for id, doc in zip(sql['ids'], sql['documents']):
+    print(f"ID: {id}\n{doc}\n\n")
+```
+
+```python python
+# Retrieve all the information in the Python collection
+python = data_analyzr.vector_store.python_collection.get()
+
+# Print each document along with its ID
+for id, doc in zip(python['ids'], python['documents']):
+    print(f"ID: {id}\n{doc}\n\n")
+```
+
+```python plot
+# Retrieve all the information in the Plot collection
+plot = data_analyzr.vector_store.plot_collection.get()
+
+# Print each document along with its ID
+for id, doc in zip(plot['ids'], plot['documents']):
+    print(f"ID: {id}\n{doc}\n\n")
+```
+</CodeGroup>

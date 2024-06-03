@@ -1,0 +1,226 @@
+---
+title: Get query results
+sidebarTitle: Get Results
+description: API reference for the DataAnalyzr `ask` method
+---
+
+```python
+DataAnalyzr.ask(
+    user_input: str = None,
+    outputs: list = None,
+    plot_path: str = None,
+    recommendations_params: dict = None,
+    counts: dict = None,
+    context: dict = None,
+    **kwargs,
+) -> dict
+```
+
+This method orchestrates the analysis process and generates visualization, insights, recommendations, and tasks based on the specified inputs and parameters.
+It is the recommended method to use for generating visualization, insights, recommendations, and tasks.
+
+1. The method coordinates the analysis process and generates visualisation, insights, recommendations, and tasks based on the specified parameters.
+2. Uses the `analysis`, `visualisation`, `insights`, `recommendations`, and `tasks` methods internally.
+3. It allows for customization of outputs, analysis rerun, insights usage, recommendations format, output type, and counts.
+4. The generated outputs are returned as a dictionary.
+
+## Parameters
+
+<ParamField path="user_input" type="string" required>
+    The input string provided by the user for generating outputs.
+    ```python
+    user_input = "What are the insights for the dataset?"
+    ```
+</ParamField>
+<ParamField path="outputs" type="list">
+    List of outputs to generate. Possible values are `visualisation`, `insights`, `recommendations`, and `tasks`.
+    Defaults to `["visualisation", "insights", "recommendations", "tasks"]`.
+    ```python
+    outputs = ["insights", "recommendations"]
+    ```
+</ParamField>
+<ParamField path="plot_path" type="string">
+    Path to save the generated plot. Only relevant when `outputs` includes `visualisation`.
+    Defaults to `generated_plots/<random-plot-name>.png`.
+    ```python
+    plot_path = "path/to/save/plot.png"
+    ```
+</ParamField>
+<ParamField path="recommendations_params" type="dictionary">
+    Parameters for generating recommendations. Includes `from_insights`, `output_type` and `json_format`.
+    ```python
+    recommendations_params = {
+        "from_insights": True,
+        "output_type": "json",
+        "json_format": {
+            "Recommendation": "Recommendation text",
+            "Reason": "Reason for the recommendation",
+            "Impact": "Impact of the recommendation",
+        },
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="from_insights" type="boolean">
+            Whether to generate recommendations from insights. Default is True.
+        </ParamField>
+        <ParamField path="output_type" type="Literal['json', 'text']">
+            Type of output for recommendations. Default is `json`.
+        </ParamField>
+        <ParamField path="json_format" type="dictionary">
+            Format for the JSON output of recommendations.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="counts" type="dictionary">
+    Dictionary containing the counts of insights, recommendations, and tasks to generate.
+    ```python
+    counts = {
+        "insights": 3,
+        "recommendations": 3,
+        "tasks": 5,
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="insights" type="integer">
+            Number of insights to generate. Default is 3.
+        </ParamField>
+        <ParamField path="recommendations" type="integer">
+            Number of recommendations to generate. Default is 3.
+        </ParamField>
+        <ParamField path="tasks" type="integer">
+            Number of tasks to generate. Default is 5.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="context" type="dictionary">
+    Context dictionary for the analysis. Includes `analysis`, `visualisation`, `insights`, `recommendations`, and `tasks`.
+    ```python
+    context = {
+        "analysis": "Analyze sales data",
+        "visualisation": "Context for visualisation",
+        "insights": "Context for insights",
+        "recommendations": "Improve sales performance",
+        "tasks": "Analyze sales data",
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="analysis" type="string">
+            Context for the analysis method.
+        </ParamField>
+        <ParamField path="visualisation" type="string">
+            Context for the visualisation method.
+        </ParamField>
+        <ParamField path="insights" type="string">
+            Context for the insights method.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            Context for the recommendations method.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            Context for the tasks method.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="rerun_analysis" type="boolean">
+    Whether to rerun the analysis before generating outputs. Default is True.
+    ```python
+    rerun_analysis = True
+    ```
+</ParamField>
+<ParamField path="max_retries" type="integer">
+    Maximum number of retries for generating outputs. Default is 10.
+    ```python
+    max_retries = 5
+    ```
+</ParamField>
+<ParamField path="time_limit" type="integer">
+    Time limit in seconds for generating outputs. Default is 45 for analysis and 60 for visualization.
+    ```python
+    time_limit = 60
+    ```
+</ParamField>
+<ParamField path="auto_train" type="boolean">
+    Whether to automatically add questions with their SQL query or Python code to the vector store. Default is True.
+    ```python
+    auto_train = True
+    ```
+</ParamField>
+
+
+## Returns
+
+<ResponseField name="response" type="dictionary">
+    Dictionary containing the generated outputs. Includes `visualisation`, `insights`, `recommendations`, and `tasks`.
+    ```python
+    response = {
+        "visualisation": "path/to/plot.png",
+        "insights": "-Insight 1\n-Insight 2\n-Insight 3",
+        "recommendations": "Recommendation 1\nRecommendation 2\nRecommendation 3",
+        "tasks": "Task 1\nTask 2\nTask 3\nTask 4\nTask 5",
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="visualisation" type="string">
+            Path to the generated plot.
+        </ParamField>
+        <ParamField path="insights" type="string">
+            Insights generated based on the analysis output.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            Recommendations generated based on the analysis output.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            Tasks generated based on the analysis output.
+        </ParamField>
+    </Expandable>
+</ResponseField>
+
+
+## Example usage
+
+```python
+# Ask for visualisation, insights, recommendations, and tasks
+response = data_analyzr.ask(
+    user_input="What are the insights for the dataset?",
+    outputs=["visualisation", "insights", "recommendations", "tasks"],
+    plot_path="path/to/plot.png",
+    recommendations_params={
+        "from_insights": True,
+        "output_type": "json",
+        "json_format": {
+            "Recommendation": "Recommendation text",
+            "Reason": "Reason for the recommendation",
+            "Impact": "Impact of the recommendation",
+        },
+    },
+    counts={
+        "insights": 3,
+        "recommendations": 3,
+        "tasks": 5,
+    },
+    context={
+        "analysis": "Analyze sales data",
+        "visualisation": "Context for visualisation",
+        "insights": "Context for insights",
+        "recommendations": "Improve sales performance",
+        "tasks": "Analyze sales data",
+    },
+    rerun_analysis=True,
+    max_retries=5,
+    time_limit=60,
+    auto_train=True,
+)
+
+# Display the visualisation
+from PIL import Image
+Image.open(response["visualisation"]).show()
+
+# Print insights
+print(response["insights"])
+
+# Print recommendations
+print(response["recommendations"])
+
+# Print tasks
+print(response["tasks"])
+```

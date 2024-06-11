@@ -56,6 +56,10 @@
         {
             "name": "Cookbooks",
             "url": "cookbooks"
+        },
+        {
+            "name": "Enterprise",
+            "url": "enterprise"
         }
     ],
     "navigation": [{
@@ -198,6 +202,17 @@
             "pages": [
                 "cookbooks/lyzr-qdrant",
                 "cookbooks/lyzr-pinecone"
+            ]
+        },
+        {
+            "group": "Enterprise",
+            "pages": [
+                {
+                    "group": "AWS Marketplace",
+                    "pages": [
+                        "enterprise/aws-marketplace/chat-agent"
+                    ]
+                }
             ]
         }
     ],

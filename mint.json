@@ -156,10 +156,27 @@
                 {
                     "group": "Data Analyzr Agents",
                     "pages": [
-                        "pre-built-agents/data-analyzr-introduction",
-                        "pre-built-agents/data-analysis-agent",
-                        "pre-built-agents/text-sql-agent",
-                        "pre-built-agents/data-analyzr-api-reference"
+                        "pre-built-agents/data-analyzr/introduction",
+                        "pre-built-agents/data-analyzr/pythonic-analysis-agent",
+                        "pre-built-agents/data-analyzr/text-sql-agent",
+                        {
+                            "group": "Advanced Configuration",
+                            "pages": [
+                                "pre-built-agents/data-analyzr/advanced-configuration/llms",
+                                "pre-built-agents/data-analyzr/advanced-configuration/vector-store"
+                            ]
+                        },
+                        {
+                            "group": "API Reference",
+                            "pages": [
+                                "pre-built-agents/data-analyzr/api-reference/overview",
+                                "pre-built-agents/data-analyzr/api-reference/constructor",
+                                "pre-built-agents/data-analyzr/api-reference/get-data",
+                                "pre-built-agents/data-analyzr/api-reference/ask",
+                                "pre-built-agents/data-analyzr/api-reference/attributes",
+                                "pre-built-agents/data-analyzr/api-reference/methods"
+                            ]
+                        }
                     ]
                 },
                 "pre-built-agents/voice-agent",

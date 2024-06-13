@@ -1,0 +1,188 @@
+---
+title: Attributes of the DataAnalyzr Class
+sidebarTitle: Attributes
+description: Overview of the attributes of the DataAnalyzr class in the lyzr library
+---
+
+1. [**Basic Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#basic-attributes) - Instance configuration attributes. Include `analysis_type`, `params`, `generator_llm`, `analysis_llm`, `context`, `logger`.
+2. [**Data Related Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#data-related-attributes) - Input dataset and vector store connections. Include `df_dict`, `database_connector`, `vector_store`.
+3. [**Analysis Related Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#analysis-related-attributes) - Values generated during analysis. Include `analysis_code`, `analysis_guide`, `analysis_output`, `plot_code`.
+4. [**Output Attributes**](/pre-built-agents/data-analyzr/api-reference/attributes#output-attributes) - Output values returned as responses. Include `plot_output`, `insights_output`, `recommendations_output`, `tasks_output`, `ai_queries_output`.
+
+
+## Basic Attributes
+
+<ParamField path="analysis_type" type="Literal['sql', 'ml', 'skip']">
+    The type of analysis to be performed.
+</ParamField>
+<ParamField path="params" type="ParamsDict">
+    Dictionary of class parameters.
+    <Expandable title="details">
+        <ParamField path="max_retries" type="integer">
+            Maximum number of retries for the LLM calls and analysis. Default is 10.
+        </ParamField>
+        <ParamField path="time_limit" type="integer">
+            Time limit in seconds for the LLM calls and analysis. Default is 45 for analysis and 60 for visualisation.
+        </ParamField>
+        <ParamField path="auto_train" type="boolean">
+            Whether to automatically add questions with their SQL query or Python code to the vector store. Default is True.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="generator_llm" type="LiteLLM">
+    LLM instance for generating analysis. Default LLM used is GPT-4o.
+
+    For details on configuring the LLM, see the [Large Language Models](/pre-built-agents/data-analyzr/advanced-configuration/llms) guide.
+    <Expandable title="details">
+        <ParamField path="model" type="string">
+            Name of the LLM model to use.
+        </ParamField>
+        <ParamField path="api_key" type="string">
+            API key for accessing LLM services. May also be set as an environment variable.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="analysis_llm" type="LiteLLM">
+    LLM instance for performing analysis. Default LLM used is GPT-4o.
+
+    For details on configuring the LLM, see the [Large Language Models](/pre-built-agents/data-analyzr/advanced-configuration/llms) guide.
+    <Expandable title="details">
+        <ParamField path="model" type="string">
+            Name of the LLM model to use.
+        </ParamField>
+        <ParamField path="api_key" type="string">
+            API key for accessing LLM services. May also be set as an environment variable.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="context" type="ContextDict">
+    Context dictionary for the analysis.
+    <Expandable title="details">
+        <ParamField path="analysis" type="string">
+            Context for the analysis.
+        </ParamField>
+        <ParamField path="visualisation" type="string">
+            Context for the visualisation generation.
+        </ParamField>
+        <ParamField path="insights" type="string">
+            Context for the insights generation.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            Context for the recommendations generation.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            Context for the tasks generation.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="logger" type="logging.Logger">
+    Logger object for logging messages.
+</ParamField>
+
+## Data Related Attributes
+
+<ParamField path="df_dict" type="dictionary">
+    Dictionary of dataframes loaded from files or databases.
+    ```python
+    df_dict = {
+        "table_name": pandas.DataFrame,
+    }
+    ```
+</ParamField>
+<ParamField path="database_connector" type="DatabaseConnector">
+    Database connector object for connecting to databases.
+    <Expandable title="details">
+        <ParamField path="host" type="string">
+            Hostname of the database server. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="port" type="string">
+            Port number of the database server. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="user" type="string">
+            Username for the database connection. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="database" type="string">
+            Name of the database to connect to. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="password" type="string">
+            Password for the database connection. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="schema" type="list">
+            Schema names to load. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="tables" type="list">
+            Table names to load. Applicable for PostgreSQL and Redshift databases.
+        </ParamField>
+        <ParamField path="conn" type="psycopg2.connect or redshift_connector.connect or sqlite3.connect">
+            Connection object for the database.
+        </ParamField>
+    </Expandable>
+</ParamField>
+<ParamField path="vector_store" type="ChromaDBVectorStore">
+    Vector store object for storing questions and their SQL queries or Python code.
+
+    For details on configuring the vector store, see the [Vector Store](/pre-built-agents/data-analyzr/advanced-configuration/vector-store) guide.
+    <Expandable title="details">
+        <ParamField path="path" type="string">
+            Path to the vector store file.
+        </ParamField>
+        <ParamField path="chroma_client" type="chromadb.PersistentClient">
+            ChromaDB client object for storing vectors.
+        </ParamField>
+        <ParamField path="documentation_collection" type="chromadb.Collection">
+            Collection object for storing documentation.
+        </ParamField>
+        <ParamField path="ddl_collection" type="chromadb.Collection">
+            Collection object for storing DDL queries.
+        </ParamField>
+        <ParamField path="sql_collection" type="chromadb.Collection">
+            Collection object for storing question and SQL query pairs.
+        </ParamField>
+        <ParamField path="python_collection" type="chromadb.Collection">
+            Collection object for storing question and Python code pairs.
+        </ParamField>
+        <ParamField path="plot_collection" type="chromadb.Collection">
+            Collection object for storing question and plot code pairs.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+## Analysis Related Attributes
+
+<ParamField path="analysis_code" type="string">
+    Code generated by the LLM for analysis.
+</ParamField>
+<ParamField path="analysis_guide" type="string">
+    Guide used to generate the analysis code.
+</ParamField>
+<ParamField path="analysis_output" type="pandas.DataFrame or dictionary or string">
+    Output generated by executing the analysis code.
+</ParamField>
+<ParamField path="plot_code" type="string">
+    Code generated by the LLM for generating visualisations.
+</ParamField>
+
+## Output Attributes
+
+<ParamField path="plot_output" type="string">
+    Path to a PNG file containing the plot generated by executing the plot code.
+</ParamField>
+<ParamField path="insights_output" type="string">
+    Insights generated by the LLM.
+</ParamField>
+<ParamField path="recommendations_output" type="string">
+    Recommendations generated by the LLM.
+</ParamField>
+<ParamField path="tasks_output" type="string">
+    Tasks generated by the LLM.
+</ParamField>
+<ParamField path="ai_queries_output" type="dictionary">
+    AI queries generated by the LLM.
+    ```python
+    ai_queries_output = {
+        "type_of_analysis1": ["query1", "query2", "query3", "query4"],
+        "type_of_analysis2": ["query1", "query2", "query3", "query4"],
+        "type_of_analysis3": ["query1", "query2", "query3", "query4"],
+    }
+    ```
+</ParamField>

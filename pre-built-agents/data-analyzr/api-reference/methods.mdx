@@ -1,0 +1,318 @@
+---
+title: Additional Methods
+sidebarTitle: Additional Methods
+description: Additional methods for the DataAnalyzr class in the lyzr library
+---
+
+## `analysis` 
+
+This method performs data analysis based on the specified analysis type and user input.
+It also sets the `analysis_guide`, `analysis_output` and `analysis_code` attributes of the `DataAnalyzr` instance.
+
+1. If the analysis type is set to `skip`, the method sets `analysis_guide` to `"No analysis performed"` and `analysis_output` and `analysis_code` to `None`.
+2. If the analysis type is set to `sql`, it generates a SQL query and performs SQL-based analysis using the provided user input and context.
+3. If the analysis type is set to `ml`, it generates Python code and performs pandas and machine learning-based analysis using the provided user input and context.
+
+```python
+analysis(
+    user_input: str,
+    analysis_context: str = None,
+    time_limit: int = None,
+    max_retries: int = None,
+    auto_train: bool = None,
+) -> Union[str, pd.DataFrame, dict[str, pd.DataFrame], None]
+```
+
+### Parameters
+
+<ParamField path="user_input" type="string" required>
+    User input for generating the analysis.
+</ParamField>
+<ParamField path="analysis_context" type="string">
+    Context for the analysis.
+</ParamField>
+<ParamField path="time_limit" type="integer">
+    Time limit in seconds for the analysis. Default is 45.
+</ParamField>
+<ParamField path="max_retries" type="integer">
+    Maximum number of retries for the analysis. Default is 10.
+</ParamField>
+<ParamField path="auto_train" type="boolean">
+    Whether to automatically add questions with their SQL query or Python code to the vector store. Default is True.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="string or pandas.DataFrame or dictionary or None">
+    Analysis output generated based on the user input and context.
+    - Depending on the given input, the output may sometimes be a single number or string. It is then returned as a string.
+    - When the output is a dictionary, at least one of the values is a pandas DataFrame.
+    - If no analysis is performed, or the analysis fails, the output is `None`.
+    ```python
+    user_input = "What is the average sale price?"
+    response = "123.456"
+    # or ---
+    user_input = "Which country has the highest GDP?"
+    response = "United States"
+    # or ---
+    user_input = "How do sales vary with time?"
+    response = pd.DataFrame(...)
+    # or ---
+    user_input = "What are the top 5 countries by GDP? What are their top industries?"
+    response = {
+        "key1": pd.DataFrame(...),
+        "key2": pd.DataFrame(...),
+    }
+    ```
+</ResponseField>
+
+### Example usage
+
+```python
+analysis_output = data_analyzr.analysis(
+    user_input="What is the average sale price?",
+    analysis_context="Today is {date}. The column {column_name} refers to the listed sale price.",
+    time_limit=60,
+    max_retries=5,
+    auto_train=True,
+)
+```
+
+## `visualisation`
+
+This method generates visualizations based on the user input and plot context.
+These visualisations are then saved to the `plot_path`.
+It is recommended that to generate visualisations, the [`ask` method](/pre-built-agents/data-analyzr/api-reference/ask.mdx) should be used instead of this method.
+
+1. If `plot_path` is not provided, the generated plot is saved to `generated_plots/<random-image-name>.png`.
+2. Sets the `plot_code` and `visualisation_output` attribute of the `DataAnalyzr` instance.
+
+```python
+visualisation(
+    user_input: str,
+    plot_context: str = None,
+    time_limit: int = None,
+    max_retries: int = None,
+    auto_train: bool = None,
+    plot_path: str = None,
+) -> str
+```
+
+### Parameters
+
+<ParamField path="user_input" type="string" required>
+    User input for generating the visualisation.
+</ParamField>
+<ParamField path="plot_context" type="string">
+    Context for the plot.
+</ParamField>
+<ParamField path="time_limit" type="integer">
+    Time limit in seconds for the visualisation process. Default is 60.
+</ParamField>
+<ParamField path="max_retries" type="integer">
+    Maximum number of retries for the visualisation process. Default is 10.
+</ParamField>
+<ParamField path="auto_train" type="boolean">
+    Whether to automatically add the visualisation to training data. Default is True.
+</ParamField>
+<ParamField path="plot_path" type="string">
+    Path to save the generated plot. Defaults to `generated_plots/<random-image-name>.png`.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="string">
+    Path to the saved plot.
+    ```python
+    response = "path/to/plot.png"
+    ```
+</ResponseField>
+
+### Example usage
+
+```python
+plot_path = data_analyzr.visualisation(
+    user_input="Visualize the sales data",
+    plot_context="Use the `ggplot` style with `plt.style.use('ggplot')`.",
+    time_limit=60,
+    max_retries=5,
+    auto_train=True,
+    plot_path="path/to/save/plot.png",
+)
+```
+
+## `insights`
+
+This method generates insights based on the user input, analysis output, and specified insights context.
+It is recommended that to generate insights, the [`ask` method](/pre-built-agents/data-analyzr/api-reference/ask.mdx) should be used instead of this method.
+
+1. The method utilizes a language model to generate insights based on the provided input and context.
+2. The generated insights are influenced by the analysis output, user input, and insights context.
+3. The generated insights are formatted and returned as a string.
+4. Sets the `insights_output` attribute of the `DataAnalyzr` instance.
+
+```python
+insights(
+    user_input: str,
+    insights_context: str = None,
+    n_insights: int = 3,
+) -> str
+```
+
+### Parameters
+
+<ParamField path="user_input" type="string" required>
+    User input for generating the insights.
+</ParamField>
+<ParamField path="insights_context" type="string">
+    Context for the insights generation.
+</ParamField>
+<ParamField path="n_insights" type="integer">
+    Number of insights to generate. Default is 3.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="string">
+    Generated insights based on the user input and context.
+    ```python
+    response = "- The average sale price is $123.45.\n-The highest sale price is $456.78.\n-The lowest sale price is $12.34."
+    ```
+</ResponseField>
+
+### Example usage
+
+```python
+insights_output = data_analyzr.insights(
+    user_input="What is the average sale price?",
+    insights_context="Today is {date}. The column {column_name} refers to the listed sale price.",
+    n_insights=3,
+)
+```
+
+## `recommendations`
+
+This method generates recommendations based on the user input, analysis insights, and specified recommendations context.
+It is recommended that to generate recommendations, the [`ask` method](/pre-built-agents/data-analyzr/api-reference/ask.mdx) should be used instead of this method.
+
+1. If the parameter `from_insights` is `False`, the method generates recommendations without using the insights output.
+2. The format of the recommendations output can be customized using the `recs_format` parameter.
+    - If the `output_type` is `text`, this parameter is ignored.
+    - If `recs_format` is `None`, the default format will be used:
+    
+    ```json
+            [{
+                "Recommendation": "string",
+                "Basis of the Recommendation": "string",
+                "Impact if implemented": "string",
+            }]
+    ```
+    
+3. The output type of the recommendations can be either text or JSON.
+4. Sets the `recommendations_output` attribute of the `DataAnalyzr` instance.
+
+```python
+recommendations(
+    user_input: str,
+    from_insights: bool = True,
+    recs_format: dict = None,
+    recommendations_context: str = None,
+    n_recommendations: int = 3,
+    output_type: Literal["text", "json"] = "text",
+) -> str
+```
+
+### Parameters
+
+<ParamField path="user_input" type="string" required>
+    User input for generating the recommendations.
+</ParamField>
+<ParamField path="from_insights" type="boolean">
+    Whether to generate recommendations from insights. Default is True.
+</ParamField>
+<ParamField path="recs_format" type="dictionary">
+    Format for the recommendations output. Default is `None`.
+</ParamField>
+<ParamField path="recommendations_context" type="string">
+    Context for the recommendations generation.
+</ParamField>
+<ParamField path="n_recommendations" type="integer">
+    Number of recommendations to generate. Default is 3.
+</ParamField>
+<ParamField path="output_type" type="Literal['text', 'json']">
+    Type of output for recommendations. Default is `text`.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="string">
+    Generated recommendations based on the user input and context.
+    ```python
+    response = "..."
+    ```
+</ResponseField>
+
+### Example usage
+
+```python
+recommendations_output = data_analyzr.recommendations(
+    user_input="What is the average sale price?",
+    from_insights=True,
+    recs_format={
+        "Recommendation": "Recommendation text",
+        "Reason": "Reason for the recommendation",
+        "Impact": "Impact of the recommendation",
+    },
+    recommendations_context="Today is {date}. The average sale price is $123.45.",
+    n_recommendations=3,
+    output_type="json",
+)
+```
+
+## `tasks`
+
+This method generates tasks based on the user input, analysis output, and specified tasks context.
+It is recommended that to generate tasks, the [`ask` method](/pre-built-agents/data-analyzr/api-reference/ask.mdx) should be used instead of this method.
+
+1. The method incorporates user input, insights, and recommendations into the generated tasks.
+2. The number of tasks to generate can be customized using the `n_tasks` parameter.
+3. Sets the `tasks_output` attribute of the `DataAnalyzr` instance.
+
+```python
+tasks(
+    user_input: str,
+    tasks_context: str = None,
+    n_tasks: int = 3,
+) -> str
+```
+
+### Parameters
+
+<ParamField path="user_input" type="string" required>
+    User input for generating the tasks.
+</ParamField>
+<ParamField path="tasks_context" type="string">
+    Context for the tasks generation.
+</ParamField>
+<ParamField path="n_tasks" type="integer">
+    Number of tasks to generate. Default is 3.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="string">
+    Generated tasks based on the user input and context.
+    ```python
+    response = "..."
+    ```
+</ResponseField>
+
+### Example usage
+
+```python
+tasks_output = data_analyzr.tasks(
+    user_input="What is the average sale price?",
+    tasks_context="Today is {date}. The average sale price is $123.45.",
+    n_tasks=3,
+)
+```

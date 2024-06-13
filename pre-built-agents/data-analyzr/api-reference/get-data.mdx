@@ -1,0 +1,229 @@
+---
+title: Method to load data
+sidebarTitle: Load Data
+description: API reference for the DataAnalyzr `get_data` method
+---
+
+```python
+DataAnalyzr.get_data(
+    db_type: Literal["files", "redshift", "postgres", "sqlite"],
+    db_config: dict,
+    vector_store_config: dict = {},
+) -> None
+```
+This method retrieves data from various types of databases or files based on the provided configuration.
+It also creates a vector store for the data. This method must be called before performing any analysis.
+
+1. The required keys in the `config` dictionary depend on the specified `db_type`.
+2. The `vector_store_config` dictionary is optional and can be used to configure the vector store.
+3. Sets the `df_dict`, `database_connector` and `vector_store` attributes of the `DataAnalyzr` object.
+4. The method does not return any value.
+
+## Parameters
+
+<ParamField path="db_type" type="Literal['files', 'redshift', 'postgres', 'sqlite']" required>
+    The type of database to connect to.
+    ```python
+    db_type = "postgres"
+    ```
+</ParamField>
+
+<ParamField path="db_config" type="dictionary" required>
+    Configuration dictionary for the database connection.
+
+    When `db_type` is `files`:
+    ```python
+    db_config = {
+        "datasets": [
+            {
+                "name": "dataset1",
+                "value": "path/to/dataset1.csv",
+                # files can be in .csv, .xlsx, .xls, and .json formats
+            },
+            {
+                "name": "dataset2",
+                "value": "path/to/dataset2.xlsx",
+                "kwargs": {"sheet_name": "Sheet1"},
+                # pass optional keyword arguments for reading the file
+            },
+            {
+                "name": "dataset3",
+                "value": pd.read_csv("path/to/dataset3.csv"),
+                # you can also pass pandas DataFrame objects
+            },
+        ],
+        "db_path": "path/to/construct/sqlite.db", # optional
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="datasets" type="list">
+            List of dictionaries containing the name and value of the datasets to load.
+        </ParamField>
+        <ParamField path="db_path" type="string">
+            Location where a SQLite database must be created.
+            Only relevant when `analysis_type` is `sql`. Defaults to `sqlite/<random-path>.db`.
+        </ParamField>
+    </Expandable>
+
+    When `db_type` is `redshift` or `postgres`:
+    ```python
+    db_config = {
+        "host": "localhost",
+        "port": 5432,
+        "user": "username",
+        "password": "password",
+        "database": "dbname",
+        "schema": ["schema_name1", "schema_name2"], # optional
+        "tables": ["table_name1", "table_name2"], # optional
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="host" type="string">
+            Hostname of the database server.
+        </ParamField>
+        <ParamField path="port" type="integer">
+            Port number of the database server.
+        </ParamField>
+        <ParamField path="user" type="string">
+            Username for the database connection.
+        </ParamField>
+        <ParamField path="password" type="string">
+            Password for the database connection.
+        </ParamField>
+        <ParamField path="database" type="string">
+            Name of the database to connect to.
+        </ParamField>
+        <ParamField path="schema" type="list">
+            List of schema names to load. Defaults to all schemas not in the `information_schema` and `pg_catalog` schemas.
+        </ParamField>
+        <ParamField path="tables" type="list">
+            List of table names to load. Defaults to all tables in the specified schema.
+        </ParamField>
+    </Expandable>
+
+    When `db_type` is `sqlite`:
+    ```python
+    db_config = {
+        "db_path": "path/to/sqlite.db",
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="db_path" type="string">
+            Path to the SQLite database file.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+<ParamField path="vector_store_config" type="dictionary">
+    Configuration dictionary for the vector store.
+    ```python
+    vector_store_config = {
+        "path": "path/to/vector_store", # optional
+        "remake_store": False # optional
+    }
+    ```
+    For details on vector store usage and configuration, refer to the [Vector Store](/pre-built-agents/data-analyzr/advanced-configuration/vector-store) guide.
+    <Expandable title="details">
+        <ParamField path="path" type="string">
+            Path to the vector store.
+            If not vector store is found at the specified path, a new one will be created.
+            Defaults to `vector_store/<random-path>`.
+        </ParamField>
+        <ParamField path="remake_store" type="boolean">
+            Whether to recreate the vector store.
+            If set to `True`, the vector store will be recreated.
+            Defaults to `False`.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+## Example usage
+
+<CodeGroup>
+```python files
+db_config = {
+    "datasets": [
+        {
+            "name": "dataset1",
+            "value": "path/to/dataset1.csv",
+            # files can be in .csv, .xlsx, .xls, and .json formats
+        },
+        {
+            "name": "dataset2",
+            "value": "path/to/dataset2.xlsx",
+            "kwargs": {"sheet_name": "Sheet1"},
+            # pass optional keyword arguments for reading the file
+        },
+        {
+            "name": "dataset3",
+            "value": pd.read_csv("path/to/dataset3.csv"),
+            # you can also pass pandas DataFrame objects
+        },
+    ],
+    "db_path": "path/to/construct/sqlite.db", # optional
+}
+vector_store_config = {
+    "path": "path/to/vector_store",
+    "remake_store": False,
+}
+data_analyzr.get_data(
+    db_type="files",
+    db_config=db_config,
+    vector_store_config=vector_store_config, # optional
+)
+```
+```python redshift
+db_config = {
+    "host": "localhost",
+    "port": 5432,
+    "user": "username",
+    "password": "password",
+    "database": "dbname",
+    "schema": ["schema_name1", "schema_name2"], # optional
+    "tables": ["table_name1", "table_name2"], # optional
+}
+vector_store_config = {
+    "path": "path/to/vector_store",
+    "remake_store": False,
+}
+data_analyzr.get_data(
+    db_type="redshift",
+    db_config=db_config,
+    vector_store_config=vector_store_config, # optional
+)
+```
+```python postgres
+db_config = {
+    "host": "localhost",
+    "port": 5432,
+    "user": "username",
+    "password": "password",
+    "database": "dbname",
+    "schema": ["schema_name1", "schema_name2"], # optional
+    "tables": ["table_name1", "table_name2"], # optional
+}
+vector_store_config = {
+    "path": "path/to/vector_store",
+    "remake_store": False,
+}
+data_analyzr.get_data(
+    db_type="postgres",
+    db_config=db_config,
+    vector_store_config=vector_store_config, # optional
+)
+```
+```python sqlite
+db_config = {
+    "db_path": "path/to/sqlite.db"
+}
+vector_store_config = {
+    "path": "path/to/vector_store",
+    "remake_store": False,
+}
+data_analyzr.get_data(
+    db_type="sqlite",
+    db_config=db_config,
+    vector_store_config=vector_store_config, # optional
+)
+```
+</CodeGroup>

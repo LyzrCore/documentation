@@ -1,0 +1,174 @@
+---
+title: DataAnalyzr constructor
+sidebarTitle: Constructor
+description: API reference for the DataAnalyzr constructor
+---
+
+```python
+DataAnalyzr(
+    analysis_type: Literal["sql", "ml", "skip"],
+    api_key: Optional[str] = None,
+    class_params: Optional[dict] = None,
+    generator_llm: Optional[LiteLLM] = None,
+    analysis_llm: Optional[LiteLLM] = None,
+    context: Optional[str] = None,
+    log_params: Optional[dict] = None,
+) -> DataAnalyzr
+```
+
+Constructor method for initializing a `DataAnalyzr` object.
+
+## Parameters
+
+<ParamField path="analysis_type" type="Literal['sql', 'ml', 'skip']" required>
+    The type of analysis to be performed.
+    ```python
+    analysis_type = "sql"
+    ```
+</ParamField>
+
+<ParamField path="api_key" type="string">
+    API key for accessing LLM services. May also be set as an environment variable.
+    ```python
+    api_key = "sk-apikey"
+    ```
+</ParamField>
+
+<ParamField path="class_params" type="dictionary">
+    Dictionary of class parameters. Accepts `max_retries`, `time_limit`, and `auto_train`.
+    ```python
+    class_params = {
+        "max_retries": 5, # int
+        "time_limit": 60, # int
+        "auto_train": True, # bool
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="max_retries" type="integer">
+            Maximum number of retries for the LLM calls and analysis. Default is 10.
+        </ParamField>
+        <ParamField path="time_limit" type="integer">
+            Time limit in seconds for the LLM calls and analysis. Default is 45 for analysis and 60 for visualisation.
+        </ParamField>
+        <ParamField path="auto_train" type="boolean">
+            Whether to automatically add questions with their SQL query or Python code to the vector store. Default is True.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+<ParamField path="generator_llm" type="LiteLLM">
+    LLM instance for generating analysis. Default LLM used is GPT-4o.
+    ```python
+    from lyzr.base import LyzrLLMFactory
+    generator_llm = LyzrLLMFactory.from_defaults(model="gpt-4-turbo")
+    ```
+    For details on configuring the LLM, see the [Large Language Models](/pre-built-agents/data-analyzr/advanced-configuration/llms) guide.
+</ParamField>
+
+<ParamField path="analysis_llm" type="LiteLLM">
+    LLM instance for performing analysis. Default LLM used is GPT-4o.
+    ```python
+    from lyzr.base import LyzrLLMFactory
+    analysis_llm = LyzrLLMFactory.from_defaults(model="gpt-4o")
+    ```
+    For details on configuring the LLM, see the [Large Language Models](/pre-built-agents/data-analyzr/advanced-configuration/llms) guide.
+</ParamField>
+
+<ParamField path="context" type="string or dictionary">
+    Context for analysis and response generation. Default is an empty string.
+    - This context is used in the analysis, insights, recommendations, and tasks methods.
+    - When passed as a string, the same context is applied to all sections - analysis, insights, recommendations, and tasks.
+    - When passed as a dictionary, it should have keys `analysis`, `visualisation`, `insights`, `recommendations`, and `tasks`.
+    - To override the class context for a specific query, pass the context to the [`ask` method](/pre-built-agents/data-analyzr/api-reference/ask).
+    ```python
+    context = "Sales data analysis for Q1 2023"
+    # or
+    context = {
+        "analysis": "Sales data analysis for Q1 2023",
+        "visualisation": "Distribution plot for sales data",
+        "insights": "Key trends in sales data",
+        "recommendations": "Improve sales performance",
+        "tasks": "Analyze sales data",
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="analysis" type="string">
+            Context for the analysis method.
+        </ParamField>
+        <ParamField path="visualisation" type="string">
+            Context for the visualisation method.
+        </ParamField>
+        <ParamField path="insights" type="string">
+            Context for the insights method.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            Context for the recommendations method.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            Context for the tasks method.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+<ParamField path="log_params" type="dictionary">
+    Dictionary of logging parameters. Accepts `log_filename`, `log_level`, and `print_log`.
+    ```python
+    log_params = {
+        "log_filename": "dataanalyzr.csv", # str
+        "log_level": "INFO", # str
+        "print_log": False, # bool
+    }
+    ```
+    <Expandable title="details">
+        <ParamField path="log_filename" type="string">
+            Name of the log file. Default is `dataanalyzr.csv`.
+        </ParamField>
+        <ParamField path="log_level" type="string">
+            Log level for the logger. Default is `INFO`.
+        </ParamField>
+        <ParamField path="print_log" type="boolean">
+            Whether to print logs to the console. Default is `False`.
+        </ParamField>
+    </Expandable>
+</ParamField>
+
+
+## Returns
+
+<ResponseField name="data_analyzr" type="DataAnalyzr">
+    DataAnalyzr object for performing conversational data analysis.
+</ResponseField>
+
+
+
+## Example usage
+
+```python
+from lyzr.base import LyzrLLMFactory
+from lyzr.data_analyzr.data_analyzr import DataAnalyzr
+
+analysis_type = "sql"
+log_params = {
+    "log_filename": "dataanalyzr.log",
+    "log_level": "DEBUG",
+    "print_log": True,
+}
+class_params = {
+    "max_retries": 5,
+    "time_limit": 60,
+    "auto_train": True,
+}
+generator_llm = LyzrLLMFactory.from_defaults(model="gpt-4-turbo")
+analysis_llm = LyzrLLMFactory.from_defaults(model="gpt-4o")
+context = "Sales data analysis for Q1 2023"
+
+data_analyzr = DataAnalyzr(
+    analysis_type=analysis_type,
+    api_key=api_key,
+    class_params=class_params,
+    generator_llm=generator_llm,
+    analysis_llm=analysis_llm,
+    context=context,
+    log_params=log_params,
+)
+```

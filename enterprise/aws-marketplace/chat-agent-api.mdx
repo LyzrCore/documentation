@@ -1,0 +1,377 @@
+---
+title: Chat Agent API Documentation
+---
+
+Abstract flow that illustrates the typical workflow for interacting with the provided API:
+
+1. **Setting Up Base URL**: Start by setting up the base URL of the server where the API is hosted. This ensures that all subsequent requests are directed to the correct endpoint.
+2. **Creating and Configuring a Chatbot**:
+    - Use the `/chatbot/` endpoint to create and configure a chatbot by providing a JSON payload with the desired configuration settings.
+    - Retrieve the generated chatbot ID for future reference.
+3. **Training the Chatbot from PDF Files**:
+    - Use the `/train/from-pdf/{chatbot_id}` endpoint to train the chatbot using PDF files. Provide the PDF files as multipart/form-data in the request payload.
+    - Monitor the training status to ensure completion.
+4. **Interacting with the Chatbot**:
+    - Initiate a conversation by creating a new conversation using the `/conversations/` endpoint and providing the user ID.
+    - Use the conversation ID to chat with the chatbot by sending a POST request to the `/chat/{conversation_id}` endpoint with the user's input message.
+    - Receive the chatbot's response along with any relevant sources.
+5. **Managing Conversations**:
+    - Retrieve conversation details, including messages, active messages, memory, and summaries, using the respective endpoints
+    - `/conversations/{conversation_id}`
+    - `/conversations/{conversation_id}/messages`
+    - `/conversations/{conversation_id}/active-messages`
+    - `/conversations/{conversation_id}/memory`
+    - `/conversations/{conversation_id}/summary`
+    - Optionally, delete a conversation using the `/conversations/{conversation_id}` endpoint.
+6. **Managing Messages**:
+    - Read a specific message by ID using the `/messages/{message_id}` endpoint.
+    - Delete a message by ID using the `/messages/{message_id}` endpoint.
+7. **Managing Summaries**:
+    - Read a summary by ID using the `/summaries/{summary_id}` endpoint.
+8. **Managing Users**:
+    - Create a new user using the `/users/` endpoint.
+    - Retrieve user details by ID using the `/users/{user_id}` endpoint.
+    - Update user details by ID using the `/users/{user_id}` endpoint.
+    - Delete a user by ID using the `/users/{user_id}` endpoint.
+    - Retrieve conversation IDs associated with a user using the `/users/{user_id}/conversation_ids` endpoint.
+
+Following this abstract flow, you can effectively interact with the provided API to create, train, and manage chatbots, as well as manage conversations, messages, summaries, and users.
+
+### Base URL
+
+Update the `BASE_URL` variable to match the server's actual address if necessary.
+
+```python
+BASE_URL = "<http://localhost:5555>"
+```
+
+### Chatbot Endpoints
+
+### Create and Configure Chatbot
+
+To create and configure a chatbot, send a POST request to the `/chatbot/` endpoint.
+
+```python
+import requests
+import json
+
+# Define the chatbot configuration
+chatbot_config = {
+    "name": "My Chatbot",
+    "description": "A simple chatbot for demonstration",
+    "configuration": {
+        "exclude_hidden": True,
+        "filename_as_id": True,
+        "recursive": True,
+        "required_exts": ["string"],
+        "system_prompt": "",
+        "query_wrapper_prompt": "",
+        "embed_model": {
+            "embedding_type": "OpenAIEmbedding",
+            "model": "text-embedding-ada-002",
+            "api_key": "sk-"
+        },
+        "llm_params": {
+            "model": "gpt-4-1106-preview",
+            "api_key": "sk-",
+            "stream": True
+        },
+        "vector_store_params": {
+            "vector_store_type": "WeaviateVectorStore",
+            "url": "https://<domain>.weaviate.network",
+            "api_key": "",
+            "index_name": "LyzrCore"
+        },
+        "service_context_params": {},
+        "chat_engine_params": {
+            "chat_mode": "context",
+            "similarity_top_k": 50,
+            "system_prompt": "You are a helpful Assistant"
+        },
+        "retriever_params": {
+            "retriever_type": "Simple"
+        }
+    }
+}
+
+# Send the request
+response = requests.post(f"{BASE_URL}/chatbot/", json=chatbot_config)
+response.raise_for_status()
+chatbot_info = response.json()
+print(f"Chatbot Info: {chatbot_info}")
+
+```
+
+### Train Chatbot from PDF
+
+To train a chatbot using PDF files, send a POST request to the `/train/from-pdf/{chatbot_id}` endpoint.
+
+```python
+import requests
+
+# Define the PDF files to upload
+pdf_files = [
+    ('files', ('test1.pdf', open('path/to/test1.pdf', 'rb'), 'application/pdf')),
+    ('files', ('test2.pdf', open('path/to/test2.pdf', 'rb'), 'application/pdf'))
+]
+
+# Send the request
+response = requests.post(f"{BASE_URL}/train/from-pdf/{chatbot_id}", files=pdf_files)
+response.raise_for_status()
+training_status = response.json()
+print(f"Training Status: {training_status}")
+
+```
+
+### Get Chatbot Configuration
+
+To retrieve the configuration of a chatbot, send a GET request to the `/chatbot/{chatbot_id}` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/chatbot/{chatbot_id}")
+response.raise_for_status()
+chatbot_config = response.json()
+print(f"Chatbot Configuration: {chatbot_config}")
+
+```
+
+### Update Chatbot Configuration
+
+To update the configuration of a chatbot, send a PUT request to the `/chatbot/{chatbot_id}` endpoint.
+
+```python
+updated_config = {
+    "name": "Updated Chatbot Name",
+    "description": "Updated description",
+    "configuration": {
+        # Updated configuration details
+    }
+}
+
+response = requests.put(f"{BASE_URL}/chatbot/{chatbot_id}", json=updated_config)
+response.raise_for_status()
+updated_chatbot_info = response.json()
+print(f"Updated Chatbot Info: {updated_chatbot_info}")
+
+```
+
+### Chat with Chatbot
+
+To initiate a chat with the chatbot within a conversation, send a POST request to the `/chat/{conversation_id}` endpoint.
+
+```python
+conversation_id = "<conversation_id>"
+user_input = "Hello, chatbot!"
+
+response = requests.post(f"{BASE_URL}/chat/{conversation_id}", json={"input_message": user_input})
+response.raise_for_status()
+chat_response = response.json()
+print(f"Chatbot Response: {chat_response}")
+
+```
+
+### Conversation Endpoints
+
+### Create Conversation
+
+To create a new conversation, send a POST request to the `/conversations/` endpoint.
+
+```python
+user_id = "<user_id>"
+
+response = requests.post(f"{BASE_URL}/conversations/", json={"user_id": user_id})
+response.raise_for_status()
+conversation_info = response.json()
+print(f"Conversation Info: {conversation_info}")
+
+```
+
+### Read Conversation
+
+To retrieve conversation details by ID, send a GET request to the `/conversations/{conversation_id}` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/conversations/{conversation_id}")
+response.raise_for_status()
+conversation_details = response.json()
+print(f"Conversation Details: {conversation_details}")
+
+```
+
+### Delete Conversation
+
+To delete a conversation by ID, send a DELETE request to the `/conversations/{conversation_id}` endpoint.
+
+```python
+response = requests.delete(f"{BASE_URL}/conversations/{conversation_id}")
+response.raise_for_status()
+deleted_info = response.json()
+print(f"Deleted Conversation Info: {deleted_info}")
+
+```
+
+### Get Conversation Messages
+
+To retrieve messages associated with a conversation, send a GET request to the `/conversations/{conversation_id}/messages` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/conversations/{conversation_id}/messages")
+response.raise_for_status()
+messages = response.json()
+print(f"Conversation Messages: {messages}")
+
+```
+
+### Get Active Conversation Messages
+
+To retrieve active messages within a conversation, send a GET request to the `/conversations/{conversation_id}/active-messages` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/conversations/{conversation_id}/active-messages")
+response.raise_for_status()
+active_messages = response.json()
+print(f"Active Conversation Messages: {active_messages}")
+
+```
+
+### Get Conversation Memory
+
+To retrieve memory details associated with a conversation, send a GET request to the `/conversations/{conversation_id}/memory` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/conversations/{conversation_id}/memory")
+response.raise_for_status()
+memory_details = response.json()
+print(f"Conversation Memory: {memory_details}")
+
+```
+
+### Get Conversation Summary
+
+To retrieve summaries associated with a conversation, send a GET request to the `/conversations/{conversation_id}/summary` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/conversations/{conversation_id}/summary")
+response.raise_for_status()
+summaries = response.json()
+print(f"Conversation Summaries: {summaries}")
+
+```
+
+### Message Endpoints
+
+### Read Message
+
+To retrieve a message by ID, send a GET request to the `/messages/{message_id}` endpoint.
+
+```python
+message_id = "<message_id>"
+
+response = requests.get(f"{BASE_URL}/messages/{message_id}")
+response.raise_for_status()
+message_details = response.json()
+print(f"Message Details: {message_details}")
+
+```
+
+### Delete Message
+
+To delete a message by ID, send a DELETE request to the `/messages/{message_id}` endpoint.
+
+```python
+response = requests.delete(f"{BASE_URL}/messages/{message_id}")
+response.raise_for_status()
+deleted_message = response.json()
+print(f"Deleted Message: {deleted_message}")
+
+```
+
+### Summary Endpoints
+
+### Read Summary
+
+To retrieve a summary by ID, send a GET request to the `/summaries/{summary_id}` endpoint.
+
+```python
+summary_id = "<summary_id>"
+
+response = requests.get(f"{BASE_URL}/summaries/{summary_id}")
+response.raise_for_status()
+summary_details = response.json()
+print(f"Summary Details: {summary_details}")
+
+```
+
+### User Endpoints
+
+### Create User
+
+To create a new user, send a POST request to the `/users/` endpoint.
+
+```python
+user_data = {
+    "name": "John Doe",
+    "email": "john@example.com"
+}
+
+response = requests.post(f"{BASE_URL}/users/", json=user_data)
+response.raise_for_status()
+user_info = response.json()
+print(f"User Info: {user_info}")
+
+```
+
+### Read User
+
+To retrieve user details by ID, send a GET request to the `/users/{user_id}` endpoint.
+
+```python
+user_id = "<user_id>"
+
+response = requests.get(f"{BASE_URL}/users/{user_id}")
+response.raise_for_status()
+user_details = response.json()
+print(f"User Details: {user_details}")
+
+```
+
+### Update User
+
+To update user details by ID, send a PUT request to the `/users/{user_id}` endpoint.
+
+```python
+updated_data = {
+    "name": "Updated Name",
+    "email": "updated_email@example.com"
+}
+
+response = requests.put(f"{BASE_URL}/users/{user_id}", json=updated_data)
+response.raise_for_status()
+updated_user_info = response.json()
+print(f"Updated User Info: {updated_user_info}")
+
+```
+
+### Delete User
+
+To delete a user by ID, send a DELETE request to the `/users/{user_id}` endpoint.
+
+```python
+response = requests.delete(f"{BASE_URL}/users/{user_id}")
+response.raise_for_status()
+deleted_user_info = response.json()
+print(f"Deleted User Info: {deleted_user_info}")
+
+```
+
+### Get User Conversation IDs
+
+To retrieve conversation IDs associated with a user, send a GET request to the `/users/{user_id}/conversation_ids` endpoint.
+
+```python
+response = requests.get(f"{BASE_URL}/users/{user_id}/conversation_ids")
+response.raise_for_status()
+conversation_ids = response.json()
+print(f"Conversation IDs: {conversation_ids}")
+
+```

@@ -227,7 +227,8 @@
                 {
                     "group": "AWS Marketplace",
                     "pages": [
-                        "enterprise/aws-marketplace/chat-agent"
+                        "enterprise/aws-marketplace/chat-agent",
+                        "enterprise/aws-marketplace/chat-agent-api"
                     ]
                 }
             ]

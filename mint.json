@@ -230,6 +230,34 @@
                         "enterprise/aws-marketplace/chat-agent",
                         "enterprise/aws-marketplace/chat-agent-api"
                     ]
+                },
+                {
+                    "group": "DataAnalyzr",
+                    "pages": [
+                        "enterprise/data-analyzr/introduction",
+                        "enterprise/data-analyzr/getting-started",
+                        "enterprise/data-analyzr/api-endpoints",
+                        {
+                            "group": "Analysis Generation",
+                            "pages": [
+                                "enterprise/data-analyzr/analysis/files",
+                                "enterprise/data-analyzr/analysis/postgres",
+                                "enterprise/data-analyzr/analysis/redshift",
+                                "enterprise/data-analyzr/analysis/azure",
+                                "enterprise/data-analyzr/analysis/mongo"
+                            ]
+                        },
+                        {
+                            "group": "Vector Store",
+                            "pages": [
+                                "enterprise/data-analyzr/vector-store/postgres",
+                                "enterprise/data-analyzr/vector-store/redshift",
+                                "enterprise/data-analyzr/vector-store/azure",
+                                "enterprise/data-analyzr/vector-store/mongo"
+                            ]
+                        },
+                        "enterprise/data-analyzr/configuration-objects"
+                    ]
                 }
             ]
         }

@@ -1,0 +1,469 @@
+---
+title: Configuration Objects
+sidebarTitle: Configuration Objects
+---
+
+This page describes the configuration objects or input parameters for the DataAnalyzr API.
+
+## URL Parameters
+
+<ParamField path='query' type='string' required>
+    A question that can be answered using the given dataset and the chosen analysis model.
+
+    This question should be in natural language, with any level of complexity.
+    Broadly, these questions can lie in any of the following categories: descriptive, diagnostic, predictive, or prescriptive.
+    Following are some examples of questions that can be asked:
+    - What is the average salary of employees? (Descriptive)
+    - What is the distribution of temperatures across the year? (Descriptive)
+    - Is there a correlation between temperature and humidity? (Diagnostic)
+    - Do companies that use certain SaaS products report higher impacts on business outcomes? (Diagnostic)
+    - Which factors have the highest impact on customer satisfaction? (Predictive)
+    - What is the expected temperature distribution for the next week? (Predictive)
+    - What is the best marketing strategy for product X? (Prescriptive)
+    - On which day of the coming week should I carry an umbrella? (Prescriptive)
+    
+    <Note>These examples assume that the datasets contain all relevant information</Note>
+    ```python
+    query = "Your query here"
+    ```
+</ParamField>
+
+<ParamField path='analysis_type' type='string' required>
+    The type of analysis to be performed.
+    
+    The options for available analysis types depend on the type of dataset:
+    - For SQL databases or for file-based analysis, the options are `sql`, `ml`, or `skip`.
+    - For NoSQL databases, this parameter is not applicable, and the analysis type is always `nosql`.
+    ```python
+    analysis_type = "ml"
+    ```
+</ParamField>
+
+<ParamField path='include' type='list of strings'>
+    The outputs to include in the response.
+    <Info>The response will always contain all fields. This parameter controls which values are calculated and populated.</Info>
+    If this parameter is not provided, all applicable values will be calculated and populated.
+    If an output type is requested but not applicable, e.g. `"sql_query"` with `analysis_type = "ml"`, the field value will be empty.
+    <Expandable title="properties">
+        <ParamField path="sql_query" type="string">
+            The SQL query generated for the input question.
+            Only applicable for SQL-based analysis.
+        </ParamField>
+        <ParamField path="python_code" type="string">
+            The python code generated for the input question.
+            Only applicable for Pythonic analysis.
+        </ParamField>
+        <ParamField path="plot_code" type="string">
+            The Python code generated to make the plot.
+            Only applicable when visualisation is requested.
+        </ParamField>
+        <ParamField path="analysis" type="string">
+            The result of executing the SQL query or the Python code on the input dataset.
+            Only applicable when `analysis_type` is not `"skip"`.
+        </ParamField>
+        <ParamField path="visualisation" type="string">
+            A presigned S3 URL to the visualisation image.
+            Only applicable when visualisation is requested.
+            The default expiry time for this URL is 3600 seconds, or 1 hour.
+            To change this or to save this image in an s3 bucket of your choice, set the `s3_bucket_params` parameter.
+        </ParamField>
+        <ParamField path="insights" type="string">
+            The insights generated.
+            These are high-level summaries of the analysis.
+            The number of insights generated can be controlled using the `counts` parameter.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            The recommendations generated.
+            These are actionable suggestions based on the analysis.
+            If no context is provided, the recommendations will be generic or based on a best-guess of the intended use-case.
+            The number of recommendations generated can be controlled using the `counts` parameter.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            The tasks generated.
+            These are actionable and granular steps that can be taken to achieve the recommendations.
+            The number of tasks generated can be controlled using the `counts` parameter.
+        </ParamField>
+    </Expandable>
+    ```python
+    include = [
+        "sql_query", "python_code", "plot_code", "analysis",
+        "visualisation", "insights", "recommendations", "tasks"
+    ]
+    ```
+</ParamField>
+
+<ParamField path='recommendations_output_type' type='string'>
+    Format for recommendations.
+    Can be either `"json"` or `"text"`.
+    Defaults to `"text"`.
+    - If the selected format is `"json"`, the following format is used:
+        ```json
+        [
+            {
+                "Recommendation": string,
+                "Basis of the Recommendation": string,
+                "Impact if implemented": string
+            },
+            {
+                "Recommendation": string,
+                "Basis of the Recommendation": string,
+                "Impact if implemented": string
+            },
+            ...(number of recommendations)
+        ]
+        ```
+    - If the selected format is `"text"`, the recommendations are returned as a single string, with each recommendation as a bullet point.
+    ```python
+    recommendations_output_type = "text"
+    ```
+</ParamField>
+
+<ParamField path='use_insights' type='boolean'>
+    Whether to use insights.
+    Defaults to `True`.
+
+    If set to `False`, no insights will be generated, and recommendations will be based on the analysis alone.
+    <Note>`False` value cannot be combined with `"insights"` in the `include` parameter.</Note>
+    ```python
+    use_insights = True
+    ```
+</ParamField>
+
+<ParamField path='rerun_analysis' type='boolean'>
+    Whether to rerun analysis.
+    Defaults to `True`.
+    
+    If set to `False`, the analysis will not be rerun, and the insights, recommendations, and tasks will be based on the existing analysis output.
+    ```python
+    rerun_analysis = False
+    ```
+</ParamField>
+
+<ParamField path='plot_path' type='string'>
+    Path to save visualisation image to.
+    Can be a filepath or a directory.
+    - If the path is a file, the image will be saved at the provided path.
+    - If the path is a directory, the image will be saved with a random name in that directory.
+    - If not provided, the visualisation will be saved in the subdirectory `generated_plots` of the current working directory.
+    
+    By default, the name given to the image is a random alphanumeric string of length 32.
+    ```python
+    plot_path = "path/to/save/plot.png"
+    ```
+</ParamField>
+
+<ParamField path='logfilename' type='string'>
+    Path to log file.
+
+    The log file will contain the details of the analysis, including the SQL query, Python code, and the analysis results.
+    Providing a logfilename makes it easier to troubleshoot issues and track the analysis.
+    ```python
+    logfilename = "path/to/logfile.csv"
+    ```
+</ParamField>
+
+## Body Parameters
+<ParamField path='vector_store_config' type='dictionary'>
+    Configuration for vector store.
+    - If you have previously created and populated a vector store, you can provide the path to the vector store and set `remake` to `"false"`.
+    - If you want the system to learn from its previous responses and update the vector store, set `remake` to `"false"`.
+    This ensures that questions and their corresponding code snippets (SQL or Python) are stored in the vector store.
+    <Expandable title="properties">
+        <ParamField path="path" type="string">
+            Path to the vector store.
+            If not provided, the vector store will be created in the subdirectory `vector_store` of the current working directory, with a random name - `vector_store/<random_string>`.
+            This random name is a string of 32 alphanumeric characters.
+        </ParamField>
+        <ParamField path="remake" type="string">
+            Whether to remake the vector store - `"true"` or `"false"`.
+            If set to `"true"`, all existing data in the vector store will be deleted and its collections will be recreated.
+            If set to `"false"`, the vector store will be used as is.
+            If no vector store exists at the provided path, a new vector store will be created regardless of this parameter.
+        </ParamField>
+    </Expandable>
+    ```python
+    vector_store_config = {
+        "path": "path_to_vector_store",
+        "remake": "true"
+    }
+    ```
+</ParamField>
+
+<ParamField path="files_config" type="dictionary">
+    Configuration for files.
+    Only applicable for file-based analysis.
+    <Expandable title="properties">
+        <ParamField path="datasets" type="dictionary">
+            Key-value pairs of dataset names and file paths.
+
+            Use this parameter to provide descriptive names for the datasets.
+            If the dataset names are not provided, the filenames will be used as dataset names.
+        </ParamField>
+        <ParamField path="db_path" type="string">
+            Path where a SQLite database should be created.
+        
+            Only applicable for SQL-based analysis.
+            If not provided, a SQLite database will be created in the subdirectory `sqlite` of the current working directory, with a random name - `sqlite/<random_string>.db`.
+            This random name is a string of 32 alphanumeric characters.
+        </ParamField>
+    </Expandable>
+    ```python
+    files_config = {
+        "datasets": {
+            "filename.ext": "Name of Dataset",
+            "filename2.ext": "Name of Dataset 2"
+        },
+        "db_path": "./testing/sqlite.db"
+    }
+    ```
+</ParamField>
+
+<ParamField path="context" type="dictionary">
+    Context for analysis and response generation.
+
+    The context is used to provide additional information to the model for generating responses.
+    This can include domain-specific information, the intended use-case, or any other relevant details.
+    Following are some examples of valid context strings:
+    - For a dataset containing sales data:
+        > The dataset and questions are provided by the manager of a small brick-and-mortar store.
+        They want to understand the sales trends and customer preferences to improve their sales and marketing strategies.
+        They are especially interested in developing a base of repeat customers.<br/><br/>
+        They cannot change the products they store or the discounts or offers provided by brands.
+        They can influence the store layout, product placement, and staffing.
+    - For a dataset containing travel preferences:
+        > The dataset and questions are provided by a travel blogger.
+        They want to understand the travel trends and preferences of their audience to create content that resonates with them.
+        They are especially interested in understanding the impact of the pandemic on travel preferences.
+
+    <Expandable title="properties">
+        <ParamField path="analysis" type="string">
+            The context for code generation.
+            This will only directly influence the code generation, not the generation of visualisation, insights, recommendations, or tasks.
+            Examples:
+            - To use specific libraries or functions:
+                > Use the `statsmodels` library for statistical analysis and `pmdarima` for time series forecasting.
+            - Provide additional technical information:
+                > To calculate the orbital speed, assume that the smaller mass is negligible.
+                This means that we can use the formula `v = sqrt(GM/r)`.
+                Here, `v` is the orbital speed, `G` is the gravitational constant, `M` is the mass of the larger body, and `r` is the distance from the center of the larger body.
+                The value of `G` is approximately `6.674 * 10^-11 m^3 kg^-1 s^-2`.
+                Note that the units of `M` and `r` should be in kilograms and meters, respectively.
+        </ParamField>
+        <ParamField path="visualisation" type="string">
+            The context for plotting code generation. 
+            This will only directly influence the visualisation generation, not the generation of insights, recommendations, or tasks.
+            Examples:
+            - Use a specific type of plot:
+                > Use a bar plot when comparing the sales of different products.
+                Use a line plot when visualising the trend in sales over time.
+            - Format labels and titles:
+                > The x-axis should represent dates, and the y-axis should represent the amount in USD.
+                The plot should have a title "Sales Trend Over the Year" and labels for the x and y axes.
+                Format dates as "%d %b %Y", e.g., "01 Jan 2023".
+        </ParamField>
+        <ParamField path="insights" type="string">
+            The context for insights generation.
+            This will only directly influence the insights generation.
+            Examples:
+            - Handling complexity of output text:
+                > Ensure that your response can be easily understood by students in the 8th grade.
+                Use simple language and avoid jargon.
+                Round all numbers to two decimal places.
+            - Request specific information:
+                > Especially mention the trends in activity during the holiday season.
+                Highlight any significant changes or patterns that can be observed.
+        </ParamField>
+        <ParamField path="recommendations" type="string">
+            The context for recommendations generation.
+            This will only directly influence the recommendations generation.
+            Examples:
+            - Providing additional information:
+                > Your recommendations should focus on improving customer satisfaction and increasing sales.
+                Note that the store is located in a high cost-of-living area, so price sensitivity is low.
+            - Specifying the target audience:
+                > Your recommendations should be tailored for the software development team, with a focus on improving code quality and reducing bugs.
+        </ParamField>
+        <ParamField path="tasks" type="string">
+            The context for tasks generation.
+            This will only directly influence the tasks generation.
+            Examples:
+            - Providing additional information:
+                > These tasks will be divided among a team of 5 people: 2 teachers, 2 high-achieving students, and 1 administrator.
+                The tasks should be designed to be completed within a week.
+            - Specifying the target audience:
+                > The tasks should be easy to replicate and semi-automated, as they will be carried out by a team of interns.
+        </ParamField>
+    </Expandable>
+    ```python
+    context = {
+        "analysis": "context for analysis",
+        "insights": "context for insights",
+        "recommendations": "context for recommendations",
+        "tasks": "context for tasks",
+        "visualisation": "context for visualisation"
+    }
+    ```
+</ParamField>
+
+<ParamField path="counts" type="dictionary">
+    Number of each type of output to generate.
+
+    All text outputs are generated as bullet-point lists.
+    The number of bullet points generated for each output type can be controlled using this parameter.
+    <Expandable title="properties">
+        <ParamField path="insights" type="integer">
+            Number of insights to generate.
+            Defaults to 3.
+        </ParamField>
+        <ParamField path="recommendations" type="integer">
+            Number of recommendations to generate.
+            Defaults to 3.
+            
+            For `"json"` format, this parameter controls the number of elements in the JSON array.
+        </ParamField>
+        <ParamField path="tasks" type="integer">
+            Number of tasks to generate.
+            Defaults to 5.
+        </ParamField>
+    </Expandable>
+    ```python
+    counts = {
+        "insights": 3,
+        "recommendations": 3,
+        "tasks": 5
+    }
+    ```
+</ParamField>
+
+<ParamField path="generator_model" type="dictionary">
+    Configuration for generator LLM.
+
+    The generator model is used to generate all text responses - insights, recommendations, and tasks.
+    The default model is GPT-4o.
+    For details on configuration of LLMs, refer to the [LLM Configuration](/pre-built-agents/data-analyzr/advanced-configuration/llms) section.
+    <Expandable title="properties">
+        <ParamField path="model" type="string">
+            Name of the model. Use the format `provider/model.name` to specify the provider.
+        </ParamField>
+        <ParamField path="api_type" type="string">
+            Provider of the API. For example, `openai`, `bedrock`, `anthropic`, etc.
+        </ParamField>
+        <ParamField path="api_base" type="string">
+            API base URL, if applicable.
+        </ParamField>
+        <ParamField path="api_version" type="string">
+            API version, if applicable.
+        </ParamField>
+        <ParamField path="organisation" type="string">
+            Organisation name, if applicable.
+        </ParamField>
+        <ParamField path="llm_params" type="dictionary">
+            Any additional parameters required for the LLM.
+        </ParamField>
+    </Expandable>
+    ```python
+    generator_model = {
+        "model": "provider/model.name",
+        "api_type": "openai",
+        "api_base": "https://hosted-llm-api.co",
+        "api_version": "2023-02-15",
+        "organisation": "org-name",
+        "llm_params": {"temperature": 0.5},
+    }
+    ```
+</ParamField>
+
+<ParamField path="analysis_model" type="dictionary">
+    Configuration for analysis LLM.
+
+    The analysis model is used to generate the SQL query or Python code for analysis, and the python code for visualisation.
+    The default model is GPT-4o.
+    For details on configuration of LLMs, refer to the [LLM Configuration](/pre-built-agents/data-analyzr/advanced-configuration/llms) section.
+    <Expandable title="properties">
+        <ParamField path="model" type="string">
+            Name of the model. Use the format `provider/model.name` to specify the provider.
+        </ParamField>
+        <ParamField path="api_type" type="string">
+            Provider of the API. For example, `openai`, `bedrock`, `anthropic`, etc.
+        </ParamField>
+        <ParamField path="api_base" type="string">
+            API base URL, if applicable.
+        </ParamField>
+        <ParamField path="api_version" type="string">
+            API version, if applicable.
+        </ParamField>
+        <ParamField path="organisation" type="string">
+            Organisation name, if applicable.
+        </ParamField>
+        <ParamField path="llm_params" type="dictionary">
+            Any additional parameters required for the LLM.
+        </ParamField>
+    </Expandable>
+    ```python
+    analysis_model = {
+        "model": "provider/model.name",
+        "api_type": "openai",
+        "api_base": "https://hosted-llm-api.co",
+        "api_version": "2023-02-15",
+        "organisation": "org-name",
+        "llm_params": {"temperature": 0.5},
+    }
+    ```
+</ParamField>
+
+<ParamField path="llm_access_credentials" type="dictionary">
+    Credentials for LLM. 
+    These key-value pairs are used to set the environment variables required to access the LLM.
+
+    This parameter does not have any pre-set keys.
+    They should be set according to the requirements of the chosen LLM.
+    All credentials required to access the LLM should be provided here.
+    For details on configuration of LLMs, refer to the [LLM Configuration](/pre-built-agents/data-analyzr/advanced-configuration/llms) section.
+    ```python
+    # for OpenAI LLMs
+    llm_access_credentials = {
+        "OPENAI_API_KEY": "Your API Key",
+    }
+    # for LLMs hosted on Amazon Bedrock
+    llm_access_credentials = {
+        "AWS_ACCESS_KEY_ID": "Your AWS Access Key ID",
+        "AWS_SECRET_ACCESS_KEY": "Your AWS Secret Access Key",
+        "AWS_SESSION_TOKEN": "Your AWS Session Token",
+        "AWS_REGION": "Your AWS Region",
+    }
+    ```
+
+</ParamField>
+
+<ParamField path="s3_bucket_params" type="dictionary">
+    Parameters for S3 bucket.
+    
+    These parameters are used to save the visualisation image in an S3 bucket.
+    If these parameters are not provided, the visualisation image will be saved in the default Lyzr S3 bucket.
+    <Expandable title="properties">
+        <ParamField path="bucket_name" type="string">
+            Name of the S3 bucket.
+        </ParamField>
+        <ParamField path="aws_access_key_id" type="string">
+            AWS access key ID.
+        </ParamField>
+        <ParamField path="aws_secret_access_key" type="string">
+            AWS secret access key.
+        </ParamField>
+        <ParamField path="aws_session_token" type="string">
+            AWS session token.
+        </ParamField>
+        <ParamField path="url_expiry_time" type="integer">
+            URL expiry time in seconds.
+        </ParamField>
+    </Expandable>
+    ```python
+    s3_bucket_params = {
+        "bucket_name": "your-bucket-name",
+        "aws_access_key_id": "access-key-id",
+        "aws_secret_access_key": "secret-access-key",
+        "aws_session_token": "session-token",
+        "url_expiry_time": 3600,
+    }
+    ```
+</ParamField>

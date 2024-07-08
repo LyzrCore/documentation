@@ -1,0 +1,112 @@
+---
+title: API Endpoints
+sidebarTitle: API Endpoints
+---
+
+The DataAnalyzr API provides two types of endpoints - analysis generation and vector store management.
+The API is served at 
+```http
+https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/
+```
+
+## Analysis Generation
+
+These are the primary endpoints for getting responses to your questions.
+You may choose to run analysis on files-base datasets (.csv, .xlsx, .xls, .json), PostgreSQL databases, Amazon Redshift, Azure SQL, or MongoDB.
+
+Refer the following sections for details on each database type:
+- [Files-based Analysis](/enterprise/data-analyzr/analysis/files)
+- [PostgreSQL Analysis](/enterprise/data-analyzr/analysis/postgres)
+- [Amazon Redshift Analysis](/enterprise/data-analyzr/analysis/redshift)
+- [Azure SQL Analysis](/enterprise/data-analyzr/analysis/azure-sql)
+- [MongoDB Analysis](/enterprise/data-analyzr/analysis/mongodb)
+
+### Response format
+
+The response format is a JSON object with the following fields:
+
+<ResponseField name="sql_query" type="string">
+    The SQL query generated for the input question.
+</ResponseField>
+
+<ResponseField name="python_code" type="string">
+    The python code generated for the input question.
+</ResponseField>
+
+<ResponseField name="plot_code" type="string">
+    The Python code generated to make the plot.
+</ResponseField>
+
+<ResponseField name="analysis" type="string">
+    The result of executing the SQL query or the Python code on the input dataset.
+</ResponseField>
+
+<ResponseField name="visualisation" type="string">
+    A presigned S3 URL to the image with default expiration time of 3600 seconds.
+</ResponseField>
+
+<ResponseField name="insights" type="string">
+    The insights generated.
+</ResponseField>
+
+<ResponseField name="recommendations" type="string">
+    The recommendations generated.
+</ResponseField>
+
+<ResponseField name="tasks" type="string">
+    The tasks generated.
+</ResponseField>
+
+Depending on the input parameters, one or more of these fields may be `null` or empty strings `""`.
+
+```json
+{
+    "sql_query": "sql query generated for the input question",
+    "python_code": "code generated for the input question",
+    "plot_code": "python code generated to make the plot",
+    "analysis": "result of executing the sql query or the python code on the input dataset",
+    "visualisation": "presigned S3 URL to the image with default expiration time of 3600 seconds",
+    "insights": "insights generated",
+    "recommendations": "recommendations generated",
+    "tasks": "tasks generated"
+}
+```
+
+## Vector Store Management
+
+The vector store is an attribute of DataAnalyzr that allows storage and retrieval of details about input datasets and past query-response pairs.
+This information is a key component of the response generation flow in DataAnalyzr.
+It allows the system to understand the context of the query, generate accurate responses, and get smarter with use.
+For a detailed understanding of the role of a vector store in the DataAnalyzr module, refer to the [Vector Store](/pre-built-agents/data-analyzr/advanced-configuration/vector-store) section.
+
+The DataAnalyzr API provides vector store management endpoints for use with PostgreSQL, Amazon Redshift, Azure SQL, and MongoDB databases.
+You may use these endpoints to add examples and extra information to your vector store.
+
+Use this table to understand which examples are relevant to your use-case:
+
+| Analysis type   | Documentation                                            | DDL                                                                      | SQL Examples                                                             | Python code Examples                                                     | Plot code Examples                                       |
+| ----------------|:--------------------------------------------------------:|:------------------------------------------------------------------------:|:------------------------------------------------------------------------:|:------------------------------------------------------------------------:|:--------------------------------------------------------:|
+| SQL             | <Icon icon="circle-check" iconType="regular" size={20}/> | <Icon icon="circle-check" iconType="regular" size={20}/>                 | <Icon icon="circle-check" iconType="regular" size={20}/>                 | <Icon icon="circle-xmark" iconType="regular" color="#818589" size={20}/> | <Icon icon="circle-check" iconType="regular" size={20}/> |
+| Pythonic        | <Icon icon="circle-check" iconType="regular" size={20}/> | <Icon icon="circle-xmark" iconType="regular" color="#818589" size={20}/> | <Icon icon="circle-xmark" iconType="regular" color="#818589" size={20}/> | <Icon icon="circle-check" iconType="regular" size={20}/>                 | <Icon icon="circle-check" iconType="regular" size={20}/> |
+| NoSQL           | <Icon icon="circle-check" iconType="regular" size={20}/> | <Icon icon="circle-xmark" iconType="regular" color="#818589" size={20}/> | <Icon icon="circle-xmark" iconType="regular" color="#818589" size={20}/> | <Icon icon="circle-check" iconType="regular" size={20}/>                 | <Icon icon="circle-check" iconType="regular" size={20}/> |
+
+Refer the following sections for details on the API endpoints for adding information to the vector store:
+- [PostgreSQL Vector Store](/enterprise/data-analyzr/vector-store/postgres)
+- [Amazon Redshift Vector Store](/enterprise/data-analyzr/vector-store/redshift)
+- [Azure SQL Vector Store](/enterprise/data-analyzr/vector-store/azure-sql)
+- [MongoDB Vector Store](/enterprise/data-analyzr/vector-store/mongodb)
+
+
+### Response format
+
+The response format is a JSON object with the following fields:
+
+<ResponseField name="message" type="string">
+    A message indicating the status of the operation.
+</ResponseField>
+
+```json
+{
+    "message": "RAG vector store updated successfully"
+}
+```

@@ -1,0 +1,307 @@
+---
+title: Azure SQL Vector Store
+sidebarTitle: Azure SQL
+---
+
+```http
+POST https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/rag-vector-store/update-rag-vector-store-azure-sql
+```
+
+Update the vector store for use in analysis with an Azure SQL database.
+
+## URL Parameters
+
+<ParamField path='path' type='string' required>
+    Path to the vector store. Must be unique to your use-case. 
+    ```python
+    path = "path/to/vector/store/project_name_test"
+    ```
+</ParamField>
+
+<ParamField path='remake' type='boolean'>
+    Whether to remake the vector store. Defaults to `false`.
+</ParamField>
+
+<ParamField path='log_filename' type='string'>
+    Path to log file. 
+    ```python
+    log_filename = "path/to/logfile.csv"
+    ```
+</ParamField>
+
+## Body Parameters
+
+<ParamField path="config" type="dictionary" required>
+    Configuration for Azure SQL database.
+    <Expandable title="properties">
+        <ParamField path="server" type="string" required>
+            Server name of the Azure SQL database.
+        </ParamField>
+        <ParamField path="database" type="string" required>
+            Name of the Azure SQL database.
+        </ParamField>
+        <ParamField path="username" type="string" required>
+            Username for the Azure SQL database.
+        </ParamField>
+        <ParamField path="password" type="string" required>
+            Password for the Azure SQL database.
+        </ParamField>
+        <ParamField path="schema" type="list of strings">
+            List of schemas to include.
+        </ParamField>
+        <ParamField path="tables" type="list of strings">
+            List of tables to include.
+        </ParamField>
+    </Expandable>
+    ```python
+    config = {
+        "server": "your-server.database.windows.net",
+        "database": "dev",
+        "username": "azure-sql-admin"
+        "password": "AzureSQLAdminPassword1",
+        "schema": ["dbo"]
+        "tables": ["cars", "employees"],
+    }
+    ```
+</ParamField>
+
+<ParamField path="docs_examples" type="list of dictionaries">
+    List of documentation examples.
+    ```python
+    docs_examples = [
+        {
+            "docs": "This is some extra documentation for the users table.",
+        },
+        {
+            "docs": "This is some extra documentation for the messages table.",
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="ddl_examples" type="list of dictionaries">
+    List of DDL examples. Only relevant for SQL-based analysis.
+    ```python
+    ddl_examples = [
+        {
+            "ddl": "CREATE TABLE users (id INT, name VARCHAR(255))",
+        },
+        {
+            "ddl": "CREATE TABLE messages (id INT, message TEXT)",
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="sql_examples" type="list of dictionaries">
+    List of SQL examples. Only relevant for SQL-based analysis.
+    ```python
+    sql_examples = [
+        {
+            "question": "Get top 10 users",
+            "sql": "SELECT TOP 10 FROM users",
+        },
+        {
+            "question": "Get all the messages",
+            "sql": "SELECT * FROM messages",
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="python_code_examples" type="list of dictionaries">
+    List of Python code examples. Only relevant for Pythonic analysis.
+    ```python
+    # Assume that every table is a distinct pandas DataFrame
+    python_code_examples = [
+        {
+            "question": "Get top 10 users",
+            "python_code": "result = users['users'][:10]"
+            # users is a pandas DataFrame
+        },
+        {
+            "question": "How many messages are there?",
+            "python_code": "result = len(messages['messages'])"
+            # messages is a pandas DataFrame
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="plot_code_examples" type="list of dictionaries">
+    List of plot code examples.
+    ```python
+    # For SQL-based analysis
+    plot_code_examples = [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(pd.run_sql('SELECT * FROM users'), x='users', y='messages')",
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(pd.run_sql('SELECT date, message_count FROM messages'), x='date', y='message_count')",
+        },
+    ]
+
+    # For Pythonic analysis
+    plot_code_examples = [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(users, x='users', y='messages')",
+            # users is a pandas DataFrame
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(messages, x='date', y='message_count')",
+            # messages is a pandas DataFrame
+        },
+    ]
+    ```
+</ParamField>
+
+## Example Usage
+
+### SQL-based Analysis
+
+```python
+import json
+import requests
+
+api_key = "YOUR_API_KEY"
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+url = "https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/rag-vector-store/update-rag-vector-store-azure-sql"
+
+params = {
+    "path": "path/to/vector/store/project_name_test",
+    "remake": False,
+    "log_filename": "path/to/logfile.csv",
+}
+
+data = {
+    "config": {
+        "server": "your-server.database.windows.net",
+        "database": "dev",
+        "username": "azure-sql-admin"
+        "password": "AzureSQLAdminPassword1",
+        "schema": ["dbo"]
+        "tables": ["cars", "employees"],
+    },
+    "docs_examples": [
+        {
+            "docs": "This is some extra documentation for the users table.",
+        },
+        {
+            "docs": "This is some extra documentation for the messages table.",
+        },
+    ],
+    "ddl_examples": [
+        {
+            "ddl": "CREATE TABLE users (id INT, name VARCHAR(255))",
+        },
+        {
+            "ddl": "CREATE TABLE messages (id INT, message TEXT)",
+        },
+    ],
+    "sql_examples": [
+        {
+            "question": "Get top 10 users",
+            "sql": "SELECT TOP 10 FROM users",
+        },
+        {
+            "question": "Get all the messages",
+            "sql": "SELECT * FROM messages",
+        },
+    ],
+    "plot_code_examples": [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(pd.run_sql('SELECT * FROM users'), x='users', y='messages')",
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(pd.run_sql('SELECT date, message_count FROM messages'), x='date', y='message_count')",
+        },
+    ],
+}
+
+response = requests.post(url, headers=headers, params=params, data=json.dumps(data))
+
+print(response.json())
+```
+```json
+{
+    "message": "RAG vector store updated successfully"
+}
+```
+### Pythonic Analysis
+
+```python
+import json
+import requests
+
+api_key = "YOUR_API_KEY"
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+url = "https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/rag-vector-store/update-rag-vector-store-azure-sql"
+
+params = {
+    "path": "path/to/vector/store/project_name_test",
+    "remake": False,
+    "log_filename": "path/to/logfile.csv",
+}
+
+data = {
+    "config": {
+        "server": "your-server.database.windows.net",
+        "database": "dev",
+        "username": "azure-sql-admin"
+        "password": "AzureSQLAdminPassword1",
+        "schema": ["dbo"]
+        "tables": ["cars", "employees"],
+    },
+    "docs_examples": [
+        {
+            "docs": "This is some extra documentation for the users table.",
+        },
+        {
+            "docs": "This is some extra documentation for the messages table.",
+        },
+    ],
+    "python_code_examples": [
+        {
+            "question": "Get top 10 users",
+            "python_code": "result = users['users'][:10]",
+        },
+        {
+            "question": "How many messages are there?",
+            "python_code": "result = len(messages['messages'])"
+        },
+    ],
+    "plot_code_examples": [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(users, x='users', y='messages')",
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(messages, x='date', y='message_count')",
+        },
+    ],
+}
+
+response = requests.post(url, headers=headers, params=params, data=json.dumps(data))
+
+print(response.json())
+```
+```json
+{
+    "message": "RAG vector store updated successfully"
+}
+```

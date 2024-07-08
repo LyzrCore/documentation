@@ -1,0 +1,176 @@
+---
+title: PostgreSQL Analysis
+sidebarTitle: PostgreSQL
+---
+
+```http
+POST https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/data_analyzer/sync/get-analysis-from-postgres
+```
+
+Get data analysis results for a PostgreSQL database.
+
+## URL Parameters
+
+For details on all parameters, refer to the [URL Parameters](/enterprise/data-analyzr/configuration-objects#url-parameters) section.
+
+<ParamField path='query' type='string' required>
+    The query to be analyzed.
+    ```python
+    query = "Your query here"
+    ```
+</ParamField>
+
+<ParamField path='analysis_type' type='string' required>
+    The type of analysis to be performed. One of `ml`, `sql`, or `skip`.
+    ```python
+    analysis_type = "ml"
+    ```
+</ParamField>
+
+<ParamField path='include' type='list of strings'>
+    The outputs to include.
+</ParamField>
+
+<ParamField path='recommendations_output_type' type='string'>
+    Format for recommendations. Either `"json"` or `"text"`.
+</ParamField>
+
+<ParamField path='use_insights' type='boolean'>
+    Whether to use insights.
+</ParamField>
+
+<ParamField path='rerun_analysis' type='boolean'>
+    Whether to rerun analysis.
+</ParamField>
+
+<ParamField path='plot_path' type='string'>
+    Path to save visualisation image to.
+</ParamField>
+
+<ParamField path='logfilename' type='string'>
+    Path to log file.
+</ParamField>
+
+## Body Parameters
+
+For details on all parameters, refer to the [Body Parameters](/enterprise/data-analyzr/configuration-objects#body-parameters) section.
+
+<ParamField path='postgres_config' type='dictionary' required>
+    Configuration for PostgreSQL database.
+    <Expandable title="properties">
+        <ParamField path="host" type="string" required>
+            Hostname of the PostgreSQL database.
+        </ParamField>
+        <ParamField path="port" type="integer" required>
+            Port number of the PostgreSQL database.
+        </ParamField>
+        <ParamField path="database" type="string" required>
+            Name of the PostgreSQL database.
+        </ParamField>
+        <ParamField path="user" type="string" required>
+            Username for the PostgreSQL database.
+        </ParamField>
+        <ParamField path="password" type="string" required>
+            Password for the PostgreSQL database.
+        </ParamField>
+        <ParamField path="schema" type="list of strings">
+            List of schemas to include.
+        </ParamField>
+        <ParamField path="tables" type="list of strings">
+            List of tables to include.
+        </ParamField>
+    </Expandable>
+    ```python
+    postgres_config = {
+        "host": "your-database-hostname.com",
+        "port": 5439,
+        "database": "dev",
+        "user": "admin"
+        "password": "AdminPassword1",
+        "schema": ["public"],
+        "tables": ["cars", "employees"],
+    }
+    ```
+</ParamField>
+
+<ParamField path='vector_store_config' type='dictionary'>
+    Configuration for vector store.
+</ParamField>
+
+<ParamField path="context" type="dictionary">
+    Context for analysis and response generation.
+</ParamField>
+
+<ParamField path="counts" type="dictionary">
+    Counts configuration.
+</ParamField>
+
+<ParamField path="generator_model" type="dictionary">
+    Configuration for generator model.
+</ParamField>
+
+<ParamField path="analysis_model" type="dictionary">
+    Configuration for analysis model.
+</ParamField>
+
+<ParamField path="llm_access_credentials" type="dictionary">
+    Credentials for LLM.
+</ParamField>
+
+<ParamField path="s3_bucket_params" type="dictionary">
+    Parameters for S3 bucket.
+</ParamField>
+
+## Example Usage
+
+```python
+import json
+import requests
+
+api_key = "YOUR_API_KEY"
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+url = "https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/data_analyzer/sync/get-analysis-from-postgres"
+
+params = {
+    "query": "Your query here",
+    "analysis_type": "sql",
+    "include": ["sql_query", "insights", "recommendations"],
+    "recommendations_output_type": "text",
+    "use_insights": True,
+    "rerun_analysis": True,
+    "plot_path": "path/to/save/visualisation.png",
+    "logfilename": "path/to/logfile.csv"
+}
+
+data = {
+    "postgres_config": {
+        "host": "your-database-hostname.com",
+        "port": 5439,
+        "database": "dev",
+        "user": "admin"
+        "password": "AdminPassword1",
+        "schema": ["public"],
+        "tables": ["cars", "employees"],
+    }
+}
+
+response = requests.post(url, headers=headers, params=params, data=json.dumps(data))
+
+print(response.json())
+```
+```json
+{
+    "sql_query": "SELECT * FROM employees WHERE age > 30",
+    "python_code": null,
+    "plot_code": null,
+    "analysis": null,
+    "visualisation": "",
+    "insights": "- Insight 1\n- Insight 2\n- Insight 3",
+    "recommendations": "- Recommendation 1\n- Recommendation 2\n- Recommendation 3",
+    "tasks": "",
+}
+```

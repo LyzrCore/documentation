@@ -1,0 +1,66 @@
+---
+title: Getting Started
+sidebarTitle: Getting Started
+---
+
+This document explains how to interact with the DataAnalyzr API using Python scripts.
+This API is served at 
+
+```http
+https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/
+```
+
+
+## Prerequisites
+
+To use the DataAnalyzr API, you will need the following:
+
+1. An API key provided by Lyzr's technical team.
+2. A dataset that you want to ask questions on, and, if applicable, credentials that allow access to it.
+3. A system from where you intend to access the API endpoints. For example, for Python, you will need a virtual environment with the `requests` library.
+
+## Authentication
+
+To use the DataAnalyzr Enterprise API endpoints, you must authenticate by providing a valid key in the Authorization header of your request.
+The key should be provided in the following format:
+
+```python
+import requests
+
+api_key = 'YOUR_API_KEY'
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+requests.post('url-of-the-api-endpoint', headers=headers)
+```
+
+To get your API key, contact [Lyzr's technical team](mailto:contact@lyzr.ai).
+
+## API Endpoints
+
+The DataAnalyzr API provides two types of endpoints - analysis generation and vector store management.
+For details on these API endpoints and how to use them, visit the [API Endpoints](enterprise/data-analyzr/endpoints) section.
+1. **[Analysis generation endpoints](/enterprise/data-analyzr/api-endpoints#analysis-generation)**: These are the primary endpoints to get responses to your questions.
+2. **[Vector store management](/enterprise/data-analyzr/api-endpoints#vector-store-management)**: Use these endpoints to add examples and extra information to your vector store.
+
+## Troubleshooting and Support
+
+If you encounter any issues while using the DataAnalyzr API, follow the troubleshooting steps below:
+1. Validate your data source: Make sure you've entered accurate credentials and that the data source is online and accessible.
+2. Validate your API tokens: Ensure that you've entered the correct API key - for the DataAnalyzr API, any LLMs you may be using, and any other services you're using.
+3. Check with default parameters: If you're using any custom parameters, switch the default parameters to see if the issue is with your custom parameters.
+If the default parameters work, ensure that your custom parameters are correct and the services are accessible.
+For example, if you're using a custom LLM, connect to the LLM API directly to ensure that it is responding as expected.
+Similarly, if you're using a custom s3 bucket, ensure that you are able to connect and add files to it using the AWS Python SDK.
+4. Replicate with OSS: When possible, try to replicate your issue with the OSS version of DataAnalyzr to see if the issue is with the API or your data.
+In the OSS version, you can read the logs using this code:
+    
+    ```python
+    from lyzr.base.logger import read_csv_log
+    # read the logs from the csv file into a pandas dataframe
+    df = read_csv_log("path/to/logs.csv")
+    df.head()
+    ```
+5. Contact support: For additional support, enterprise users can reach out to [Lyzr's technical team](mailto:contact@lyzr.ai)
+Please provide as much detail as possible about the issue, including the endpoint you're trying to access, the data you're sending, and any error messages you're receiving.

@@ -1,0 +1,49 @@
+Endpoint: `DELETE /v2/environment/{env_id}`
+
+This endpoint allows you to delete an existing environment using its unique environment ID. This operation removes the environment and its associated configurations from the system.
+
+#### Parameters
+
+<ParamField path="env_id " type="string" required>
+   The unique identifier of the environment to be deleted.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X DELETE "https://agent.api.lyzr.app/v2/environment/{env_id}" \
+-H "accept: application/json"\
+-H "Content-Type: application/json" \
+-H "x-api-key: your_Lyzr_API_Key_Here"
+```
+```python Python
+import requests
+
+env_id = "66e1820aa64xxxxxx"
+url = f"https://agent.api.lyzr.app/v2/environment/{env_id}"
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.delete(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+    "message": "Environment deleted successfully."
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="message" type="string">
+  Confirmation of successful environment deletion
+</ParamField>

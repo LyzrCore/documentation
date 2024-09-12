@@ -1,0 +1,70 @@
+Endpoint: `GET /v1/sessions/{session_id}`
+
+This endpoint retrieves details of a specific session based on the provided `session_id`.
+#### Query String Parameters
+
+<ParamField path="timeout " type="string">
+    Optional timeout for the request.
+</ParamField>
+
+#### Parameters
+
+<ParamField path="session_id " type="string" required>
+ The unique ID of the session to retrieve.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://agent.api.lyzr.app/v1/sessions/{session_id}?timeout=30" \
+-H "accept: application/json"\
+-H "x-api-key: your_api_key_here"
+```
+```python Python
+import requests
+
+session_id = "123"
+url = f"https://agent.api.lyzr.app/v1/sessions/{session_id}?timeout=30"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_api_key_here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "active": false,
+  "session_id": "IITZ",
+  "_id": "66dac329a64b2c361cb39286",
+  "user_id": "123",
+  "created_at": "2024-09-06T08:54:01.978000"
+}
+
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="active" type="boolean">
+  Indicates if the session is currently active.
+</ParamField>
+<ParamField path="session_id" type="string">
+  The unique identifier of the session.
+</ParamField>
+<ParamField path="_id" type="string">
+  The internal ID of the session in the database.
+</ParamField>
+<ParamField path="user_id" type="string">
+  The ID of the user associated with the session.
+</ParamField>
+<ParamField path="created_at" type="string">
+  The timestamp when the session was created.
+</ParamField>
+

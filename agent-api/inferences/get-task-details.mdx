@@ -1,0 +1,64 @@
+Endpoint: `GET /v2/task/{task_id}`
+
+This endpoint allows you to retrieve the current status of a specific task. This is useful for tracking the progress of ongoing tasks or retrieving the results once a task is completed. The task ID is required to fetch the corresponding task details.
+
+#### Parameters
+
+<ParamField path="task_id " type="string" required>
+  The unique identifier of the task.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://agent.api.lyzr.app/v2/task/{task_id}" \
+ -H "accept: application/json"\
+ -H "x-api-key: your_Lyzr_API_Key_Here" 
+```
+```python Python
+import requests
+
+# Define the task ID
+task_id = "91b97d32-0e60-4e75-89xxxxxx"
+
+# Define the API URL
+url = f"https://agent.api.lyzr.app/v2/task/{task_id}"
+
+# Define the headers
+headers = {
+    "Accept": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "task_id": "91b97d32-0e60-4e75-89xxxxxx",
+  "status": "completed",
+  "result": {
+    "response": "I'm here to assist you with property recommendations! Please provide me with your requirements or preferences for the type of property you're looking for, and I'll recommend the best options for you."
+  }
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="task_id" type="string">
+  The unique identifier of the task.
+</ParamField>
+<ParamField path="status" type="string">
+  The current status of the task (e.g., "pending", "completed")
+</ParamField>
+<ParamField path="result" type="string">
+  The result of the task, if completed.
+  </ParamField>
+<ParamField path="response" type="string">
+  The agent's response to the task.
+</ParamField>

@@ -1,0 +1,87 @@
+Endpoint: `GET /v2/activities`
+
+This endpoint retrieves all activities for a specific user and session. The activities can include any actions or interactions made by the user during that session.
+
+
+#### Query-String Parameters
+
+<ParamField path="user_id " type="string" required>
+ The unique ID of the user.
+</ParamField>
+<ParamField path="session_id " type="string" required>
+ The unique ID of the session for that user.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://agent.api.lyzr.app/v2/activities?user_id=12345&session_id=abcdef" \
+     -H "x-api-key: your-api-key-here" \
+     -H "accept: application/json"
+```
+```python Python
+import requests
+
+params = {
+    "user_id": "12345",
+    "session_id": "abcdef"
+}
+
+url = "https://agent.api.lyzr.app/v2/activities"
+headers = {
+    "x-api-key": "your-api-key-here",
+    "accept": "application/json"
+}
+
+response = requests.get(url, headers=headers, params=params)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "_id": "66d9758717901xxxxxx",
+    "session_id": "abcdef",
+    "user_id": "12345",
+    "log_data": {
+      "module": "FeatureType.TOOL_CALLING",
+      "content": "THOUGHT: The tweet about the latest AI trends has been successfully posted. \nOBSERVATION: The tweet has been created and posted on Twitter.\nNEXT_ACTION: Mark the task as complete.\n\n<EXECUTION_COMPLETE>\n\nSummary: I created a tweet highlighting the latest AI trends, including generative AI, ethics, NLP advancements, applications in healthcare and finance, and automation. The tweet was successfully posted on Twitter."
+    },
+    "time_stamp": "2024-09-05 09:10:31"
+  },
+  {
+    "_id": "66d9764117901bcxxxxxx",
+    "session_id": "abcdef",
+    "user_id": "12345",
+    "log_data": {
+      "module": "FeatureType.TOOL_CALLING",
+      "content": "THOUGHT: The tweet about OpenAI has been successfully posted. \nOBSERVATION: The tweet has been shared on Twitter successfully. \nNEXT_ACTION: Mark the task as complete.\n\n<EXECUTION_COMPLETE>\n\nSummary: I created and posted a tweet on OpenAI, highlighting their commitment to safe and beneficial AI technologies. The tweet included relevant hashtags and was successfully shared on Twitter."
+    },
+    "time_stamp": "2024-09-05 09:13:37"
+  }
+]
+
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="_id" type="string">
+  Unique ID of the activity.
+</ParamField>
+<ParamField path="session_id" type="string">
+  Session ID associated with the activity.
+</ParamField>
+<ParamField path="user_id" type="string">
+  User ID associated with the session.
+  </ParamField>
+<ParamField path="log_data" type="object">
+  Detailed log of the activity.
+</ParamField>
+<ParamField path="time_stamp" type="object">
+  Timestamp of when the activity occurred.
+</ParamField>

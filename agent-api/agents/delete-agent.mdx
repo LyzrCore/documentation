@@ -1,0 +1,49 @@
+Endpoint: `DELETE /v2/agent/{agent_id}`
+
+This endpoint is used to delete a specific agent identified by its unique agent ID. This operation removes the agent and its associated data from the system.
+
+#### Parameters
+
+<ParamField path="agent_id " type="string" required>
+  The unique identifier of the agent to be deleted.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X DELETE "https://agent.api.lyzr.app/v2/agent/{agent_id}" \
+     -H "accept: application/json"\
+     -H "Content-Type: application/json" \
+     -H "x-api-key: your_Lyzr_API_Key_Here"
+```
+```python Python
+import requests
+
+agent_id = "60d0fe4f531xxxxxx"  # Replace with the actual agent ID
+
+url = f"https://agent.api.lyzr.app/v2/agent/{agent_id}"
+
+headers = {
+    "Accept": "application/json"
+}
+
+response = requests.delete(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+```json 200
+{
+    "message": "Agent deleted successfully."
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="message" type="dict">
+  Confirmation message about the agent’s deletion.
+</ParamField>

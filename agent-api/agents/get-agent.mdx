@@ -1,0 +1,61 @@
+Endpoint: `GET /v2/agent/{agent_id}`
+
+This endpoint retrieves detailed information about a specific agent identified by its unique agent ID.
+
+#### Parameters
+
+<ParamField path="agent_id " type="string" required>
+  The unique identifier of the agent whose details are to be retrieved.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://agent.api.lyzr.app/v2/agent/{agent_id}" \
+     -H "Accept: application/json" \
+     -H "content-type: application/json"\
+     -H "x-api-key: your_Lyzr_API_Key_Here" 
+```
+```python Python
+import requests
+
+agent_id = "60d0fe4f531xxxxxx"  # Replace with the actual agent ID
+
+url = f"https://agent.api.lyzr.app/v2/agent/{agent_id}"
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+```json 200
+{
+  "env_id": "66e1820aaxxxxxxx",
+  "system_prompt": "Hello, I am your virtual assistant.",
+  "name": "Virtual Assistant",
+  "agent_description": "An assistant for handling general queries and tasks."
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="env_id" type="dict">
+  Identifier for the agent's environment.
+</ParamField>
+<ParamField path="system_prompt" type="dict">
+  Initial prompt for agent behavior.
+</ParamField>
+<ParamField path="name" type="dict">
+  Name of the agent.
+</ParamField>
+<ParamField path="agent_description" type="dict">
+  Description of the agent’s purpose
+</ParamField>

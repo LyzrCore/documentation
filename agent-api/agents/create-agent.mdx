@@ -1,0 +1,71 @@
+Endpoint: `POST /v2/agent`
+
+This endpoint is used to create a new agent within the system. This request requires configuration details for the agent and returns a unique ID for the newly created agent.
+
+#### Parameters
+<ParamField path="env_id" type="string" required>
+  The ID of the environment in which the agent will operate. This links the agent to a specific environment configuration.
+</ParamField>
+<ParamField path="system_prompt" type="string" required>
+  The initial system prompt or instruction that sets the behavior or context for the agent. This prompt guides the agent's responses and interactions.
+</ParamField>
+<ParamField path="name" type="string" required>
+  The name of the Agent.
+</ParamField>
+<ParamField path="agent_description " type="string" required>
+  A description of the agent's purpose or functionality. This provides additional context and details about the agent's role and capabilities.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST "https://agent.api.lyzr.app/v2/agent" \
+     -H "accept: application/json"\
+     -H "Content-Type: application/json" \
+     -H "x-api-key: your_Lyzr_API_Key_Here" \
+     -d '{
+           "env_id": "60d0fe4f531xxxxxx",  # Replace with the actual environment ID
+           "system_prompt": "Hello, I am your virtual assistant.",
+           "name": "Virtual Assistant",
+           "agent_description": "An assistant for handling general queries and tasks."
+         }'
+
+
+```
+```python Python
+import requests
+
+agent_config = {
+    "env_id": "60d0fe4f531xxxxxx",  # Replace with the actual environment ID
+    "system_prompt": "Hello, I am your virtual assistant.",
+    "name": "Virtual Assistant",
+    "agent_description": "An assistant for handling general queries and tasks."
+}
+
+url = "https://agent.api.lyzr.app/v2/agent"
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.post(url, headers=headers, json=agent_config)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+    "agent_id": "60d0fe4f531xxxxxx"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="agent_id" type="string">
+  Unique identifier of the created agent.
+</ParamField>

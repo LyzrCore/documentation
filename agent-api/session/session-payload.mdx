@@ -1,0 +1,45 @@
+Endpoint: `GET /v1/sessions/{session_id}/summary`
+
+Retrieve a summary of the chat payload for a specific session. This endpoint provides a detailed summary of all interactions between the user and the assistant during the session, formatted as a single payload.
+
+#### Path Parameters
+
+<ParamField path="session_id " type="string" required>
+    The unique ID of the session.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://api.example.com/v1/sessions/{session_id}/summary" \
+-H "x-api-key: your_api_key_here"
+```
+```python Python
+import requests
+
+session_id = "IITZ"
+url = f"https://api.example.com/v1/sessions/{session_id}/summary"
+headers = {
+    "x-api-key": "your_api_key_here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "payload": "user: want to buy property between $400000 to $700000 in new jearsey.\nassistant: Based on your budget of $400,000 to $700,000, I found a suitable property for you:\n\n### Property Recommendation:\n\n1. **Property Address:** 10.357 Randolph Ave, Jersey City, NJ 07304  \n   **Price:** $724,500  \n   **Beds:** 3  \n   **Baths:** 3  \n   **Area:** 1981 sqft  \n   **Description:** This property is a rare opportunity to own a well-maintained income-producing corner mixed-use property in booming Jersey City, just minutes from downtown and near new developments with NYC views. It features separate electric/gas systems, two rental units, and one commercial storefront.  \n   **Link:** [View Listing](https://www.zillow.com/homedetails/357-Randolph-Ave-Jersey-City-NJ-07304/352146397_zpid/)  \n   **Score:** 0.8058  \n\nIf you're interested in discussing more or want to see additional properties, feel free to book a meeting using the link below:  \n[Book a Meeting](https://calendly.com/harshit-nariya85)\nuser: suggest me property under $1M\nassistant: Here are some properties under $1 million that you might find interesting:\n\n1. **Property Address:** 6. 362 Hoboken Ave UNIT 302, Jersey City, NJ 07306  \n   **Price:** $162,661  \n   **Beds:** 1  \n   **Baths:** 1  \n   **Area:** 604 sqft  \n   **Virtual Tour:** Not available  \n   **Listing Link:** Not available  \n\n2. **Property Address:** 6. 362 Hoboken Ave UNIT 302, Jersey City, NJ 07306  \n   **Price:** $388,888  \n   **Beds:** 3  \n   **Baths:** 2  \n   **Area:** 2500 sqft  \n   **Virtual Tour:** Not available  \n   **Listing Link:** Not available  \n\n3. **Property Address:** 10. 357 Randolph Ave, Jersey City, NJ 07304  \n   **Price:** $724,500  \n   **Beds:** 3  \n   **Baths:** 3  \n   **Area:** 1981 sqft  \n    I created ell me about this website? What's it called and what's it for?\n\nAssistant: It seems you are looking for information about a specific website, but you haven't provided the name or URL of the website in question. If you could provide me with the website's name or some context, I'd be happy to help you learn more about it!"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="payload" type="string">
+  Summary of the chat payload, including user and assistant interactions.
+</ParamField>
+

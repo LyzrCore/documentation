@@ -60,6 +60,10 @@
         {
             "name": "Enterprise",
             "url": "enterprise"
+        },
+        {
+            "name":"Lyzr Agent API",
+            "url": "agent-api"
         }
     ],
     "navigation": [{
@@ -229,6 +233,82 @@
                     "pages": [
                         "enterprise/aws-marketplace/chat-agent",
                         "enterprise/aws-marketplace/chat-agent-api"
+                    ]
+                }
+            ]
+        },
+        {
+            "group": "Lyzr Agent API",
+            "pages": [
+                "agent-api/introduction",
+                {
+                    "group": "Components",
+                    "pages": [
+                        {
+                            "group": "Environment",
+                            "pages":[
+                                "agent-api/environment/introduction",
+                                "agent-api/environment/create-environment",
+                                "agent-api/environment/get-environment",
+                                "agent-api/environment/update-environment",
+                                "agent-api/environment/delete-environment"
+                            ]
+                        },
+                        {
+                            "group": "Agents",
+                            "pages":[
+                                "agent-api/agents/introduction",
+                                "agent-api/agents/create-agent",
+                                "agent-api/agents/get-agent",
+                                "agent-api/agents/update-agent",
+                                "agent-api/agents/delete-agent"
+                            ]
+                        },
+                        {
+                            "group": "Inferences",
+                            "pages":[
+                                "agent-api/inferences/chat",
+                                "agent-api/inferences/stream-chat",
+                                "agent-api/inferences/task",
+                                "agent-api/inferences/get-task-details"
+                            ]
+                        },
+                        {
+                            "group": "Tools",
+                            "pages":[
+                                "agent-api/tools/create-tool"
+                            ]
+                        },
+                        {
+                            "group": "Activity",
+                            "pages":[
+                                "agent-api/activity/get-activities"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "group": "User And Session",
+                    "pages": [
+                        {
+                            "group": "User",
+                            "pages": [
+                                "agent-api/user/create-user",
+                                "agent-api/user/get-user",
+                                "agent-api/user/update-user"
+                            ]
+                        },
+                        {
+                            "group": "Session",
+                            "pages": [
+                                "agent-api/session/get-user-session",
+                                "agent-api/session/create-session",
+                                "agent-api/session/get-session",
+                                "agent-api/session/update-session",
+                                "agent-api/session/session-history",
+                                "agent-api/session/session-payload"
+                            ]
+                        }
                     ]
                 }
             ]

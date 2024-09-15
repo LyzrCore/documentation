@@ -1,0 +1,69 @@
+Endpoint: `POST /v2/chat/`
+
+This endpoint allows interaction with an agent by sending a chat request. This enables a user to initiate or continue a conversation with the agent by passing relevant session data.
+
+#### Parameters
+
+<ParamField path="user_id " type="string" required>
+  The unique identifier of the user interacting with the agent.
+</ParamField>
+<ParamField path="agent_id " type="string" required>
+  The unique identifier of the agent handling the chat.
+</ParamField>
+<ParamField path="session_id " type="string" required>
+  The session ID to maintain context across multiple interactions.
+</ParamField>
+<ParamField path="message " type="string" required>
+  The user's message or query to the agent.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST "https://agent.api.lyzr.app/v2/chat/" \
+     -H "accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "x-api-key: your_Lyzr_API_Key_Here" \
+     -d '{
+           "user_id": "user123",
+           "agent_id": "60d0fe4f531xxxxxx",
+           "session_id": "session123",
+           "message": "Hello, how can I improve my productivity?"
+         }'
+```
+```python Python
+import requests
+
+url = "https://agent.api.lyzr.app/v2/chat/"
+
+data = {
+    "user_id": "user123",  # Replace with actual user ID
+    "agent_id": "60d0fe4f531xxxxx",  # Replace with actual agent ID
+    "session_id": "session123",  # Replace with actual session ID
+    "message": "Hello, how can I improve my productivity?"
+}
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.post(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+    "response": "To improve productivity, you can focus on time management, set clear goals, and minimize distractions."
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="response" type="string">
+  The agent's reply based on the user's input message.
+</ParamField>

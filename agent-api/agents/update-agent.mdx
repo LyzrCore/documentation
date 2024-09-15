@@ -1,0 +1,78 @@
+Endpoint: `PUT /v2/agent/{agent_id}`
+
+This endpoint updates the configuration of an existing agent specified by its unique agent ID. This request allows modifications to the agent’s settings and details.
+
+#### Parameters
+
+<ParamField path="agent_id " type="string" required>
+  The unique identifier of the agent to be updated.
+</ParamField>
+
+#### Request Body Parameters
+
+<ParamField path="env_id " type="string" required>
+  The updated ID of the environment associated with the agent.
+</ParamField>
+<ParamField path="system_prompt " type="string" required>
+  The updated system prompt or instruction for the agent.
+</ParamField>
+<ParamField path="name " type="string" required>
+  The updated name of the agent.
+</ParamField>
+<ParamField path="agent_description " type="string" required>
+  The updated description of the agent’s purpose and functionality.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X PUT "https://agent.api.lyzr.app/v2/agent/{agent_id}" \
+     -H "accept: application/json"\
+     -H "Content-Type: application/json" \
+     -H "x-api-key: your_Lyzr_API_Key_Here" \
+     -d '{
+           "env_id": "66e1820aa64xxxxxx",
+           "system_prompt": "Hello, I am your updated virtual assistant.",
+           "name": "Updated Virtual Assistant",
+           "agent_description": "An updated assistant for handling queries and tasks."
+         }'
+```
+```python Python
+import requests
+
+agent_id = "60d0fe4f531xxxxx"  # Replace with the actual agent ID
+
+agent_config = {
+    "env_id": "66e1820aa6xxxxxx",
+    "system_prompt": "Hello, I am your updated virtual assistant.",
+    "name": "Updated Virtual Assistant",
+    "agent_description": "An updated assistant for handling queries and tasks."
+}
+
+url = f"https://agent.api.lyzr.app/v2/agent/{agent_id}"
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.put(url, headers=headers, json=agent_config)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+```json 200
+{
+    "message": "Agent updated successfully"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="message" type="dict">
+  Confirmation that the agent was updated successfully.
+</ParamField>

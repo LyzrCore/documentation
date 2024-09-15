@@ -1,0 +1,75 @@
+Endpoint: `POST /v2/stream/`
+
+This endpoint allows for real-time or streamed interaction with an agent. It is designed for continuous dialogue where the agent's responses are streamed back to the user incrementally, enhancing the real-time interaction experience.
+
+#### Parameters
+
+<ParamField path="user_id " type="string" required>
+  The unique identifier of the user interacting with the agent.
+</ParamField>
+<ParamField path="agent_id " type="string" required>
+  The unique identifier of the agent handling the chat.
+</ParamField>
+<ParamField path="session_id " type="string" required>
+ The session ID to maintain context across multiple interactions.
+</ParamField>
+<ParamField path="message " type="string" required>
+  The user's message or query to the agent.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST "https://agent.api.lyzr.app/v2/stream/" \
+ -H "accept: application/json"\
+ -H "content-type: application/json"\
+ -H "x-api-key: your_Lyzr_API_Key_Here" \
+     -d '{
+           "user_id": "user123",
+           "agent_id": "60d0fe4f5311236168a109ca",
+           "session_id": "session123",
+           "message": "Can you stream your response?"
+         }'
+
+```
+```python Python
+import requests
+
+url = "https://agent.api.lyzr.app/v2/stream/"
+
+data = {
+    "user_id": "user123",  # Replace with actual user ID
+    "agent_id": "60d0fe4f5311236168a109ca",  # Replace with actual agent ID
+    "session_id": "session123",  # Replace with actual session ID
+    "message": "Can you stream your response?"
+}
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.post(url, headers=headers, json=data, stream=True)
+
+# Handle the streamed response
+if response.status_code == 200:
+    for chunk in response.iter_content(chunk_size=128):
+        print(chunk.decode("utf-8"))
+else:
+    print(f"Error: {response.status_code} - {response.text}")
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+LYZR_AGENT: To improve productivity, you can focus on time management, set clear goals, and minimize distractions.
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="response" type="string">
+  The agent’s response sent back incrementally.
+</ParamField>

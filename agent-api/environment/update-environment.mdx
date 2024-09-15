@@ -1,0 +1,120 @@
+Endpoint: `PUT /v2/environment/{env_id}`
+
+This endpoint allows you to update the configuration of an existing environment identified by its unique environment ID. This endpoint accepts new configuration details and returns a confirmation message upon successful update.
+
+#### Parameters
+
+<ParamField path="env_id " type="string" required>
+  The unique identifier of the environment to update.
+</ParamField>
+
+#### Request Body
+<ParamField path="config" type="json" required>
+  The request body must be a JSON object with the updated environment configuration details.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X PUT "https://agent.api.lyzr.app/v2/environment/{env_id}" \
+     -H "accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "x-api-key: your_Lyzr_API_Key_Here"\
+     -d '{
+           "env_config": {
+               "name": "Updated Environment",
+               "features": [
+                   {
+                       "type": "TOOL_CALLING",
+                       "priority": 1,
+                       "config": {
+                           "max_tries": 10
+                       }
+                   }
+               ],
+               "tools": [
+                   "new_tool_id"  # Replace with the actual tool ID
+               ],
+               "llm_config": {
+                   "provider": "openai",
+                   "model": "gpt-4o-mini",
+                   "config": {
+                       "temperature": 0.7,
+                       "top_p": 0.85
+                   },
+                   "env": {
+                       "OPENAI_API_KEY": "your_new_openai_api_key_here"  # Replace with your new OpenAI API key
+                   }
+               }
+           }
+       }'
+
+
+```
+```python Python
+import requests
+
+env_id = "60d0fe4f531xxxxxx"  # Replace with your environment ID
+
+updated_config = {
+    "name": "Updated Environment",
+    "features": [
+        {
+            "type": "TOOL_CALLING",
+            "priority": 1,
+            "config": {
+                "max_tries": 10
+            }
+        }
+    ],
+    "tools": [
+        "new_tool_id"  # Replace with the actual tool ID you want to use
+    ],
+    "llm_config": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "config": {
+            "temperature": 0.7,
+            "top_p": 0.85
+        },
+        "env": {
+            "OPENAI_API_KEY": "your_new_openai_api_key_here"  # Replace with your new OpenAI API key
+        }
+    }
+}
+
+url = f"https://agent.api.lyzr.app/v2/environment/{env_id}"
+headers = {
+    "x-api-key": "your_Lyzr_API_Key_Here",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "env_config": updated_config
+}
+
+response = requests.put(url, headers=headers, json=payload)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "message": "Environment updated successfully",
+  "environment_id": "66e1820aa6xxxxxx"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="message" type="string">
+  Confirmation message of successful update.
+</ParamField>
+<ParamField path="environment_id" type="string">
+  ID of the updated environment.
+</ParamField>

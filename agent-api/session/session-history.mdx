@@ -1,0 +1,66 @@
+Endpoint: `GET /v1/sessions/{session_id}/history`
+
+Retrieve the chat history for a specific session. This endpoint provides details on all interactions between the user and the assistant during the session.
+
+#### Path Parameters
+
+<ParamField path="session_id " type="string" required>
+    The unique ID of the session.
+</ParamField>
+
+#### Query String Parameters
+<ParamField path="unix " type="boolean">
+ Optional, filter results by Unix timestamp if needed.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://agent.api.lyzr.app/v1/sessions/{session_id}/history" \
+-H "x-api-key: your_api_key_here"
+```
+```python Python
+import requests
+
+session_id = "IITZ"
+url = f"https://agent.api.lyzr.app/v1/sessions/{session_id}/history"
+headers = {
+    "x-api-key": "your_api_key_here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+[
+  {
+    "role": "user",
+    "content": "want to buy property between $400000 to $700000 in new jearsey.",
+    "created_at": "2024-08-30T09:41:44.355000"
+  },
+  {
+    "role": "assistant",
+    "content": "Based on your budget of $400,000 to $700,000.",
+    "created_at": "2024-08-30T09:41:44.357000"
+  }
+]
+
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="role" type="string">
+  Role of the participant (`user` or `assistant`).
+</ParamField>
+<ParamField path="content" type="string">
+  The content of the message exchanged.
+</ParamField>
+<ParamField path="created_at" type="string">
+  Timestamp of when the message was created.
+</ParamField>
+

@@ -1,0 +1,59 @@
+Endpoint: `POST /v1/sessions/`
+
+This endpoint creates a new session for a user. You need to provide the `user_id` and optional metadata in the request body.
+
+
+#### Parameters
+
+<ParamField path="user_id " type="string" required>
+ The unique ID of the user for whom the session is created.
+</ParamField>
+<ParamField path="metadata " type="object">
+ Additional metadata related to the session.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST https://agent.api.lyzr.app/v1/sessions/ \
+-H "x-api-key: your_api_key_here" \
+-H "Content-Type: application/json" \
+-d '{
+  "user_id": "string",
+  "metadata": {}
+}'
+```
+```python Python
+import requests
+
+url = "https://agent.api.lyzr.app/v1/sessions/"
+headers = {
+    "x-api-key": "your_api_key_here",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "user_id": "string",
+    "metadata": {}
+}
+
+response = requests.post(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "session_id": "66e2a2a6a64bxxxxxxx"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="session_id" type="string">
+  The unique identifier for the newly created session.
+</ParamField>

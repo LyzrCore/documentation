@@ -1,0 +1,66 @@
+Endpoint: `PUT /v1/users/{user_id}`
+
+This endpoint update an existing user's information. It requires the user’s unique ID (user_id) to be passed in the request path, and the updated user details must be provided in the request body.
+
+#### Parameters
+<ParamField path="user_id" type="string" required>
+  The unique ID of the user whose details need to be updated.
+</ParamField>
+
+<ParamField path="email" type="string" required>
+  The updated email address of the user
+</ParamField>
+<ParamField path="first_name" type="string" required>
+  The updated first name of the user.
+</ParamField>
+<ParamField path="last_name" type="string" required>
+  The updated last name of the user.
+</ParamField>
+<ParamField path="metadata" type="object" required>
+  A JSON object containing any additional metadata or custom fields for the user.
+</ParamField>
+
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X PUT https://api.example.com/v1/users/{user_id} \
+-H "x-api-key: your_api_key_here" \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "name@example.com",
+  "first_name": "name",
+  "last_name": "abc",
+  "metadata": {}
+}'
+
+
+```
+```python Python
+import requests
+
+url = "https://api.example.com/v1/users/{user_id}"
+headers = {
+    "x-api-key": "your_api_key_here",
+    "Content-Type": "application/json"
+}
+data = {
+    "email": "name@example.com",
+    "first_name": "name",
+    "last_name": "abc",
+    "metadata": {}
+}
+
+response = requests.put(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+"User updated successfully"
+```
+
+</ResponseExample>

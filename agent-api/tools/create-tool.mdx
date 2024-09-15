@@ -1,0 +1,178 @@
+Endpoint: `POST /v2/tool`
+
+This endpoint allows you to create new tools from an OpenAPI schema. These tools are used by agents to access external APIs. A user must provide the OpenAPI schema, and the system will register the tool and return the tool IDs.
+
+#### Query-String Parameters
+
+<ParamField path="user_id " type="string" required>
+  The unique ID of the user creating the tool.
+</ParamField>
+
+#### Parameters
+
+<ParamField path="schema " type="object" required>
+  The OpenAPI schema defining the tool’s structure.<br />
+  <Tip>You can generate your [OpenAPI schema here](https://chatgpt.com/g/g-LTPfeQ1eN-agent-api-schema-builder), which defines the structure and functionality of your tool in a standardized format.</Tip>
+
+  Example OpenAPI Schema:
+  ```json
+    {
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "description": "API for fetching webpage content.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/fetch-content/": {
+      "post": {
+        "summary": "Fetch Content",
+        "description": "Fetches content from the specified webpage URL.",
+        "operationId": "fetch_content_fetch_content__post",
+        "parameters": [
+          {
+            "name": "webpage_url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Webpage URL",
+              "description": "The URL of the webpage from which to fetch content."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string",
+                      "description": "The content of the webpage."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "type": "object",
+        "title": "HTTPValidationError",
+        "description": "Validation error response returned when the request fails validation.",
+        "properties": {
+          "detail": {
+            "type": "array",
+            "title": "Detail",
+            "description": "A list of validation errors.",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "title": "ValidationError",
+        "description": "Details about a specific validation error.",
+        "properties": {
+          "loc": {
+            "type": "array",
+            "title": "Location",
+            "description": "The location of the error in the request data.",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message",
+            "description": "A human-readable message describing the error."
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type",
+            "description": "The type of error encountered."
+          }
+        },
+        "required": ["loc", "msg", "type"]
+      }
+    }
+  },
+  "servers":[
+    {
+        "url":"https://fetch.example.com",
+        "description":"Fetch Content Server"
+    }
+  ]
+}
+
+  ```
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST "https://agent.api.lyzr.app/v2/tool" \
+     -H "accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '<Your-OPENAPI-SCHEMA>'
+```
+```python Python
+import requests
+
+data = <Your-OPENAPI-SCHEMA>
+
+url = "https://agent.api.lyzr.app/v2/tool"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+    }
+
+response = requests.post(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "tool_ids": [
+    "tool_abc123",
+    "tool_def456"
+  ]
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="tool_ids" type="string[]">
+  List of IDs for the tools that were created.
+</ParamField>

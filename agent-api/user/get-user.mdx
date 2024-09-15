@@ -1,0 +1,63 @@
+Endpoint: `GET /v1/users/{user_id}`
+
+This endpoint retrieves details of a specific user by their user_id. You will need an API key for authentication.
+
+#### Parameters
+<ParamField path="user_id" type="string" required>
+  The unique ID of the user.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET https://agent.api.lyzr.app/v1/users/{user_id} \
+-H "x-api-key: your_api_key_here" \
+-H "Content-Type: application/json"
+
+```
+```python Python
+import requests
+
+user_id = "1234"
+url = "https://agent.api.lyzr.app/v1/users/{user_id}"
+headers = {
+    "x-api-key": "your_api_key_here",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+    "user_id": "123",
+    "email": "abc@example.com",
+    "first_name": "abc",
+    "last_name": "abc",
+    "metadata": {}
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="user_id" type="string" required>
+  The unique ID of the user.
+</ParamField>
+<ParamField path="email" type="string" required>
+  Email address of the user.
+</ParamField>
+<ParamField path="first_name" type="string" required>
+  First name of the user.
+</ParamField>
+<ParamField path="last_name" type="string" required>
+  Last name of the user.
+</ParamField>
+<ParamField path="metadata " type="object" required>
+  Additional metadata related to the user.
+</ParamField>

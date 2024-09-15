@@ -1,0 +1,80 @@
+Endpoint: `PUT /v1/sessions/{session_id}`
+
+This endpoint updates the details of a specific session based on the provided `session_id`.
+
+#### Path Parameters
+
+<ParamField path="session_id " type="string" required>
+    The unique ID of the session to update.
+</ParamField>
+
+#### Parameters
+<ParamField path="user_id " type="string" required>
+ The ID of the user associated with the session.
+</ParamField>
+<ParamField path="metadata " type="object" required>
+ Optional metadata associated with the session.
+</ParamField>
+
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X PUT "https://agent.api.lyzr.app/v1/sessions/{session_id}" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your_api_key_here" \
+-d '{
+  "user_id": "1234",
+  "metadata": {}
+}'
+
+```
+```python Python
+import requests
+import json
+
+# Define the API URL and headers
+session_id = "IITZ"
+url = f"https://agent.api.lyzr.app/v1/sessions/{session_id}"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_api_key_here"
+}
+data = {
+    "user_id": "7422",
+    "metadata": {}
+}
+
+response = requests.put(url, headers=headers, data=json.dumps(data))
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "session_id": "IITZ",
+  "metadata": {}
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="active" type="boolean">
+  Indicates if the session is currently active.
+</ParamField>
+<ParamField path="session_id" type="string">
+  The unique identifier of the session.
+</ParamField>
+<ParamField path="_id" type="string">
+  The internal ID of the session in the database.
+</ParamField>
+<ParamField path="user_id" type="string">
+  The ID of the user associated with the session.
+</ParamField>
+<ParamField path="created_at" type="string">
+  The timestamp when the session was created.
+</ParamField>
+

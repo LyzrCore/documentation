@@ -1,0 +1,19 @@
+---
+title: Introduction
+sidebarTitle: "Introduction"
+---
+
+The Environment defines the foundational modules, features, available tools, and configurations for your agent's operation. It categorizes modules into sync (modifying message streams) and background (read-only), enabling various capabilities such as retrieval, memory management, and tool access. External APIs can be integrated via OpenAPI schemas, and API keys are used for interaction with external services like OpenAI. The environment ensures robust, customizable agent behavior.
+
+## Available Modules
+| Module Type           | SYNC/Background | Description |
+|-----------------------|------------------|-------------|
+| SELF_REFLECTION       | SYNC             | Enables self-reflection capabilities for the agent, either by using the same model or a different model. |
+| OPEN_AI_RETRIEVAL_ASSISTANT | SYNC      | Offers retrieval capabilities using OpenAI's retriever. |
+| TOOL_CALLING          | SYNC             | Allows API tool calling. The agent can call any registered OpenAPI schema-supported API. |
+| KNOWLEDGE_BASE        | SYNC             | Provides Lyzr RAG capabilities with fully customizable retriever configurations. |
+| LONG_TERM_MEMORY      | SYNC             | Provides long contextual memory using multiple retrieval and summarization strategies. |
+| SHORT_TERM_MEMORY     | SYNC             | Provides short contextual memory for a configurable number of messages (n), determining how many messages to fetch per inference. |
+| STRUCTURED_MEMORY     | Background       | Acts as a structured JSON memory collector, storing structured information during conversations or task processes. |
+| LOGGING               | Background       | Collects and logs structured JSON data, ensuring the smooth functioning and troubleshooting of agent conversations or processes. |
+| HUMANIZER             | SYNC             | Humanizes the output of the agent, making it more relatable and natural for users. |

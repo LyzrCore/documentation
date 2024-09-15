@@ -1,0 +1,164 @@
+## Overview
+
+Endpoint: `POST /v2/environment`
+
+This endpoint allows you to create a new environment for your agent. An environment contains configurations, features, and tools that define the operational scope of the agent, including the use of external APIs and large language models (LLMs).
+
+#### Parameters
+
+<ParamField path="name" type="string" required>
+  The name of the environment.
+</ParamField>
+<ResponseField name="features" type="object" required>
+List of environment modules and configurations.
+  <Expandable title="properties">
+    <ResponseField name="type" type="string">
+      Type of feature or module (e.g., TOOL_CALLING).
+    </ResponseField>
+
+    <ResponseField name="priority" type="boolean">
+      Order of execution for the feature.
+    </ResponseField>
+
+    <ResponseField name="config" type="boolean">
+      Feature-specific configuration settings
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+<ParamField path="tools" type="string" required>
+  List of tools integrated into the environment.
+</ParamField>
+<ResponseField name="llm_config" type="object" required>
+Configuration for the large language model
+  <Expandable title="properties">
+    <ResponseField name="provider" type="string" required>
+      LLM service provider (e.g., OpenAI).
+    </ResponseField>
+
+    <ResponseField name="model" type="string" required>
+      The specific LLM model (e.g., GPT-4).
+    </ResponseField>
+
+    <ResponseField name="config" type="object" required>
+        Model-specific parameters.
+        <Expandable title="properties">
+            <ResponseField name="temperature" type="string">
+            Controls randomness of model output.
+            </ResponseField>
+
+            <ResponseField name="top_p" type="string">
+            Controls diversity in responses.
+            </ResponseField>
+        </Expandable>
+        </ResponseField>
+
+    <ResponseField name="env" type="object" required>
+        Environment variables for API usage
+        <Expandable title="properties">
+            <ResponseField name="OPENAI_API_KEY" type="string">
+            API key for OpenAI access.
+            </ResponseField>
+        </Expandable>
+        </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST "https://agent.api.lyzr.app/v2/environment" \
+-H "accept: application/json"\
+-H "Content-Type: application/json" \
+-H "x-api-key: your_Lyzr_API_Key_Here" \
+-d '{
+    "name": "My Environment",
+    "features": [
+        {
+            "type": "TOOL_CALLING",
+            "priority": 0,
+            "config": {
+                "max_tries": 5
+            }
+        },
+        {
+            "type": "SHORT_TERM_MEMORY",
+            "priority": 0
+        }
+    ],
+    "tools": [
+        "perplexity_search"
+    ],
+    "llm_config": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "config": {
+            "temperature": 0.5,
+            "top_p": 0.9
+        },
+        "env": {
+            "OPENAI_API_KEY": "your_openai_api_key_here"
+        }
+    }
+}'
+
+
+```
+```python Python
+import requests
+
+data = {
+    "name": "My Environment",
+    "features": [
+        {
+            "type": "TOOL_CALLING",
+            "priority": 0,
+            "config": {
+                "max_tries": 5
+            }
+        },
+        {
+            "type": "SHORT_TERM_MEMORY",
+            "priority": 0
+        }
+    ],
+    "tools": [
+        "perplexity_search"
+    ],
+    "llm_config": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "config": {
+            "temperature": 0.5,
+            "top_p": 0.9
+        },
+        "env": {
+            "OPENAI_API_KEY": "your_openai_api_key_here"
+        }
+    }
+}
+
+url = "https://agent.api.lyzr.app/v2/environment"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+    }
+
+response = requests.post(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "env_id": "66e1820aa6xxxxxx"
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+<ParamField path="env_id" type="string">
+  Identifier for the associated environment.
+</ParamField>

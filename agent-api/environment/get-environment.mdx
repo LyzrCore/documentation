@@ -1,0 +1,77 @@
+Endpoint: `GET /v2/environment/{env_id}`
+
+This endpoint retrieves detailed information about an environment using its unique environment ID. This endpoint provides insights into the environment's configuration, features, tools, and language model settings.
+
+#### Parameters
+
+<ParamField path="env_id " type="string" required>
+  The unique identifier of the environment whose details are being requested.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X GET "https://api.example.com/v2/environment/{env_id}" \
+-H "accept: application/json"\
+-H "Content-Type: application/json" \
+-H "x-api-key: your_Lyzr_API_Key_Here" 
+
+```
+```python Python
+import requests
+
+env_id = "66e1820aa64xxxxxx"
+url = f"https://agent.api.lyzr.app/v2/environment/{env_id}"
+
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "your_Lyzr_API_Key_Here"
+}
+
+response = requests.get(url, headers=headers)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+```json 200
+{
+    "id": "60d0fe4f5311236xxxxxx",
+    "features": [
+        {
+            "type": "TOOL_CALLING",
+            "priority": 0,
+            "config": {
+                "max_tries": 5
+            }
+        },
+        {
+            "type": "SHORT_TERM_MEMORY",
+            "priority": 0
+        }
+    ],
+    "tools": [
+        "perplexity_search"
+    ],
+    "llm_config": {
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "config": {
+            "temperature": 0.5,
+            "top_p": 0.9
+        },
+        "env": {
+            "OPENAI_API_KEY": "your_openai_api_key_here"
+        }
+    }
+}
+
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="schema" type="dict">
+  Environment configuration for updating includes features, tools, and LLM settings. Contains API keys and model parameters.
+</ParamField>

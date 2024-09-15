@@ -1,0 +1,74 @@
+Endpoint: `POST /v1/users`
+
+This endpoint allows you to create a new user by providing necessary user details such as `user_id`, `email`, `first_name`, `last_name`, and additional metadata. You will need an API key for authentication.
+
+#### Parameters
+<ParamField path="user_id" type="string" required>
+  Unique identifier for the user.
+</ParamField>
+<ParamField path="email" type="string" required>
+  Email address of the user.
+</ParamField>
+<ParamField path="first_name" type="string" required>
+  First name of the user.
+</ParamField>
+<ParamField path="last_name" type="string" required>
+  Last name of the user.
+</ParamField>
+<ParamField path="metadata " type="object" required>
+  Additional metadata related to the user.
+</ParamField>
+
+<CodeGroup>
+<RequestExample>
+```bash Curl
+curl -X POST https://agent.api.lyzr.app/v1/users/ \
+-H "x-api-key: your_api_key_here" \
+-H "Content-Type: application/json" \
+-d '{
+  "user_id": "123",
+  "email": "abc@example.com",
+  "first_name": "abc",
+  "last_name": "abc",
+  "metadata": {}
+}'
+```
+```python Python
+import requests
+
+url = "https://agent.api.lyzr.app/v1/users/"
+headers = {
+    "x-api-key": "your_api_key_here",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "user_id": "123",
+    "email": "abc@example.com",
+    "first_name": "abc",
+    "last_name": "abc",
+    "metadata": {}
+}
+
+response = requests.post(url, headers=headers, json=data)
+```
+</RequestExample>
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "user_id": {
+    "user_id": "66e29773a64b2xxxxxx"
+  }
+}
+```
+
+</ResponseExample>
+
+#### Response Parameters
+
+<ParamField path="user_id" type="object">
+  Object containing the created user's ID.
+</ParamField>

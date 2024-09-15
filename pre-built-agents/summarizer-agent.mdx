@@ -34,9 +34,9 @@ summarizer = Summarizer(api_key="your_openai_api_key")
 
 ```python
 text = "Big paragraphs or conversations that you wish to streamline or shorten"
-instructions = "Summary"  # Other options include "Notes", "Tweet"
+style = "Summary"  # Other options include "Notes", "Tweet"
 
-summary = summarizer.summarize(text, style=style)
+summary = summarizer.summarize(text, instructions=style)
 print(summary)
 ```
 

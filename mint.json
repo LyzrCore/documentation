@@ -18,7 +18,8 @@
     "primaryTab": {
         "name": "Introduction"
     },
-    "topbarLinks": [{
+    "topbarLinks": [
+        {
             "name": "Lyzr",
             "url": "https://lyzr.ai"
         },
@@ -35,13 +36,19 @@
         "name": "Book Demo",
         "url": "https://www.lyzr.ai/book-demo"
     },
-    "anchors": [{
+    "anchors": [
+        {
             "name": "Join Slack",
             "icon": "slack",
             "url": "https://anybodycanai.slack.com/ssb/redirect"
         }
     ],
-    "tabs": [{
+    "tabs": [
+        {
+            "name": "Lyzr Agent API",
+            "url": "agent-api"
+        },
+        {
             "name": "Pre-built Agents",
             "url": "pre-built-agents"
         },
@@ -60,25 +67,30 @@
         {
             "name": "Enterprise",
             "url": "enterprise"
-        },
-        {
-            "name":"Lyzr Agent API",
-            "url": "agent-api"
         }
     ],
-    "navigation": [{
+    "navigation": [
+        {
             "group": "Get Started",
-            "pages": ["introduction", "how-to-use", "FAQs", "getting-support"]
+            "pages": [
+                "introduction",
+                "how-to-use",
+                "FAQs",
+                "getting-support"
+            ]
         },
         {
             "group": "Pre-built Agents",
-            "pages": [{
+            "pages": [
+                {
                     "group": "Rag Powered Agents",
-                    "pages": ["pre-built-agents/rag-powered-agents/intro",
+                    "pages": [
+                        "pre-built-agents/rag-powered-agents/intro",
                         {
                             "group": "Chat Agent",
                             "pages": [
-                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start", {
+                                "pre-built-agents/rag-powered-agents/chat-agent/quick-start",
+                                {
                                     "group": "Usage",
                                     "pages": [
                                         "pre-built-agents/rag-powered-agents/chat-agent/installation"
@@ -97,10 +109,8 @@
                                                 "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-youtube",
                                                 "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-webpage",
                                                 "pre-built-agents/rag-powered-agents/chat-agent/data-sources/add-website"
-
                                             ]
                                         }
-
                                     ]
                                 }
                             ]
@@ -129,17 +139,16 @@
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-youtube",
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-webpage",
                                                 "pre-built-agents/rag-powered-agents/search-agent/data-sources/add-website"
-
                                             ]
                                         }
-
                                     ]
                                 }
                             ]
                         },
                         {
                             "group": "Advanced Configuration",
-                            "pages": [{
+                            "pages": [
+                                {
                                     "group": "Vector Databases",
                                     "pages": [
                                         "pre-built-agents/rag-powered-agents/advanced-configuration/vector-database/weaviate",
@@ -151,7 +160,10 @@
                                 },
                                 {
                                     "group": "Large Language Models",
-                                    "pages": ["pre-built-agents/rag-powered-agents/advanced-configuration/llms/openai", "pre-built-agents/rag-powered-agents/advanced-configuration/llms/azure-openai"]
+                                    "pages": [
+                                        "pre-built-agents/rag-powered-agents/advanced-configuration/llms/openai",
+                                        "pre-built-agents/rag-powered-agents/advanced-configuration/llms/azure-openai"
+                                    ]
                                 }
                             ]
                         }
@@ -246,7 +258,7 @@
                     "pages": [
                         {
                             "group": "Environment",
-                            "pages":[
+                            "pages": [
                                 "agent-api/environment/introduction",
                                 "agent-api/environment/create-environment",
                                 "agent-api/environment/get-environment",
@@ -256,7 +268,7 @@
                         },
                         {
                             "group": "Agents",
-                            "pages":[
+                            "pages": [
                                 "agent-api/agents/introduction",
                                 "agent-api/agents/create-agent",
                                 "agent-api/agents/get-agent",
@@ -266,7 +278,7 @@
                         },
                         {
                             "group": "Inferences",
-                            "pages":[
+                            "pages": [
                                 "agent-api/inferences/chat",
                                 "agent-api/inferences/stream-chat",
                                 "agent-api/inferences/task",
@@ -275,13 +287,13 @@
                         },
                         {
                             "group": "Tools",
-                            "pages":[
+                            "pages": [
                                 "agent-api/tools/create-tool"
                             ]
                         },
                         {
                             "group": "Activity",
-                            "pages":[
+                            "pages": [
                                 "agent-api/activity/get-activities"
                             ]
                         }

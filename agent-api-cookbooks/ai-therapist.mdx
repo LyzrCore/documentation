@@ -1,0 +1,92 @@
+---
+title: AI Therapist
+---
+
+In this notebook, we demonstrate how to use the Lyzr Agent API to create an AI-driven therapy assistant capable of providing personalized support and guidance in mental wellness. The process begins by configuring an environment with LLM capabilities, including a key feature called `LONG_TERM_MEMORY` that enhances the therapeutic responses and understanding. Additionally, tools like `perplexity_search` to retrieve relevant information. A key feature of this assistant is the ability to generate compassionate and context-aware therapeutic advice, helping users manage stress, anxiety, or other emotional challenges.
+
+To try this, refer to this [Google Colab guide](https://colab.research.google.com/drive/1J40b93eUEAtTp5ERGESk0YEqlnDKrguj?usp=sharing#scrollTo=JeWEZ4Idz4i8)
+## 1. **Install Package**:
+```bash
+pip install lyzr-agent-api
+```
+
+## 2. Setup and Initialization:
+```python
+from lyzr_agent_api.client import AgentAPI
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+from lyzr_agent_api.models.agents import AgentConfig
+from lyzr_agent_api.models.chat import ChatRequest
+```
+
+```python
+#Initiate Lyzr Agent API Client
+client = AgentAPI(x_api_key="LYZR-AGENT-API-KEY")
+```
+
+## 3. **Environment Creation**:
+Set up the agent's environment. The create_env function creates a new environment with specified configurations such as features as a module it uses `LONG_TERM_MEMORY`, tools such as `perplexity_search`, and a large language model (LLM) as gpt-4o-mini. It takes an environment name and optional API key, makes an API call to set up the environment, and returns the newly created environment's ID.
+
+```python
+environment_config = EnvironmentConfig(
+        name="AI Therapist Environment",
+        features=[
+            FeatureConfig(
+                type="SHORT_TERM_MEMORY",
+                config={},
+                priority=0,
+            ),
+            FeatureConfig(
+                type="LONG_TERM_MEMORY",
+                config={},
+                priority=0,
+            )
+        ],
+        tools=["perplexity_search"],
+        llm_config={"provider": "openai",
+                    "model": "gpt-4o-mini",
+                    "config": {
+                        "temperature": 0.5,
+                        "top_p": 0.9
+                    },
+                    "env": {
+                        "OPENAI_API_KEY": "OPENAI_API_KEY"
+                    }},
+    )
+```
+```python
+environment = client.create_environment_endpoint(json_body=environment_config)
+```
+
+## 4. **Create AI Therapist Agent**:
+The agent_config defines the configuration for creating an AI-driven content creation agent. It specifies the environment in which the agent operates using an env_id, sets a system_prompt that frames it as an empathetic and supportive AI therapist. Its primary role is to assist users in managing their emotions, offering advice, and providing mental health support through thoughtful and considerate conversations.
+```python
+agent_config = AgentConfig(
+        env_id='Enter-your-environment-id-here',  # Example environment ID
+        system_prompt=""" You are an expert content creation agent. You can generate different content formats like articles, social media posts, and code. """,
+        name="Content Creation Agent",
+        agent_description='Content Creator Assistant Agent'
+    )
+```
+```python
+agent = client.create_agent_endpoint(json_body=agent_config)
+```
+
+## 5. **User Interaction and Get Therapy**:
+The response variable captures the result of sending a chat request to the AI Therapist Agent using the `chat_with_agent` method, where `user_id`, `agent_id`, and `message` are provided. 
+
+```python
+response = client.chat_with_agent(
+    json_body=ChatRequest(
+        user_id="your-user-id",
+        agent_id="your-agent-id",
+        message="I'm feeling stressed and anxious about my work. How can I manage these feelings?.",
+        session_id="your-session-id"
+        )
+    )
+
+```
+Response
+```
+I'm really sorry to hear that you're feeling stressed and anxious about your work. 
+It's perfectly valid to experience these emotions, especially in a demanding work environment. \n\nCan you share more about what's specifically causing your stress and anxiety? Are there particular tasks or situations at work that feel overwhelming to you?
+```

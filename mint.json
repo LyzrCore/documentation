@@ -49,6 +49,10 @@
             "url": "agent-api"
         },
         {
+            "name": "Agent API Cookbooks",
+            "url": "agent-api-cookbooks"
+        },
+        {
             "name": "Pre-built Agents",
             "url": "pre-built-agents"
         },
@@ -235,6 +239,15 @@
             "pages": [
                 "cookbooks/lyzr-qdrant",
                 "cookbooks/lyzr-pinecone"
+            ]
+        },
+        {
+            "group": "Agent API Cookbooks",
+            "pages": [
+                "agent-api-cookbooks/lyzr-agent-api-short-term-memory",
+                "agent-api-cookbooks/lyzr-agent-api-tool-calling",
+                "agent-api-cookbooks/humanizer-content-creator",
+                "agent-api-cookbooks/ai-therapist"
             ]
         },
         {

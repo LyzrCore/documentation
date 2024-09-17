@@ -1,0 +1,98 @@
+---
+title: Customer Support Chatbot With Short Term Memory
+---
+
+In today's fast-paced world, businesses and individuals are constantly seeking ways to enhance productivity and improve customer interactions. One innovative solution is the integration of intelligent agents, which can understand and respond to user queries effectively. The concept behind the provided code is to explore the capabilities of AI-driven agents in a controlled environment, aiming to create a system that can handle a range of tasks, from customer support to personal assistance.
+
+By configuring an environment with AI features and creating an agent that can intelligently respond to messages, the code demonstrates the potential for businesses and developers to leverage AI technology in a practical and scalable way. This specific example uses a short-term memory feature and OpenAI's language model to ensure the agent can provide coherent and contextually relevant responses, making interactions more natural and productive.
+
+
+To try this, refer to this [Google Colab guide](https://colab.research.google.com/drive/1Pc4mczkYEWZvShJa8_IQ2CEolA0xptCM#scrollTo=6d2l7IjG9-cJ)
+# Solution
+
+The provided code offers a step-by-step approach to creating, configuring, and interacting with an intelligent agent in a virtual environment.
+
+## 1. **Setup**:
+```bash
+pip install lyzr_agent_api
+```
+```python
+from lyzr_agent_api.client import AgentAPI
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+from lyzr_agent_api.models.agents import AgentConfig
+from lyzr_agent_api.models.chat import ChatRequest
+```
+
+```python
+#Initiate Lyzr Agent API Client
+client = AgentAPI(x_api_key="LYZR-AGENT-API-KEY")
+```
+
+## 2. **Setup Environment**:
+`EnvironmentConfig` specifies the environment where the agent will operate. It includes enabling features like short-term memory and configuring tools and LLM (Language Learning Model).
+The environment is created by interacting with the `AgentAPI`.
+
+```python
+environment_config = EnvironmentConfig(
+       name="Test Environment",
+       features=[
+           FeatureConfig(
+               type="SHORT_TERM_MEMORY",
+               config={},
+               priority=0,
+           )
+       ],
+       tools=[],
+       llm_config={"provider": "openai",
+       "model": "gpt-4o-mini",
+       "config": {
+           "temperature": 0.5,
+           "top_p": 0.9
+       },
+       "env": {
+           "OPENAI_API_KEY": "OPENAI_API_KEY"
+       }},
+   )
+```
+```python
+environment = client.create_environment_endpoint(json_body=environment_config)
+```
+
+## 3. **Create Agent**:
+`AgentConfig` outlines the agent's attributes, including its name, description, and relevant prompts to guide its behavior.
+The agent is then instantiated in the previously created environment using the `AgentAPI`.
+```python
+agent_config = AgentConfig(
+       env_id="environment-id",  # Example environment ID
+       system_prompt="You are Customer Support Agent. Assist customers by answering queries about product features, handling complaints, and providing troubleshooting guidance in a professional and friendly manner.Help customers resolve issues, track orders, and offer product recommendations while ensuring a seamless and positive support experience.",
+       name="Customer Support",
+       agent_description="This Agent is Handling Customers queries.",
+   )
+```
+```python
+agent = client.create_agent_endpoint(json_body=agent_config)
+```
+
+## 4. **Interact with Agent**:
+`ChatRequest` encapsulates the parameters for a user to communicate with the agent, such as user ID, agent ID, session ID, and the user's message.
+The interaction is facilitated through the `chat_with_agent` method, which processes the request and generates a response from the agent.
+
+```python
+response = client.chat_with_agent(
+   json_body=ChatRequest(
+       user_id="user-id",
+       agent_id="agent-id",
+       message="I ordred ADIDAS backpack 15 days ago. now i want to return this product. how can I proceed further?",
+       session_id="session-id",
+   )
+)
+```
+Response
+```output
+Thank you for reaching out. 
+We understand that you would like to return the ADIDAS backpack you ordered 15 days ago. 
+However, our return policy allows for returns only within 7 days of receiving the product.
+
+Unfortunately, as the return window has passed, we are unable to process the return at this time. 
+We apologize for any inconvenience this may cause.
+```

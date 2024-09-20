@@ -1,0 +1,247 @@
+---
+title: Build Web Scraper With Tool Calling
+---
+
+
+In the example below, we demonstrate how to use the Lyzr Agent API to create a web scraping assistant using the fetch content tool. This assistant is designed to efficiently extract and summarize content from a given website. The process starts by defining the OpenAPI schema for fetching webpage content. The model then sets up a tool using this schema, configures an environment that integrates LLM capabilities for tool calling, and finally deploys an agent specifically trained to scrape content. The agent interacts with the website, scrapes the data, and provides a concise summary.
+
+To try this, refer to this [Google Colab guide](https://colab.research.google.com/drive/1GmJZTGnZPJo2SmQe5HLrAdElNo1Vx-b8#scrollTo=rIvOwXgjsznS)
+
+
+## Install Package
+```bash
+pip install lyzr-agent-api
+```
+```python
+from lyzr_agent_api.client import AgentAPI
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+from lyzr_agent_api.models.agents import AgentConfig
+from lyzr_agent_api.models.chat import ChatRequest
+from lyzr_agent_api.models.tools import OpenAPISchema
+```
+
+```python
+#Initiate Lyzr Agent API Client
+client = AgentAPI(x_api_key="lyzr-api-key")
+```
+
+## Define OpenAPI Schema:
+
+Creates a schema to define the API for fetching webpage content.
+
+```python
+user_id = "email@example.com"
+json_body = OpenAPISchema(
+    {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "FastAPI",
+            "description": "API for fetching webpage content.",
+            "version": "0.1.0"
+        },
+        "paths": {
+            "/fetch-content/": {
+                "post": {
+                    "summary": "Fetch Content",
+                    "description": "Fetches content from the specified webpage URL.",
+                    "operationId": "fetch_content",
+                    "parameters": [
+                        {
+                            "name": "webpage_url",
+                            "in": "query",
+                            "required": True,
+                            "schema": {
+                                "type": "string",
+                                "title": "Webpage URL",
+                                "description": "The URL of the webpage from which to fetch content."
+                            }
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Content fetched successfully",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "content": {
+                                                "type": "string",
+                                                "description": "The content of the webpage."
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "422": {
+                            "description": "Validation Error",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/HTTPValidationError"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "HTTPValidationError": {
+                    "type": "object",
+                    "title": "HTTPValidationError",
+                    "description": "Validation error response returned when the request fails validation.",
+                    "properties": {
+                        "detail": {
+                            "type": "array",
+                            "title": "Detail",
+                            "description": "A list of validation errors.",
+                            "items": {
+                                "$ref": "#/components/schemas/ValidationError"
+                            }
+                        }
+                    }
+                },
+                "ValidationError": {
+                    "type": "object",
+                    "title": "ValidationError",
+                    "description": "Details about a specific validation error.",
+                    "properties": {
+                        "loc": {
+                            "type": "array",
+                            "title": "Location",
+                            "description": "The location of the error in the request data.",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "integer"
+                                    }
+                                ]
+                            }
+                        },
+                        "msg": {
+                            "type": "string",
+                            "title": "Message",
+                            "description": "A human-readable message describing the error."
+                        },
+                        "type": {
+                            "type": "string",
+                            "title": "Error Type",
+                            "description": "The type of error encountered."
+                        }
+                    },
+                    "required": ["loc", "msg", "type"]
+                }
+            }
+        },
+        "servers": [
+            {
+                "url": "https://fetch.example.com", #Enter your Server URL
+                "description": "Fetch Content Server"
+            }
+        ]
+    }
+
+    # Add more components as needed
+)
+```
+
+## Create Tool Endpoint
+
+Sets up the web scraping tool using the OpenAPI schema.
+```python
+response = client.create_tools_endpoint(
+    user_id=user_id,
+    json_body=json_body,
+)
+
+for tool in response['tool_ids']:
+  print(tool['name']) #e.g. gives `fetch_content` tool
+```
+
+
+## Configure Environment:
+Establishes the environment where the agent operates and configures the LLM.This configuration sets up an environment for the web scraping agent with the `TOOL_CALLING` feature, allowing the agent to call external tools like the `fetch_content` tool for scraping website data. It uses the `gpt-4o-mini` model from OpenAI with specified LLM parameters for reasoning and tool integration. The setup ensures up to 3 attempts to successfully use the tool.
+
+```python
+environment_config = EnvironmentConfig(
+       name="Test Environment",
+       features=[
+           FeatureConfig(
+               type="TOOL_CALLING",
+               config={"max_tries":3},
+               priority=0,
+           )
+       ],
+       tools=["fetch_content"],
+       llm_config={"provider": "openai",
+       "model": "gpt-4o-mini",
+       "config": {
+           "temperature": 0.5,
+           "top_p": 0.9
+       },
+       "env": {
+           "OPENAI_API_KEY": "OPENAI_API_KEY"
+       }},
+   )
+```
+```python
+environment = client.create_environment_endpoint(json_body=environment_config)
+print(environment) #e.g.{'environment_id':'6wgjsdjbjxxxxxx'}
+```
+
+## Create Web Scraper Agent
+Sets up an agent with specific prompts for web scraping tasks.
+```python
+agent_config = AgentConfig(
+       env_id="Enter-your-environment-id-here",  # Example environment ID
+       system_prompt="You are a web scraping assistant. Your task is to use the provided fetch content tool to extract data from the given website efficiently.",
+       name="Web Scrapper Agent",
+       agent_description="This agent is used to scrap website.",
+   )
+
+```
+```python
+agent = client.create_agent_endpoint(json_body=agent_config)
+print(agent) #e.g.{'agent_id':'6whdsdjbbjxxxxxx'}
+```
+
+## Execute Task with Agent
+Interacts with the agent to scrape and summarize content from a provided webpage.
+This code snippet demonstrates how to use the client API to create a chat task that instructs an AI agent to scrape and summarize content from a given website. It initiates a task with a specific user and agent ID. 
+```python
+response = client.create_chat_task(
+        json_body=ChatRequest(
+       user_id="your-user-id",
+       agent_id="your-agent-id",
+       message="scrap the content of https://www.lyzr.ai/ and give summary of it.",
+       session_id="your-session-id",
+   )
+)
+```
+
+This checks the task's status to retrieve the summary of the website.
+```python
+response_status = client.get_task_status(
+        task_id=response.task_id,  # Use the task_id from the create response
+    )
+
+print(response_status)
+```
+
+```output
+TaskStatus(task_id='b6a9f317-b046-4458-a367-1be78f97ee3b', status='completed', 
+result={'response': 'The website "lyzr.ai" focuses on providing AI-driven 
+solutions for businesses, particularly in the areas of data analytics and 
+automation. It highlights various features such as advanced machine learning 
+capabilities, user-friendly interfaces, and integration with existing systems. 
+The goal is to enhance operational efficiency and decision-making processes for 
+organizations. Additionally, the site includes testimonials, case studies, and a 
+blog section that discusses trends in AI technology.'})
+```

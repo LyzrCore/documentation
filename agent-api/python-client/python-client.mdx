@@ -1,0 +1,160 @@
+---
+title: Python Client
+---
+
+## Installation
+
+First, install the `lyzr-agent-api` package:
+```bash
+pip install lyzr-agent-api
+```
+For more detailed installation instructions, refer to the [installation guide on PyPI](https://pypi.org/project/lyzr-agent-api/).
+### Initializing the Client
+
+To start using the API, initialize the `AgentAPI` client with your Lyzr API key:
+
+<Note> **Tip:** You can generate your API key from the [Lyzr Agent API Studio](https://agent.lyzr.app).</Note>
+
+```python
+from lyzr_agent_api.client import AgentAPI
+
+client = AgentAPI(x_api_key="your-lyzr-api-key")
+```
+
+## Environment
+
+#### Create an Environment
+The environment is a fundamental building block of the Lyzr Agent API. It defines the modules, features, tools available, and other configurations for your agent.For more,[click here](/agent-api/environment/introduction).
+
+```python
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+
+environment_config = EnvironmentConfig(
+    name="Test Environment",
+    features=[
+        FeatureConfig(
+            type="SHORT_TERM_MEMORY",
+            config={},
+            priority=0,
+        )
+    ],
+    tools=[],
+    llm_config={
+        "provider": "openai",
+        "model": "gpt-4o-mini",
+        "config": {
+            "temperature": 0.5,
+            "top_p": 0.9,
+        },
+        "env": {
+            "OPENAI_API_KEY": "your-openai-api-key"
+        }
+    },
+)
+environment = client.create_environment_endpoint(json_body=environment_config) 
+print(environment)
+# The response will include the environment ID, e.g. {'environment_id': '6wjbwhekndjxxxxx'}
+```
+
+#### Update an Environment
+
+This function updates the configuration of an existing environment by passing in the environment ID (`env_id`) and a JSON body containing the new environment settings (`json_body`).
+```python
+response = client.update_environment_endpoint(
+    env_id="env-id",
+    json_body=environment_config,
+)
+```
+
+#### Get an Environment
+This function retrieves a list of all available environments. It returns the details of each environment, allowing you to view their configurations and statuses.
+```python
+client.get_environments_endpoint()
+```
+
+## Agent
+#### Create an Agent
+
+Once the environment is set up, create an agent within that environment. The agent uses the environment ID to operate and can be customized with a system prompt and a description:
+
+```python
+from lyzr_agent_api.models.agents import AgentConfig
+
+agent_config = AgentConfig(
+    env_id="environment-id",  # Replace with the actual environment ID
+    system_prompt="This is a system prompt.",
+    name="Test Agent",
+    agent_description="Description of the test agent",
+)
+agent = client.create_agent_endpoint(json_body=agent_config)
+print(agent)
+# The response will include the agent ID, e.g. {'agent_id': '66fcghvhxxxxxx'}
+```
+
+#### Update an Agent
+This function updates the configuration of an existing agent by providing the agent ID (`agent_id`) and a JSON body containing the new settings (`json_body`). It allows you to modify an agent's behavior or properties dynamically.
+```python
+response = client.update_agent_endpoint(
+    agent_id=agent_id,
+    json_body=agent_config
+)
+```
+
+#### Get an Agent
+This function retrieves a list of all available agents. It returns the details and configurations of each agent, allowing you to review and manage them.
+```python
+client.get_agents_endpoint()
+```
+
+#### Delete an Agent
+This function deletes an agent by specifying its `agent_id`.
+```python 
+response = client.delete_agent_by_id(
+    agent_id=agent_id     # Example agent ID to delete
+)
+```
+
+## Inference
+#### Chat with the Agent
+
+After creating the agent, you can initiate a chat session with it. Provide the user ID, agent ID, and a message to start the conversation:
+
+```python
+from lyzr_agent_api.models.chat import ChatRequest
+
+response = client.chat_with_agent(
+    json_body=ChatRequest(
+        user_id="user-id",
+        agent_id="agent-id",  # Replace with the actual agent ID
+        message="Hello",
+        session_id="session-id",
+    )
+)
+
+print(response)
+```
+
+#### Execute Task with Agent
+
+```python
+from lyzr_agent_api.models.chat import ChatRequest
+
+response = client.create_chat_task(
+        json_body=ChatRequest(
+       user_id="your-user-id",
+       agent_id="your-agent-id",
+       message="scrap the content of https://www.lyzr.ai/ and give summary of it.",
+       session_id="your-session-id",
+   )
+    )
+
+print(response) #e.g {'task_id':'hsjshxxxxxxxx'}
+```
+Get Task Status and Response
+```python
+response_status = client.get_task_status(
+        task_id=response.task_id,  # Use the task_id from the create response
+    )
+
+print(response_status)
+```

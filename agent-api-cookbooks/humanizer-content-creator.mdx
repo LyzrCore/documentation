@@ -1,0 +1,90 @@
+---
+title: Content Creation Assistant With Humanizer
+---
+
+In this notebook, we demonstrate how to use the Lyzr Agent API to create an AI-driven content creation assistant capable of generating various content formats such as articles, blog posts, and social media updates. The process begins by configuring an environment with LLM capabilities, including a key feature called `HUMANIZER` that ensures the content generated is more human-like and relatable. Additionally, tools like "perplexity_search" are integrated to assist with information retrieval and analysis. Next, we set up an agent specifically trained to create, refine, and humanize content based on user input, providing personalized outputs tailored to the requested format. To learn more about building agents, refer to the official Lyzr Agent API documentation.
+
+To try this, refer to this [Google Colab guide](https://colab.research.google.com/drive/1rZA5aNJ2Hj3oJSSIF9xmLAdzUyRReDGT?usp=sharing)
+## 1. **Install Package**:
+```bash
+pip install lyzr-agent-api
+```
+
+## 2. Setup and Initialization:
+```python
+from lyzr_agent_api.client import AgentAPI
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+from lyzr_agent_api.models.agents import AgentConfig
+from lyzr_agent_api.models.chat import ChatRequest
+```
+
+This line initializes the AgentAPI client to interact with the Lyzr Agent API. It sets the base URL for API requests, passes the required API key (lyzr-api-key) for authentication, and specifies a timeout of 3600 seconds for API responses. This client will be used to communicate with the API, allowing functions such as environment and agent creation, as well as content generation.
+```python
+#Initiate Lyzr Agent API Client
+client = AgentAPI(x_api_key="LYZR-AGENT-API-KEY")
+```
+
+## 3. **Environment Creation**:
+This configuration sets up an environment for a content creation agent using the EnvironmentConfig class. The environment is named "Content Creation Environment" and includes a key feature called HUMANIZER, which ensures the generated content has a more human-like quality. The environment is equipped with the "perplexity_search" tool, which can assist in information retrieval or processing tasks. For language model capabilities, the environment is configured to use OpenAI's "gpt-4o-mini" model. The model's behavior is fine-tuned with a temperature setting of 0.5, allowing for a balance between creative diversity and focus in responses, along with a top-p value of 0.9. The OpenAI API key is also specified in the environment for secure communication with the language model.
+
+```python
+environment_config = EnvironmentConfig(
+        name="Content Creation Envrionment",
+        features=[
+            FeatureConfig(
+                type="HUMANIZER",
+                config={},
+                priority=0,
+            )
+        ],
+        tools=["perplexity_search"],
+        llm_config={"provider": "openai",
+                    "model": "gpt-4o-mini",
+                    "config": {
+                        "temperature": 0.5,
+                        "top_p": 0.9
+                    },
+                    "env": {
+                        "OPENAI_API_KEY": "OPENAI_API_KEY"
+                    }},
+    )
+```
+```python
+environment = client.create_environment_endpoint(json_body=environment_config)
+```
+
+## 4. **Create Content Creation Agent**:
+The agent_config defines the configuration for creating an AI-driven content creation agent. It specifies the environment in which the agent operates using an env_id, sets a system_prompt to guide the agent's behavior (in this case, as an expert in generating different content formats such as articles, social media posts, and code), and assigns a name and description to the agent. This configuration enables the agent to assist users in creating a variety of content, tailored to specific user requests.
+```python
+agent_config = AgentConfig(
+        env_id='Enter-your-environment-id-here',  # Example environment ID
+        system_prompt=""" You are an expert content creation agent. You can generate different content formats like articles, social media posts, and code. """,
+        name="Content Creation Agent",
+        agent_description='Content Creator Assistant Agent'
+    )
+```
+```python
+agent = client.create_agent_endpoint(json_body=agent_config)
+```
+
+## 5. **User Interaction and Content Generation**:
+The response variable captures the result of sending a chat request to the content creation agent using the chat_with_agent method. In this request, the user_id and agent_id are provided to identify the user and the specific agent that will handle the task. The message field contains the user's prompt, in this case, asking the agent to "Write a blog post on 'The benefits of using a content creation AI assistant'." The agent processes this request and generates the desired content, which is returned in the response.
+
+```python
+response = client.chat_with_agent(
+    json_body=ChatRequest(
+        user_id="your-user-id",
+        agent_id="your-agent-id",
+        message="Write a Blog post on 'The benefits of using a content creation AI assistant'."))
+```
+Response
+```
+The Benefits of Using a Content Creation AI Assistant\n\nIn our fast-paced digital world, the need for high-quality content has never been greater. 
+Businesses, marketers, and content creators are always on the lookout for smarter ways to produce engaging and timely material. 
+This is where content creation AI assistants come into play—innovative tools that harness the power of artificial intelligence to simplify the content creation process. 
+Let’s dive into the many advantages of using an AI assistant for your content needs and how it can enhance your overall strategy.
+\n\n## 1. Boosted Efficiency\n\nWhen it comes to content creation, time is of the essence.
+Crafting compelling pieces can be a lengthy process, but a content creation AI assistant can help speed things up significantly. 
+These tools can generate ideas, draft articles, and even create social media posts in a fraction of the time it would take a human.
+This means you can spend less time brainstorming and more time focusing 
+```

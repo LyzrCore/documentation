@@ -247,7 +247,8 @@
                 "agent-api-cookbooks/lyzr-agent-api-short-term-memory",
                 "agent-api-cookbooks/lyzr-agent-api-tool-calling",
                 "agent-api-cookbooks/humanizer-content-creator",
-                "agent-api-cookbooks/ai-therapist"
+                "agent-api-cookbooks/ai-therapist",
+                "agent-api-cookbooks/ibm-watsonx"
             ]
         },
         {

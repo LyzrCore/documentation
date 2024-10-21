@@ -1,0 +1,100 @@
+---
+title: Financial Advisor with IBM WatsonX
+---
+
+This guide provides a step-by-step approach to creating and configuring an intelligent agent using the Lyzr Agent API integrated with IBM WatsonX for advanced natural language processing and AI capabilities. This example sets up an environment for a financial advisor agent, demonstrating how to process queries related to investment strategies and financial planning.
+
+## 1. Setup
+
+First, make sure you have the `lyzr_agent_api` package installed. If not, install it using:
+
+```bash
+pip install lyzr_agent_api
+```
+
+Import the necessary classes:
+
+```python
+from lyzr_agent_api.client import AgentAPI
+from lyzr_agent_api.models.environment import EnvironmentConfig, FeatureConfig
+from lyzr_agent_api.models.agents import AgentConfig
+from lyzr_agent_api.models.chat import ChatRequest
+```
+
+Initialize the Lyzr Agent API client with your API key:
+
+```python
+client = AgentAPI(x_api_key="LYZR-AGENT-API-KEY")
+```
+
+## 2. Setup Environment
+
+Configure the environment where your agent will operate, enabling features like short-term memory and setting up the IBM WatsonX model:
+
+```python
+environment_config = EnvironmentConfig(
+    name="Test Environment",
+    features=[
+        FeatureConfig(
+            type="SHORT_TERM_MEMORY",
+            config={},
+            priority=0,
+        )
+    ],
+    tools=[],
+    llm_config={
+        "provider": "ibm",
+        "model": "watsonx/ibm/granite-13b-chat-v2",
+        "config": {
+            "temperature": 0.5,
+            "top_p": 0.9,
+        },
+        "env": {
+            "WATSONX_URL": "",  # Your watsonx.ai base URL
+            "WATSONX_APIKEY": "",  # IBM cloud API key
+            "WATSONX_TOKEN": "" # IAM auth token
+            "WATSONX_PROJECT_ID": ""  # Project ID of your WatsonX instance
+            "WATSONX_DEPLOYMENT_SPACE_ID": "" # ID of your deployment space to use deployed models
+        }
+    },
+)
+
+environment = client.create_environment_endpoint(json_body=environment_config)
+print(environment)  # This will include the environment ID.
+```
+See [here](https://cloud.ibm.com/apidocs/watsonx-ai#api-authentication) for more information on how to get an access token to authenticate to watsonx.ai.
+
+## 3. Create Agent
+
+Create an agent with specific attributes, such as name, description, and behavioral prompts:
+
+```python
+agent_config = AgentConfig(
+    env_id="your-environment-id",  # Replace with the actual environment ID obtained from previous step
+    system_prompt="Act like an experienced financial advisor with 20 years of expertise in wealth management, retirement planning, and investment strategies. Your clients range from individuals to small business owners seeking guidance on optimizing their financial health. Provide comprehensive, step-by-step advice that takes into account both short-term needs and long-term goals.",
+    name="Financial Advisor Agent",
+    agent_description="This agent provides expert financial guidance, offering tailored strategies for wealth management, retirement planning, and investment growth.",
+)
+agent = client.create_agent_endpoint(json_body=agent_config)
+print(agent)  # This will include the agent ID.
+```
+
+## 4. Interact with Agent
+
+Initiate a chat session with the agent, providing your user ID, the agent ID, and your query:
+
+```python
+response = client.chat_with_agent(
+    json_body=ChatRequest(
+        user_id="user-id",
+        agent_id="your-agent-id",  # Replace with the actual agent ID obtained from previous step
+        message="What are the best investment strategies for balancing short-term liquidity needs with long-term wealth growth?",
+        session_id="session-id",
+    )
+)
+
+print(response)  # This will display the agent's response to your query.
+```
+
+
+By following these steps, you can effectively integrate Lyzr Agent API with IBM WatsonX to create a customized intelligent agent capable of providing expert advice and handling specific user queries in the financial domain. Adjust configurations and system prompts to tailor the agent's behavior and optimize user interactions.

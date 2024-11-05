@@ -1,8 +1,8 @@
 ---
-title: Financial Advisor with IBM WatsonX
+title: Financial Advisor with IBM watsonx
 ---
 
-This guide provides a step-by-step approach to creating and configuring an intelligent agent using the Lyzr Agent API integrated with IBM WatsonX for advanced natural language processing and AI capabilities. This example sets up an environment for a financial advisor agent, demonstrating how to process queries related to investment strategies and financial planning.
+This guide provides a step-by-step approach to creating and configuring an intelligent agent using the Lyzr Agent API integrated with IBM watsonx for advanced natural language processing and AI capabilities. This example sets up an environment for a financial advisor agent, demonstrating how to process queries related to investment strategies and financial planning.
 
 ## 1. Setup
 
@@ -29,7 +29,7 @@ client = AgentAPI(x_api_key="LYZR-AGENT-API-KEY")
 
 ## 2. Setup Environment
 
-Configure the environment where your agent will operate, enabling features like short-term memory and setting up the IBM WatsonX model:
+Configure the environment where your agent will operate, enabling features like short-term memory and setting up the IBM watsonx model:
 
 ```python
 environment_config = EnvironmentConfig(
@@ -53,7 +53,7 @@ environment_config = EnvironmentConfig(
             "WATSONX_URL": "",  # Your watsonx.ai base URL
             "WATSONX_APIKEY": "",  # IBM cloud API key
             "WATSONX_TOKEN": "" # IAM auth token
-            "WATSONX_PROJECT_ID": ""  # Project ID of your WatsonX instance
+            "WATSONX_PROJECT_ID": ""  # Project ID of your watsonx instance
             "WATSONX_DEPLOYMENT_SPACE_ID": "" # ID of your deployment space to use deployed models
         }
     },
@@ -97,4 +97,4 @@ print(response)  # This will display the agent's response to your query.
 ```
 
 
-By following these steps, you can effectively integrate Lyzr Agent API with IBM WatsonX to create a customized intelligent agent capable of providing expert advice and handling specific user queries in the financial domain. Adjust configurations and system prompts to tailor the agent's behavior and optimize user interactions.
+By following these steps, you can effectively integrate Lyzr Agent API with IBM watsonx to create a customized intelligent agent capable of providing expert advice and handling specific user queries in the financial domain. Adjust configurations and system prompts to tailor the agent's behavior and optimize user interactions.

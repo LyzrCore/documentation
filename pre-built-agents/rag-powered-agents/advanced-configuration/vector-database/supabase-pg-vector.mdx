@@ -1,0 +1,19 @@
+---
+title: Supabase PG-Vector 
+---
+
+## Lyzr + Supabase PG-Vector
+
+```bash
+pip install vecs supabase
+```
+
+```python
+vector_store_params = {
+    "vector_store_type": "SupabaseVectorStore",
+    postgres_connection_string=(
+        "postgresql://<user>:<password>@<host>:<port>/<db_name>"
+    ),
+    collection_name="lyzr_core",
+}
+```

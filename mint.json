@@ -155,6 +155,7 @@
                                 {
                                     "group": "Vector Databases",
                                     "pages": [
+                                        "pre-built-agents/rag-powered-agents/advanced-configuration/vector-database/supabase-pg-vector",
                                         "pre-built-agents/rag-powered-agents/advanced-configuration/vector-database/weaviate",
                                         "pre-built-agents/rag-powered-agents/advanced-configuration/vector-database/qdrant",
                                         "pre-built-agents/rag-powered-agents/advanced-configuration/vector-database/pinecone",

@@ -1,0 +1,180 @@
+---
+title: MongoDB Vector Store
+sidebarTitle: MongoDB
+---
+
+```http
+POST https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/rag-vector-store/update-rag-vector-store-mongodb
+```
+
+Update the vector store for use in analysis with a MongoDB database.
+
+## URL Parameters
+
+<ParamField path='path' type='string' required>
+    Path to the vector store. Must be unique to your use-case. 
+    ```python
+    path = "path/to/vector/store/project_name_test"
+    ```
+</ParamField>
+
+<ParamField path='remake' type='boolean'>
+    Whether to remake the vector store. Defaults to `false`.
+</ParamField>
+
+<ParamField path='log_filename' type='string'>
+    Path to log file. 
+    ```python
+    log_filename = "path/to/logfile.csv"
+    ```
+</ParamField>
+
+## Body Parameters
+
+<ParamField path="config" type="dictionary" required>
+    Configuration for MongoDB database.
+    <Expandable title="properties">
+        <ParamField path="host" type="string" required>
+            Hostname of the MongoDB database.
+        </ParamField>
+        <ParamField path="port" type="integer" required>
+            Port of the MongoDB database.
+        </ParamField>
+        <ParamField path="database" type="string" required>
+            Name of the MongoDB database.
+        </ParamField>
+        <ParamField path="collections" type="list of strings">
+            List of collections to include.
+        </ParamField>
+        <ParamField path="connection_kwargs" type="dictionary">
+            Connection keyword arguments.
+        </ParamField>
+    </Expandable>
+    ```python
+    config = {
+        "host": "your-mongodb-hostname.com",
+        "port": 27017
+        "database": "dev",
+        "collections": ["cars", "employees"],
+        "connection_kwargs": {
+            "directConnection": true
+        }
+    }
+    ```
+</ParamField>
+
+<ParamField path="docs_examples" type="list of dictionaries">
+    List of documentation examples.
+    ```python
+    docs_examples = [
+        {
+            "docs": "This is some extra documentation for the users table.",
+        },
+        {
+            "docs": "This is some extra documentation for the messages table.",
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="python_code_examples" type="list of dictionaries">
+    List of Python code examples.
+    ```python
+    python_code_examples = [
+        {
+            "question": "Get all the users",
+            "python_code": "result = pd.DataFrame(list(db.users.find()))",
+        },
+        {
+            "question": "How many messages are there?",
+            "python_code": "result = db.messages.count_documents({})",
+        },
+    ]
+    ```
+</ParamField>
+
+<ParamField path="plot_code_examples" type="list of dictionaries">
+    List of plot code examples.
+    ```python
+    plot_code_examples = [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(db.user, x='users', y='messages')"
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(db.messages, x='date', y='message_count')"
+        },
+    ]
+    ```
+</ParamField>
+
+## Example Usage
+
+```python
+import json
+import requests
+
+api_key = "YOUR_API_KEY"
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+url = "https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/rag-vector-store/update-rag-vector-store-mongodb"
+
+params = {
+    "path": "path/to/vector/store/project_name_test",
+    "remake": False,
+    "log_filename": "path/to/logfile.csv",
+}
+
+data = {
+    "config": {
+        "host": "your-mongodb-hostname.com",
+        "port": 27017,
+        "database": "dev",
+        "collections": ["cars", "employees"],
+        "connection_kwargs": {
+            "directConnection": true
+        }
+    },
+    "docs_examples": [
+        {
+            "docs": "This is some extra documentation for the users table.",
+        },
+        {
+            "docs": "This is some extra documentation for the messages table.",
+        },
+    ],
+    "python_code_examples": [
+        {
+            "question": "Get all the users",
+            "python_code": "result = pd.DataFrame(list(db.users.find()))",
+        },
+        {
+            "question": "How many messages are there?",
+            "python_code": "result = db.messages.count_documents({})",
+        },
+    ],
+    "plot_code_examples": [
+        {
+            "question": "Plot the messages per user",
+            "plot_code": "fig = px.bar(db.user, x='users', y='messages')"
+        },
+        {
+            "question": "Plot the number of messages over time",
+            "plot_code": "fig = px.line(db.messages, x='date', y='message_count')"
+        },
+    ],
+}
+
+response = requests.post(url, headers=headers, params=params, data=json.dumps(data))
+
+print(response.json())
+```
+```json
+{
+    "message": "RAG vector store updated successfully"
+}
+```

@@ -1,0 +1,240 @@
+---
+title: Files-based Analysis
+sidebarTitle: Files
+---
+
+```http
+POST https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/data_analyzer/sync/get-analysis-from-file
+```
+Get data analysis results for one or more files.
+
+## URL Parameters
+
+For details on all parameters, refer to the [URL Parameters](/enterprise/data-analyzr/configuration-objects#url-parameters) section.
+
+<ParamField path='query' type='string' required>
+    The query to be analyzed.
+    ```python
+    query = "Your query here"
+    ```
+</ParamField>
+
+<ParamField path='analysis_type' type='string' required>
+    The type of analysis to be performed. One of `ml`, `sql`, or `skip`.
+    ```python
+    analysis_type = "ml"
+    ```
+</ParamField>
+
+<ParamField path='include' type='list of strings'>
+    The outputs to include.
+</ParamField>
+
+<ParamField path='recommendations_output_type' type='string'>
+    Format for recommendations. Either `"json"` or `"text"`.
+</ParamField>
+
+<ParamField path='use_insights' type='boolean'>
+    Whether to use insights.
+</ParamField>
+
+<ParamField path='rerun_analysis' type='boolean'>
+    Whether to rerun analysis.
+</ParamField>
+
+<ParamField path='plot_path' type='string'>
+    Path to save visualisation image to.
+</ParamField>
+
+<ParamField path='logfilename' type='string'>
+    Path to log file.
+</ParamField>
+
+## Body Parameters
+
+For details on all parameters, refer to the [Body Parameters](/enterprise/data-analyzr/configuration-objects#body-parameters) section.
+
+<ParamField path='files' type='list of files' required>
+    The files to analyze.
+    ```python
+    files = [
+        (
+            "files",
+            (
+                "name_of_dataset", # name of this table or dataset
+                open("file_path.csv", "rb"), # file object
+                "text/csv" # MIME type
+            ),
+        ),
+        (
+            "files",
+            (
+                "name_of_dataset",
+                open("file_path.xlsx", "rb"),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ),
+        ),
+        (
+            "files",
+            (
+                "name_of_dataset",
+                open("file_path.xls", "rb"),
+                "application/vnd.ms-excel"
+            ),
+        ),
+        (
+            "files",
+            (
+                "name_of_dataset",
+                open("file_path.json", "rb"),
+                "application/json"
+            ),
+        )
+    ]
+    ```
+</ParamField>
+
+<ParamField path="files_config" type="dictionary">
+    Configuration for files.
+    <Expandable title="properties">
+        <ParamField path="datasets" type="dictionary">
+            Key-value pairs of dataset names and file paths.
+        </ParamField>
+        <ParamField path="db_path" type="string">
+            Path where a SQLite database should be created. For SQL-based analysis only
+        </ParamField>
+    </Expandable>
+    ```python
+    files_config = {
+        "datasets": {
+            "filename.ext": "Name of Dataset",
+            "filename2.ext": "Name of Dataset 2"
+        },
+        "db_path": "./testing/sqlite.db"
+    }
+    ```
+</ParamField>
+
+<ParamField path='vector_store_config' type='dictionary'>
+    Configuration for vector store.
+</ParamField>
+
+<ParamField path="context" type="dictionary">
+    Context for analysis and response generation.
+</ParamField>
+
+<ParamField path="counts" type="dictionary">
+    Counts configuration.
+</ParamField>
+
+<ParamField path="generator_model" type="dictionary">
+    Configuration for generator model.
+</ParamField>
+
+<ParamField path="analysis_model" type="dictionary">
+    Configuration for analysis model.
+</ParamField>
+
+<ParamField path="llm_access_credentials" type="dictionary">
+    Credentials for LLM.
+</ParamField>
+
+<ParamField path="s3_bucket_params" type="dictionary">
+    Parameters for S3 bucket.
+</ParamField>
+
+## Example Usage
+
+
+```python
+import json
+import requests
+
+api_key = "YOUR_API_KEY"
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+url = "https://v1.api.data-analyzr.dev.app.lyzr.ai/v1/data_analyzer/sync/get-analysis-from-file"
+
+params = {
+    "query": "Your query here",
+    "analysis_type": "ml",
+    "include": ["python_code", "insights", "recommendations"],
+    "recommendations_output_type": "text",
+    "use_insights": True,
+    "rerun_analysis": True,
+    "plot_path": "path/to/save/visualisation.png",
+    "logfilename": "path/to/logfile.csv"
+}
+
+files = [
+    (
+        "files",
+        (
+            "name_of_dataset",
+            open("file_path.csv", "rb"),
+            "text/csv"
+        ),
+    ),
+    (
+        "files",
+        (
+            "name_of_dataset",
+            open("file_path.xlsx", "rb"),
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    ),
+    (
+        "files",
+        (
+            "name_of_dataset",
+            open("file_path.xls", "rb"),
+            "application/vnd.ms-excel"
+        ),
+    ),
+    (
+        "files",
+        (
+            "name_of_dataset",
+            open("file_path.json", "rb"),
+            "application/json"
+        ),
+    )
+]
+
+files_config = {
+    "datasets": {
+        "filename.ext": "Name of Dataset",
+        "filename2.ext": "Name of Dataset 2"
+    },
+    "db_path": "./testing/sqlite.db"
+}
+
+vector_store_config = {
+    "path": "path_to_vector_store",
+    "remake": "true"
+}
+
+data = {
+    "files_config": json.dumps(files_config),
+    "vector_store_config": json.dumps(vector_store_config)
+}
+
+response = requests.post(url, headers=headers, params=params, files=files, data=data)
+
+print(response.json())
+```
+```json
+{
+    "sql_query": null,
+    "python_code": "result = df['age'].mean()",
+    "plot_code": null,
+    "analysis": null,
+    "visualisation": "",
+    "insights": "- Insight 1\n- Insight 2\n- Insight 3",
+    "recommendations": "- Recommendation 1\n- Recommendation 2\n- Recommendation 3",
+    "tasks": "",
+}
+```

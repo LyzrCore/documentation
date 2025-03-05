@@ -45,6 +45,10 @@
     ],
     "tabs": [
         {
+            "name": "Lyzr Agent Studio",
+            "url": "agent-studio"
+        },
+        {
             "name": "Lyzr Agent API",
             "url": "agent-api"
         },
@@ -340,6 +344,18 @@
                 
                         "agent-api/python-client/python-client"
                 
+            ]
+        },
+        {
+            "group": "Lyzr Agent Studio",
+            "pages": [
+                "agent-studio/introduction",
+                "agent-studio/agent-building",
+                "agent-studio/models",
+                "agent-studio/knowledge-base",
+                "agent-studio/tools",
+                "agent-studio/publishing_deployment",
+                "agent-studio/team-management"
             ]
         }
     ],

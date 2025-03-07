@@ -1,0 +1,28 @@
+---
+title: Publishing & Deployment
+sidebarTitle: "Publishing & Deployment"
+description: 'Publishing & Deployment of apps within Lyzr'
+---
+
+The agent built can be deployed in 2 ways: 
+- Publish it as part of app store of Agent Studio
+- Deploy it as part of your own product
+
+## Publishing in app store
+1. Click Save Agent after testing.
+2. Select Publish to make it accessible.
+3. Define privacy settings
+    - Private – will be published, but will be visible to the creator of the agent
+    - Organization – will be published as part of organization, and will be visible to all the team members of the organization. Publishing to organization is only available to members who are part of the organization plan.
+    - Public – will be visible to everyone as part of the Appstore
+
+## Deploy in your own product
+
+Agents built as part of Agent Studio can be deployed across any product. This can be implemented by following the steps mentioned below:
+1. Open the Agent
+2. Click on Agent API that’s available as shown in the image below
+
+![agent_api](./assets/images/lyzr-studio/agent_api.png)
+
+3. Copy Agent JSON. Switch to Inference tab. You will find the curl request for inferencing with the agent.
+4. Use this as part of your own product.

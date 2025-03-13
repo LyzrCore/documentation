@@ -67,6 +67,7 @@
                 "agent-studio/models",
                 "agent-studio/knowledge-base",
                 "agent-studio/tools",
+                "agent-studio/features",
                 "agent-studio/publishing_deployment",
                 "agent-studio/account-management",
                 "agent-studio/team-management"

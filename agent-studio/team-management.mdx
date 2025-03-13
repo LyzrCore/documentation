@@ -1,21 +1,50 @@
 ---
-title: Team Management
+title: "Team Management"
 sidebarTitle: "Team Management"
-description: 'Team management in Lyzr organisation plans'
+description: "Team management in Lyzr Agent Studio"
 ---
 
+<Frame as="div">
+  <Icon icon="check" color="green" />    Team management is only available if you are part of Organization plan or Teams plan.&#x20;
+  <Icon icon="circle-xmark" color="red" />    Not available if you are part of Community (free) or Pro plan
+</Frame>
 
-<Note>Team collaboration is available only for Organization and Enterprise plan users</Note>
+Lyzr Agent Studio allows you to collaborate and build agents together.&#x20;
 
 ## User Roles & Permissions
-When an organization plan is purchased, the buyer automatically becomes the Org Owner. The Org Owner can add team members and assign one of the following roles:
 
-Member – Can create, use, and collaborate on agents and knowledge bases.
-Admin – Can add and remove team members, manage access, and oversee organization-wide settings. Does not have access to billing cycle, and cannot stop subscription. Can do everything that an Admin can do
-Org Owner – Can do everything that an Admin can do. But has additional control over team, billing and subscriptions. Owner can remove any user, but owner cannot be removed by others.
+There are three roles available, where permissions are different for each and every role.&#x20;
+
+| Role       | Billing                                  | Team Management                          | Build Agents                        | Share Agents                        | Publish Agents                      |
+| ---------- | ---------------------------------------- | ---------------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------------- |
+| **Owner**  | <Icon icon="check" color="green" />      | <Icon icon="check" color="green" />      | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> |
+| **Admin**  | <Icon icon="circle-xmark" color="red" /> | <Icon icon="check" color="green" />      | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> |
+| **Member** | <Icon icon="circle-xmark" color="red" /> | <Icon icon="circle-xmark" color="red" /> | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> | <Icon icon="check" color="green" /> |
+
+When an organization or teams plan is purchased, the buyer automatically becomes the Org Owner. There can be only one org owner, and if an org owner needs to be changed, then reach out to us through email at [studio@lyzr.ai](mailto:studio@lyzr.ai)
+
+## Billing
+
+1. Only owners have access to billing. Click **Manage** at the bottom of the left sidebar.
+
+2. A new page will open; click on **Manage Billing**.
+
+3. Here, you can view invoices, modify card details, check upcoming payment details, and unsubscribe.
+
+## Team Management
+
+1. Both Owners and Admins can manage the team. Click **Manage** at the bottom of the left sidebar.
+
+2. A new page will open; click on the **Teams** tab.
+
+3. You will see a list of added users. Click on the **three dots** next to a user to remove them.
+
+4. To add a new member, click **Invite**, enter the email ID, assign a role, and submit to add the team member.
 
 ## Collaboration & Sharing
+
 * Any creator of an agent or knowledge base can share it with other members within the organization.
+
 * Collaboration ensures seamless knowledge sharing and team-wide access to important resources.
 
-Only one member of an organization can be an Org Owner. By default, the user who has subscribed and paid the Organization plan would be made the Owner
+* Irrespective of the role, an agent can be published as part of teams/organization

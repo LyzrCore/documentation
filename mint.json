@@ -69,7 +69,7 @@
                 "agent-studio/tools",
                 "agent-studio/features",
                 "agent-studio/publishing_deployment",
-                "agent-studio/account-management",
+                "agent-studio/accounts-billing",
                 "agent-studio/team-management"
             ]
         }
